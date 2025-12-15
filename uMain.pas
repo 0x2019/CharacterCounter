@@ -143,6 +143,9 @@ end;
 
 procedure TfrmMain.FormCreate(Sender: TObject);
 begin
+  Constraints.MinWidth  := Width;
+  Constraints.MinHeight := Height;
+
   LoadSettings(Self);
 
   mmoTextChange(nil);
