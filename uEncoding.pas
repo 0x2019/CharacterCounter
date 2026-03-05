@@ -1,4 +1,4 @@
-﻿unit uExt.Encoding;
+﻿unit uEncoding;
 
 interface
 

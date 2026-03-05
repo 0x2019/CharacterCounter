@@ -2370,9 +2370,9 @@ object frmMain: TfrmMain
     OnChange = mmoTextChange
   end
   object btnExit: TsBitBtn
-    Left = 518
+    Left = 498
     Top = 334
-    Width = 80
+    Width = 100
     Height = 25
     Hint = '<b>'#54532#47196#44536#47016' '#51333#47308'</b>'
     Caption = 'E&xit'
@@ -2383,12 +2383,12 @@ object frmMain: TfrmMain
     TabOrder = 6
     TabStop = False
     OnClick = btnExitClick
-    SkinData.SkinSection = 'SPEEDBUTTON'
+    SkinData.SkinSection = 'TOOLBUTTON'
   end
   object btnAbout: TsBitBtn
-    Left = 432
+    Left = 392
     Top = 334
-    Width = 80
+    Width = 100
     Height = 25
     Hint = '<b>'#54532#47196#44536#47016' '#51221#48372'</b>'
     Caption = '&About'
@@ -2399,7 +2399,7 @@ object frmMain: TfrmMain
     TabOrder = 5
     TabStop = False
     OnClick = btnAboutClick
-    SkinData.SkinSection = 'SPEEDBUTTON'
+    SkinData.SkinSection = 'TOOLBUTTON'
   end
   object chkAlwaysOnTop: TsCheckBox
     Left = 0
@@ -2415,9 +2415,9 @@ object frmMain: TfrmMain
     OnClick = chkAlwaysOnTopClick
   end
   object btnClear: TsBitBtn
-    Left = 260
+    Left = 180
     Top = 334
-    Width = 80
+    Width = 100
     Height = 25
     Hint = '<b>'#51077#47141' '#45236#50857' '#52488#44592#54868'</b>'
     Caption = '&Clear'
@@ -2428,12 +2428,13 @@ object frmMain: TfrmMain
     TabOrder = 3
     TabStop = False
     OnClick = btnClearClick
+    SkinData.SkinSection = 'TOOLBUTTON'
   end
   object scrStats: TsScrollBox
     Left = 604
-    Top = 8
+    Top = 7
     Width = 210
-    Height = 351
+    Height = 352
     HorzScrollBar.Smooth = True
     HorzScrollBar.Tracking = True
     VertScrollBar.Smooth = True
@@ -2463,9 +2464,9 @@ object frmMain: TfrmMain
     OnClick = chkUseCP949Click
   end
   object btnCopy: TsBitBtn
-    Left = 346
+    Left = 286
     Top = 334
-    Width = 80
+    Width = 100
     Height = 25
     Hint = '<b>'#53364#47549#48372#46300#50640' '#48373#49324'</b>'
     Caption = 'C&opy'
@@ -2476,6 +2477,7 @@ object frmMain: TfrmMain
     TabOrder = 4
     TabStop = False
     OnClick = btnCopyClick
+    SkinData.SkinSection = 'TOOLBUTTON'
   end
   object sSkinManager: TsSkinManager
     AnimEffects.BlendOnMoving.Active = True

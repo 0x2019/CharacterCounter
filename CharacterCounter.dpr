@@ -1,30 +1,35 @@
 ﻿program CharacterCounter;
 
 uses
-  Vcl.Forms,
   Winapi.Windows,
+  Vcl.Forms,
   uMain in 'uMain.pas' {frmMain},
-  uMain.UI.Settings in 'uMain.UI.Settings.pas',
-  uExt in 'uExt.pas',
-  uMain.UI in 'uMain.UI.pas',
-  uExt.Chars in 'uExt.Chars.pas',
-  uExt.Encoding in 'uExt.Encoding.pas',
-  uMain.UI.Stats in 'uMain.UI.Stats.pas';
+  uAppController in 'uAppController.pas',
+  uAppSettings in 'uAppSettings.pas',
+  uAppStats in 'uAppStats.pas',
+  uAppStrings in 'uAppStrings.pas',
+  uChars in 'uChars.pas',
+  uEncoding in 'uEncoding.pas',
+  uTextStats in 'uTextStats.pas',
+  uForms in '..\Common\uForms.pas',
+  uMessageBox in '..\Common\uMessageBox.pas',
+  uSettings in '..\Common\uSettings.pas';
 
 var
   uMutex: THandle;
 
-{$O+} {$SetPEFlags IMAGE_FILE_RELOCS_STRIPPED}
 {$R *.res}
 
 begin
   uMutex := CreateMutex(nil, True, 'CC!');
-  if (uMutex <> 0 ) and (GetLastError = 0) then begin
-  Application.Initialize;
-  Application.MainFormOnTaskbar := True;
-  Application.CreateForm(TfrmMain, frmMain);
-  Application.Run;
-  if uMutex <> 0 then
-    CloseHandle(uMutex);
+  if (uMutex <> 0) and (GetLastError = 0) then
+  begin
+    Application.Initialize;
+    Application.MainFormOnTaskbar := True;
+    Application.CreateForm(TfrmMain, frmMain);
+    Application.Run;
+
+    if uMutex <> 0 then
+      CloseHandle(uMutex);
   end;
 end.

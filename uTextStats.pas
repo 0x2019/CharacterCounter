@@ -1,4 +1,4 @@
-﻿unit uExt;
+﻿unit uTextStats;
 
 interface
 
@@ -43,7 +43,7 @@ procedure UpdateHangulCounts(const ch: Char; var ConsonantCount, VowelCount: Int
 implementation
 
 uses
-  uExt.Chars, uExt.Encoding;
+  uChars, uEncoding;
 
 function GetTextStats(const Text: string): TTextStats;
 var

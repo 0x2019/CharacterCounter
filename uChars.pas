@@ -1,4 +1,4 @@
-﻿unit uExt.Chars;
+﻿unit uChars;
 
 interface
 
