@@ -7,7 +7,7 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, System.Character, sSkinProvider, sSkinManager,
   Vcl.StdCtrls, Vcl.Buttons, sBitBtn, System.ImageList, Vcl.ImgList,
   acAlphaImageList, sMemo, acAlphaHints, sCheckBox, sLabel, Vcl.ExtCtrls,
-  sScrollBox,
+  sScrollBox, Vcl.Menus,
 
   uForms, uMessageBox, uSettings;
 
@@ -20,7 +20,9 @@ type
     btnExit: TsBitBtn;
     btnAbout: TsBitBtn;
     sAlphaHints: TsAlphaHints;
-    chkAlwaysOnTop: TsCheckBox;
+    MainMenu: TMainMenu;
+    mnuView: TMenuItem;
+    miAlwaysOnTop: TMenuItem;
     btnClear: TsBitBtn;
     scrStats: TsScrollBox;
     lblStats: TsHTMLLabel;
@@ -31,7 +33,7 @@ type
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
-    procedure chkAlwaysOnTopClick(Sender: TObject);
+    procedure miAlwaysOnTopClick(Sender: TObject);
     procedure mmoTextChange(Sender: TObject);
     procedure btnClearClick(Sender: TObject);
     procedure chkUseCP949Click(Sender: TObject);
@@ -51,7 +53,7 @@ implementation
 {$R *.dfm}
 
 uses
-  uAppController, uAppSettings, uAppStats, uEncoding, uTextStats;
+  uAppController, uAppMenu, uAppSettings, uAppStats, uEncoding, uTextStats;
 
 procedure TfrmMain.ChangeMessageBoxPosition(var Msg: TMessage);
 begin
@@ -84,9 +86,9 @@ begin
   AppController_Exit(Self);
 end;
 
-procedure TfrmMain.chkAlwaysOnTopClick(Sender: TObject);
+procedure TfrmMain.miAlwaysOnTopClick(Sender: TObject);
 begin
-  AppController_ToggleAlwaysOnTop(Self);
+  AppMenu_AlwaysOnTop(Self);
 end;
 
 procedure TfrmMain.chkUseCP949Click(Sender: TObject);
@@ -108,7 +110,7 @@ begin
   Self.OnMouseDown := DragForm;
 
   AppSettings_Load(Self);
-  AppController_ToggleAlwaysOnTop(Self);
+  UI_SetAlwaysOnTop(Self, miAlwaysOnTop.Checked);
 
   mmoTextChange(nil);
 end;

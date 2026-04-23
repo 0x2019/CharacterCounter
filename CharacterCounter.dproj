@@ -134,6 +134,7 @@
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="uAppController.pas"/>
+        <DCCReference Include="uAppMenu.pas"/>
         <DCCReference Include="uAppSettings.pas"/>
         <DCCReference Include="uAppStats.pas"/>
         <DCCReference Include="uAppStrings.pas"/>

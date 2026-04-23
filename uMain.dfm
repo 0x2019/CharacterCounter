@@ -2348,6 +2348,7 @@ object frmMain: TfrmMain
     0000000000000000000000000000000000000000000000000000000000008000
     0100}
   KeyPreview = True
+  Menu = MainMenu
   OnClose = FormClose
   OnCreate = FormCreate
   OnKeyDown = FormKeyDown
@@ -2396,23 +2397,10 @@ object frmMain: TfrmMain
     Images = sCharImageList
     ParentShowHint = False
     ShowHint = True
-    TabOrder = 5
+    TabOrder = 4
     TabStop = False
     OnClick = btnAboutClick
     SkinData.SkinSection = 'TOOLBUTTON'
-  end
-  object chkAlwaysOnTop: TsCheckBox
-    Left = 0
-    Top = 329
-    Width = 106
-    Height = 17
-    Hint = '<b>'#54637#49345' '#50948'</b>'
-    TabStop = False
-    Caption = 'Always On &Top'
-    ParentShowHint = False
-    ShowHint = True
-    TabOrder = 1
-    OnClick = chkAlwaysOnTopClick
   end
   object btnClear: TsBitBtn
     Left = 180
@@ -2425,7 +2413,7 @@ object frmMain: TfrmMain
     Images = sCharImageList
     ParentShowHint = False
     ShowHint = True
-    TabOrder = 3
+    TabOrder = 2
     TabStop = False
     OnClick = btnClearClick
     SkinData.SkinSection = 'TOOLBUTTON'
@@ -2440,7 +2428,7 @@ object frmMain: TfrmMain
     VertScrollBar.Smooth = True
     VertScrollBar.Tracking = True
     AutoMouseWheel = True
-    TabOrder = 7
+    TabOrder = 5
     object lblStats: TsHTMLLabel
       Left = 5
       Top = 5
@@ -2460,7 +2448,7 @@ object frmMain: TfrmMain
     Caption = '&Use CP949 Encoding'
     ParentShowHint = False
     ShowHint = True
-    TabOrder = 2
+    TabOrder = 1
     OnClick = chkUseCP949Click
   end
   object btnCopy: TsBitBtn
@@ -2474,10 +2462,21 @@ object frmMain: TfrmMain
     Images = sCharImageList
     ParentShowHint = False
     ShowHint = True
-    TabOrder = 4
+    TabOrder = 3
     TabStop = False
     OnClick = btnCopyClick
     SkinData.SkinSection = 'TOOLBUTTON'
+  end
+  object MainMenu: TMainMenu
+    Left = 176
+    Top = 61
+    object mnuView: TMenuItem
+      Caption = #48372#44592'(&V)'
+      object miAlwaysOnTop: TMenuItem
+        Caption = #54637#49345' '#50948'(&A)'
+        OnClick = miAlwaysOnTopClick
+      end
+    end
   end
   object sSkinManager: TsSkinManager
     AnimEffects.BlendOnMoving.Active = True
@@ -5131,8 +5130,8 @@ object frmMain: TfrmMain
     CaptionAlignment = taCenter
     SkinData.SkinSection = 'FORM'
     TitleButtons = <>
-    Left = 32
-    Top = 56
+    Left = 88
+    Top = 136
   end
   object sCharImageList: TsCharImageList
     EmbeddedFonts = <
@@ -5157,8 +5156,8 @@ object frmMain: TfrmMain
         ScalingFactor = 0.800000000000000000
         Char = 61637
       end>
-    Left = 3
-    Top = 56
+    Left = 75
+    Top = 104
     Bitmap = {}
   end
   object sAlphaHints: TsAlphaHints

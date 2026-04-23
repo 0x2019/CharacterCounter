@@ -5,6 +5,7 @@ uses
   Vcl.Forms,
   uMain in 'uMain.pas' {frmMain},
   uAppController in 'uAppController.pas',
+  uAppMenu in 'uAppMenu.pas',
   uAppSettings in 'uAppSettings.pas',
   uAppStats in 'uAppStats.pas',
   uAppStrings in 'uAppStrings.pas',
