@@ -1,4 +1,4 @@
-﻿unit uEncoding;
+﻿unit uTextEncoding;
 
 interface
 

@@ -2473,6 +2473,17 @@ object frmMain: TfrmMain
   object MainMenu: TMainMenu
     Left = 176
     Top = 61
+    object mnuFile: TMenuItem
+      Caption = #54028#51068'(&F)'
+      SubMenuImages = sMenuImageList
+      object miOpenFile: TMenuItem
+        Caption = #50676#44592'(&O)...'
+        SubMenuImages = sMenuImageList
+        ImageIndex = 0
+        ShortCut = 16463
+        OnClick = miOpenFileClick
+      end
+    end
     object mnuView: TMenuItem
       Caption = #48372#44592'(&V)'
       object miAlwaysOnTop: TMenuItem
@@ -2480,6 +2491,11 @@ object frmMain: TfrmMain
         OnClick = miAlwaysOnTopClick
       end
     end
+  end
+  object OpenFileDlg: TsOpenDialog
+    Filter = #53581#49828#53944' '#47928#49436' (*.txt)|*.txt|'#47784#46304' '#54028#51068' (*.*)|*.*'
+    Left = 296
+    Top = 69
   end
   object sSkinManager: TsSkinManager
     AnimEffects.BlendOnMoving.Active = True
@@ -5319,5 +5335,21 @@ object frmMain: TfrmMain
     SkinSection = 'HINT'
     Left = 95
     Top = 57
+  end
+  object sMenuImageList: TsCharImageList
+    ShareImages = True
+    EmbeddedFonts = <
+      item
+        FontName = 'FontAwesome'
+        FontData = {}
+      end>
+    Items = <
+      item
+        ScalingFactor = 0.600000000000000000
+        Char = 61564
+      end>
+    Left = 209
+    Top = 19
+    Bitmap = {}
   end
 end

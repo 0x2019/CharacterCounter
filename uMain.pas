@@ -7,7 +7,7 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, System.Character, sSkinProvider, sSkinManager,
   Vcl.StdCtrls, Vcl.Buttons, sBitBtn, System.ImageList, Vcl.ImgList,
   acAlphaImageList, sMemo, acAlphaHints, sCheckBox, sLabel, Vcl.ExtCtrls,
-  sScrollBox, Vcl.Menus,
+  sScrollBox, Vcl.Menus, sDialogs,
 
   uForms, uMessageBox, uSettings;
 
@@ -20,7 +20,10 @@ type
     btnExit: TsBitBtn;
     btnAbout: TsBitBtn;
     sAlphaHints: TsAlphaHints;
+    OpenFileDlg: TsOpenDialog;
     MainMenu: TMainMenu;
+    mnuFile: TMenuItem;
+    miOpenFile: TMenuItem;
     mnuView: TMenuItem;
     miAlwaysOnTop: TMenuItem;
     btnClear: TsBitBtn;
@@ -28,12 +31,14 @@ type
     lblStats: TsHTMLLabel;
     chkUseCP949: TsCheckBox;
     btnCopy: TsBitBtn;
+    sMenuImageList: TsCharImageList;
     procedure btnAboutClick(Sender: TObject);
     procedure btnExitClick(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure miAlwaysOnTopClick(Sender: TObject);
+    procedure miOpenFileClick(Sender: TObject);
     procedure mmoTextChange(Sender: TObject);
     procedure btnClearClick(Sender: TObject);
     procedure chkUseCP949Click(Sender: TObject);
@@ -52,7 +57,7 @@ implementation
 {$R *.dfm}
 
 uses
-  uAppController, uAppMenu, uAppSettings, uAppStats, uEncoding, uTextStats;
+  uAppController, uAppMenu, uAppSettings, uAppStats, uTextEncoding, uTextStats;
 
 procedure TfrmMain.ChangeMessageBoxPosition(var Msg: TMessage);
 begin
@@ -82,6 +87,11 @@ end;
 procedure TfrmMain.miAlwaysOnTopClick(Sender: TObject);
 begin
   AppMenu_AlwaysOnTop(Self);
+end;
+
+procedure TfrmMain.miOpenFileClick(Sender: TObject);
+begin
+  AppMenu_OpenFile(Self);
 end;
 
 procedure TfrmMain.chkUseCP949Click(Sender: TObject);

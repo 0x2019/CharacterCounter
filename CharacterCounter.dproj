@@ -139,8 +139,9 @@
         <DCCReference Include="uAppStats.pas"/>
         <DCCReference Include="uAppStrings.pas"/>
         <DCCReference Include="uChars.pas"/>
-        <DCCReference Include="uEncoding.pas"/>
+        <DCCReference Include="uTextEncoding.pas"/>
         <DCCReference Include="uTextStats.pas"/>
+        <DCCReference Include="..\Common\uEncoding.pas"/>
         <DCCReference Include="..\Common\uForms.pas"/>
         <DCCReference Include="..\Common\uMessageBox.pas"/>
         <DCCReference Include="..\Common\uSettings.pas"/>

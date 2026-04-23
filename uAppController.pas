@@ -3,7 +3,9 @@
 interface
 
 uses
-  Winapi.Windows, System.SysUtils, Vcl.Forms, Clipbrd, uMain;
+  Winapi.Windows, System.SysUtils, Vcl.Forms, Clipbrd, uMain,
+
+  uForms, uMessageBox;
 
 procedure AppController_UpdateStats(F: TfrmMain);
 
@@ -17,19 +19,20 @@ procedure AppController_ToggleCP949Encoding(F: TfrmMain);
 implementation
 
 uses
-  uForms, uMessageBox,
-  uAppStats, uAppStrings, uEncoding, uTextStats;
+  uAppStats, uAppStrings, uTextEncoding, uTextStats;
 
 procedure AppController_UpdateStats(F: TfrmMain);
 var
   Stats: TTextStats;
+  InputText: string;
 begin
   if F = nil then Exit;
 
-  Stats := GetTextStats(F.mmoText.Text);
+  InputText := string.Join(sLineBreak, F.mmoText.Lines.ToStringArray);
+  Stats := GetTextStats(InputText);
   F.lblStats.Caption := ShowTextStats(Stats);
-  F.btnClear.Enabled := Trim(F.mmoText.Text) <> '';
-  F.btnCopy.Enabled  := Trim(F.mmoText.Text) <> '';
+  F.btnClear.Enabled := Trim(InputText) <> '';
+  F.btnCopy.Enabled  := Trim(InputText) <> '';
 end;
 
 procedure AppController_Clear(F: TfrmMain);

@@ -1,15 +1,81 @@
-unit uAppMenu;
+﻿unit uAppMenu;
 
 interface
 
 uses
-  Vcl.Forms, uMain,
+  Winapi.Windows, System.Classes, System.IOUtils, System.SysUtils, Vcl.Forms,
+  uMain,
 
-  uForms;
+  uEncoding, uForms, uMessageBox;
 
+// File
+procedure AppMenu_OpenFile(F: TfrmMain);
+
+// View
 procedure AppMenu_AlwaysOnTop(F: TfrmMain);
 
 implementation
+
+uses
+  uAppStrings;
+
+procedure AppMenu_OpenFile(F: TfrmMain);
+var
+  FileName: string;
+  FileBytes: TBytes;
+  InputText: string;
+  WindowTitle: string;
+begin
+  if F = nil then Exit;
+  if not Assigned(F.OpenFileDlg) then Exit;
+
+  F.OpenFileDlg.FileName := '';
+  if not F.OpenFileDlg.Execute then Exit;
+
+  FileName := F.OpenFileDlg.FileName;
+  if FileName = '' then Exit;
+
+  try
+    FileBytes := TFile.ReadAllBytes(FileName);
+    if not TryDecode(FileBytes, InputText) then
+    begin
+      UI_MessageBox(F, SUnsupportedFileMsg, MB_ICONERROR or MB_OK);
+      Exit;
+    end;
+
+    F.mmoText.Text := InputText;
+    F.mmoText.SelStart := 0;
+    F.mmoText.SelLength := 0;
+
+    try
+      F.mmoTextChange(nil);
+    except
+
+    end;
+
+    WindowTitle := ExtractFileName(FileName) + ' - ' + APP_NAME;
+    try
+      F.Caption := WindowTitle;
+    except
+      F.Caption := APP_NAME;
+    end;
+
+    if Assigned(F.sSkinProvider) then
+    begin
+      try
+        F.sSkinProvider.AddedTitle.Text := WindowTitle;
+      except
+        try
+          F.sSkinProvider.AddedTitle.Text := APP_NAME;
+        except
+        end;
+      end;
+    end;
+  except
+    on E: Exception do
+      UI_MessageBox(F, Format(SOpenFileErrorMsg, [E.Message]), MB_ICONERROR or MB_OK);
+  end;
+end;
 
 procedure AppMenu_AlwaysOnTop(F: TfrmMain);
 begin
@@ -19,4 +85,3 @@ begin
 end;
 
 end.
-

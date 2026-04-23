@@ -43,7 +43,7 @@ procedure UpdateHangulCounts(const ch: Char; var ConsonantCount, VowelCount: Int
 implementation
 
 uses
-  uChars, uEncoding;
+  uChars, uTextEncoding;
 
 function GetTextStats(const Text: string): TTextStats;
 var

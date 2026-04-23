@@ -10,8 +10,9 @@ uses
   uAppStats in 'uAppStats.pas',
   uAppStrings in 'uAppStrings.pas',
   uChars in 'uChars.pas',
-  uEncoding in 'uEncoding.pas',
+  uTextEncoding in 'uTextEncoding.pas',
   uTextStats in 'uTextStats.pas',
+  uEncoding in '..\Common\uEncoding.pas',
   uForms in '..\Common\uForms.pas',
   uMessageBox in '..\Common\uMessageBox.pas',
   uSettings in '..\Common\uSettings.pas';
@@ -28,7 +29,7 @@ begin
     Application.Initialize;
     Application.MainFormOnTaskbar := True;
     Application.CreateForm(TfrmMain, frmMain);
-    Application.Run;
+  Application.Run;
 
     if uMutex <> 0 then
       CloseHandle(uMutex);
