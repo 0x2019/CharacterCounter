@@ -1,4 +1,5 @@
 object frmMain: TfrmMain
+  Tag = 99
   Left = 0
   Top = 0
   BorderIcons = [biSystemMenu, biMinimize]
@@ -2419,6 +2420,7 @@ object frmMain: TfrmMain
     SkinData.SkinSection = 'TOOLBUTTON'
   end
   object scrStats: TsScrollBox
+    Tag = 99
     Left = 604
     Top = 7
     Width = 210
@@ -2430,6 +2432,7 @@ object frmMain: TfrmMain
     AutoMouseWheel = True
     TabOrder = 5
     object lblStats: TsHTMLLabel
+      Tag = 99
       Left = 5
       Top = 5
       Width = 120
