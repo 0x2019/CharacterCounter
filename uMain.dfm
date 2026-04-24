@@ -2490,6 +2490,14 @@ object frmMain: TfrmMain
         Caption = #54637#49345' '#50948'(&A)'
         OnClick = miAlwaysOnTopClick
       end
+      object N1: TMenuItem
+        Caption = '-'
+      end
+      object miWordWrap: TMenuItem
+        AutoCheck = True
+        Caption = #51460' '#48148#45000'(&W)'
+        OnClick = miWordWrapClick
+      end
     end
   end
   object OpenFileDlg: TsOpenDialog

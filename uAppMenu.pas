@@ -4,7 +4,7 @@ interface
 
 uses
   Winapi.Windows, System.Classes, System.IOUtils, System.SysUtils, Vcl.Forms,
-  uMain,
+  Vcl.StdCtrls, uMain,
 
   uEncoding, uForms, uMessageBox;
 
@@ -13,6 +13,7 @@ procedure AppMenu_OpenFile(F: TfrmMain);
 
 // View
 procedure AppMenu_AlwaysOnTop(F: TfrmMain);
+procedure AppMenu_WordWrap(F: TfrmMain);
 
 implementation
 
@@ -87,6 +88,19 @@ begin
   if F = nil then Exit;
   F.miAlwaysOnTop.Checked := not F.miAlwaysOnTop.Checked;
   UI_SetAlwaysOnTop(F, F.miAlwaysOnTop.Checked);
+end;
+
+procedure AppMenu_WordWrap(F: TfrmMain);
+begin
+  if F = nil then Exit;
+  if not Assigned(F.miWordWrap) then Exit;
+  if not Assigned(F.mmoText) then Exit;
+  F.mmoText.WordWrap := F.miWordWrap.Checked;
+
+  if F.miWordWrap.Checked then
+    F.mmoText.ScrollBars := ssVertical
+  else
+    F.mmoText.ScrollBars := ssBoth;
 end;
 
 end.

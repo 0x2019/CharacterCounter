@@ -19,6 +19,7 @@ begin
   Ini := TMemIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'), TEncoding.UTF8);
   try
     F.miAlwaysOnTop.Checked := Ini.ReadBool('Main', 'AlwaysOnTop', False);
+    F.miWordWrap.Checked := Ini.ReadBool('Main', 'WordWrap', False);
     F.chkUseCP949.Checked := Ini.ReadBool('Main', 'UseCP949', False);
   finally
     Ini.Free;
@@ -34,6 +35,7 @@ begin
   Ini := TMemIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'), TEncoding.UTF8);
   try
     Ini.WriteBool('Main', 'AlwaysOnTop', F.miAlwaysOnTop.Checked);
+    Ini.WriteBool('Main', 'WordWrap', F.miWordWrap.Checked);
     Ini.WriteBool('Main', 'UseCP949', F.chkUseCP949.Checked);
     Ini.UpdateFile;
   finally

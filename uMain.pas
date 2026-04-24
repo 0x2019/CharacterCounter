@@ -26,6 +26,7 @@ type
     miOpenFile: TMenuItem;
     mnuView: TMenuItem;
     miAlwaysOnTop: TMenuItem;
+    miWordWrap: TMenuItem;
     btnClear: TsBitBtn;
     scrStats: TsScrollBox;
     lblStats: TsHTMLLabel;
@@ -38,6 +39,7 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure miAlwaysOnTopClick(Sender: TObject);
+    procedure miWordWrapClick(Sender: TObject);
     procedure miOpenFileClick(Sender: TObject);
     procedure mmoTextChange(Sender: TObject);
     procedure btnClearClick(Sender: TObject);
@@ -92,6 +94,11 @@ begin
   AppMenu_AlwaysOnTop(Self);
 end;
 
+procedure TfrmMain.miWordWrapClick(Sender: TObject);
+begin
+  AppMenu_WordWrap(Self);
+end;
+
 procedure TfrmMain.miOpenFileClick(Sender: TObject);
 begin
   AppMenu_OpenFile(Self);
@@ -119,6 +126,7 @@ begin
 
   AppSettings_Load(Self);
   UI_SetAlwaysOnTop(Self, miAlwaysOnTop.Checked);
+  AppMenu_WordWrap(Self);
 
   mmoTextChange(nil);
 end;
