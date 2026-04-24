@@ -28,7 +28,16 @@ var
 begin
   if F = nil then Exit;
 
-  InputText := string.Join(sLineBreak, F.mmoText.Lines.ToStringArray);
+  InputText := F.mmoText.Text;
+  if InputText <> '' then
+    if F.FLoadedFromFile and (not F.mmoText.Modified) and (not F.FHasTrailingNewLine) then
+    begin
+      if InputText.EndsWith(#13#10) then
+        Delete(InputText, Length(InputText) - 1, 2)
+      else if CharInSet(InputText[Length(InputText)], [#10, #13]) then
+        Delete(InputText, Length(InputText), 1);
+    end;
+
   Stats := GetTextStats(InputText);
   F.lblStats.Caption := ShowTextStats(Stats);
   F.btnClear.Enabled := Trim(InputText) <> '';
@@ -42,6 +51,8 @@ begin
 
   if UI_ConfirmYesNo(F, SClearConfirmMsg) then
   begin
+    F.FLoadedFromFile := False;
+    F.FHasTrailingNewLine := False;
     F.mmoText.Clear;
     F.mmoTextChange(nil);
   end;

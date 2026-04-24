@@ -43,7 +43,12 @@ begin
       Exit;
     end;
 
+    F.FLoadedFromFile := True;
+    F.FHasTrailingNewLine := (InputText <> '') and
+      CharInSet(InputText[Length(InputText)], [#10, #13]);
+
     F.mmoText.Text := InputText;
+    F.mmoText.Modified := False;
     F.mmoText.SelStart := 0;
     F.mmoText.SelLength := 0;
 

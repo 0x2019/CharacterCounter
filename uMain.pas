@@ -46,6 +46,9 @@ type
   private
     { Private declarations }
   public
+    FLoadedFromFile: Boolean;
+    FHasTrailingNewLine: Boolean;
+
     procedure ChangeMessageBoxPosition(var Msg: TMessage); message mbMessage;
   end;
 
@@ -107,6 +110,9 @@ end;
 
 procedure TfrmMain.FormCreate(Sender: TObject);
 begin
+  FLoadedFromFile := False;
+  FHasTrailingNewLine := False;
+
   UI_SetMinConstraints(Self);
   UI_LoadFormSettings(Self);
   UI_EnableDragForm(Self);

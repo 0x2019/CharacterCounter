@@ -37,6 +37,9 @@ function GetTextStats(const Text: string): TTextStats;
 // 단어 수 계산
 function GetWordCount(const Text: string): Integer;
 
+// 줄 수 계산 (CR/LF 정규화 후 계산)
+function GetLineCount(const Text: string): Integer;
+
 // 한글 자모 여부에 따라 자음/모음 수를 갱신
 procedure UpdateHangulCounts(const ch: Char; var ConsonantCount, VowelCount: Integer);
 
@@ -47,14 +50,15 @@ uses
 
 function GetTextStats(const Text: string): TTextStats;
 var
-  i, TextLen, LineFeedCount: Integer;
+  i, TextLen: Integer;
   ch: Char;
   actualCharCode: Cardinal;
   NoSpaceBuilder: TStringBuilder;
-  HasNonNewline: Boolean;
+  NormalizedText: string;
 begin
   Result := Default(TTextStats);
-  Result.CharCountWithSpaces := Length(ConvertCRLFtoLF(Text));
+  NormalizedText := ConvertCRLFtoLF(Text);
+  Result.CharCountWithSpaces := Length(NormalizedText);
 
   TextLen := Length(Text);
   NoSpaceBuilder := TStringBuilder.Create(TextLen);
@@ -108,39 +112,7 @@ begin
   end;
 
   Result.WordCount := GetWordCount(Text);
-
-  if Text = '' then
-    Result.LineCount := 0
-  else
-  begin
-    LineFeedCount := 0;
-    HasNonNewline := False;
-    i := 1;
-    while i <= TextLen do
-    begin
-      if Text[i] = #13 then
-      begin
-        Inc(LineFeedCount);
-        if (i < TextLen) and (Text[i+1] = #10) then
-          Inc(i);
-      end
-      else if Text[i] = #10 then
-        Inc(LineFeedCount)
-      else
-        HasNonNewline := True;
-      Inc(i);
-    end;
-
-    if (TextLen > 0) and not CharInSet(Text[TextLen], [#10, #13]) then
-      Inc(LineFeedCount);
-
-    Result.LineCount := LineFeedCount;
-
-    // 마지막이 개행으로 끝난 경우 빈 줄도 1줄로 포함
-    if (TextLen > 0) and CharInSet(Text[TextLen], [#10, #13]) and HasNonNewline then
-      Inc(Result.LineCount);
-
-    end;
+  Result.LineCount := GetLineCount(Text);
   Result.ByteCountWithSpaces := GetByteCount(Text);
 end;
 
@@ -163,6 +135,25 @@ begin
       Inc(Result);
     end;
   end;
+end;
+
+function GetLineCount(const Text: string): Integer;
+var
+  i: Integer;
+  LineFeedCount: Integer;
+  NormalizedText: string;
+begin
+  NormalizedText := ConvertCRLFtoLF(Text);
+
+  if NormalizedText = '' then
+    Exit(0);
+
+  LineFeedCount := 0;
+  for i := 1 to Length(NormalizedText) do
+    if NormalizedText[i] = #10 then
+      Inc(LineFeedCount);
+
+  Result := LineFeedCount + 1;
 end;
 
 procedure UpdateHangulCounts(const ch: Char; var ConsonantCount, VowelCount: Integer);
