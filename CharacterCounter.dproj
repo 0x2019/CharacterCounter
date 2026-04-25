@@ -133,6 +133,9 @@
             <Form>frmMain</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="uOptions.pas">
+            <Form>frmOptions</Form>
+        </DCCReference>
         <DCCReference Include="uAppController.pas"/>
         <DCCReference Include="uAppMenu.pas"/>
         <DCCReference Include="uAppSettings.pas"/>

@@ -5,7 +5,7 @@ object frmMain: TfrmMain
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = 'Character Counter'
-  ClientHeight = 359
+  ClientHeight = 358
   ClientWidth = 815
   Color = clBtnFace
   Font.Charset = ANSI_CHARSET
@@ -2356,9 +2356,9 @@ object frmMain: TfrmMain
   TextHeight = 13
   object mmoText: TsMemo
     Left = 0
-    Top = 7
+    Top = 3
     Width = 598
-    Height = 321
+    Height = 352
     Font.Charset = ANSI_CHARSET
     Font.Color = clBlack
     Font.Height = -13
@@ -2371,58 +2371,10 @@ object frmMain: TfrmMain
     TabOrder = 0
     OnChange = mmoTextChange
   end
-  object btnExit: TsBitBtn
-    Left = 498
-    Top = 334
-    Width = 100
-    Height = 25
-    Hint = '<b>'#54532#47196#44536#47016' '#51333#47308'</b>'
-    Caption = 'E&xit'
-    ImageIndex = 1
-    Images = sCharImageList
-    ParentShowHint = False
-    ShowHint = True
-    TabOrder = 6
-    TabStop = False
-    OnClick = btnExitClick
-    SkinData.SkinSection = 'TOOLBUTTON'
-  end
-  object btnAbout: TsBitBtn
-    Left = 392
-    Top = 334
-    Width = 100
-    Height = 25
-    Hint = '<b>'#54532#47196#44536#47016' '#51221#48372'</b>'
-    Caption = '&About'
-    ImageIndex = 0
-    Images = sCharImageList
-    ParentShowHint = False
-    ShowHint = True
-    TabOrder = 4
-    TabStop = False
-    OnClick = btnAboutClick
-    SkinData.SkinSection = 'TOOLBUTTON'
-  end
-  object btnClear: TsBitBtn
-    Left = 180
-    Top = 334
-    Width = 100
-    Height = 25
-    Hint = '<b>'#51077#47141' '#45236#50857' '#52488#44592#54868'</b>'
-    Caption = '&Clear'
-    ImageIndex = 2
-    Images = sCharImageList
-    ParentShowHint = False
-    ShowHint = True
-    TabOrder = 2
-    TabStop = False
-    OnClick = btnClearClick
-    SkinData.SkinSection = 'TOOLBUTTON'
-  end
   object scrStats: TsScrollBox
     Tag = 99
     Left = 604
-    Top = 7
+    Top = 3
     Width = 210
     Height = 352
     HorzScrollBar.Smooth = True
@@ -2430,7 +2382,7 @@ object frmMain: TfrmMain
     VertScrollBar.Smooth = True
     VertScrollBar.Tracking = True
     AutoMouseWheel = True
-    TabOrder = 5
+    TabOrder = 1
     object lblStats: TsHTMLLabel
       Tag = 99
       Left = 5
@@ -2438,37 +2390,6 @@ object frmMain: TfrmMain
       Width = 120
       Height = 13
     end
-  end
-  object chkUseCP949: TsCheckBox
-    Left = 0
-    Top = 344
-    Width = 132
-    Height = 17
-    Hint = 
-      '<b>CP949 '#51064#53076#46377' '#49324#50857'</b>'#13#10'<br>'#13#10'<br>'#13#10#44544#51088' '#49688#50752' '#48148#51060#53944' '#44228#49328' '#48169#49885#51012' <b>UTF-8</b>'#50640#49436 +
-      ' <b>CP949</b>'#47196' '#48320#44221#54633#45768#45796'.'
-    TabStop = False
-    Caption = '&Use CP949 Encoding'
-    ParentShowHint = False
-    ShowHint = True
-    TabOrder = 1
-    OnClick = chkUseCP949Click
-  end
-  object btnCopy: TsBitBtn
-    Left = 286
-    Top = 334
-    Width = 100
-    Height = 25
-    Hint = '<b>'#53364#47549#48372#46300#50640' '#48373#49324'</b>'
-    Caption = 'C&opy'
-    ImageIndex = 3
-    Images = sCharImageList
-    ParentShowHint = False
-    ShowHint = True
-    TabOrder = 3
-    TabStop = False
-    OnClick = btnCopyClick
-    SkinData.SkinSection = 'TOOLBUTTON'
   end
   object MainMenu: TMainMenu
     Left = 176
@@ -2482,6 +2403,32 @@ object frmMain: TfrmMain
         ImageIndex = 0
         ShortCut = 16463
         OnClick = miOpenFileClick
+      end
+      object N2: TMenuItem
+        Caption = '-'
+      end
+      object miExit: TMenuItem
+        Caption = #51333#47308'(&X)'
+        SubMenuImages = sMenuImageList
+        ImageIndex = 1
+        OnClick = miExitClick
+      end
+    end
+    object mnuEdit: TMenuItem
+      Caption = #54200#51665'(&E)'
+      SubMenuImages = sMenuImageList
+      object miCopy: TMenuItem
+        Caption = #48373#49324'(&C)'
+        SubMenuImages = sMenuImageList
+        ImageIndex = 2
+        ShortCut = 16451
+        OnClick = miCopyClick
+      end
+      object miClearAll: TMenuItem
+        Caption = #47784#46160' '#51648#50864#44592'(&A)'
+        SubMenuImages = sMenuImageList
+        ImageIndex = 3
+        OnClick = miClearAllClick
       end
     end
     object mnuView: TMenuItem
@@ -2497,6 +2444,26 @@ object frmMain: TfrmMain
         AutoCheck = True
         Caption = #51460' '#48148#45000'(&W)'
         OnClick = miWordWrapClick
+      end
+    end
+    object mnuTool: TMenuItem
+      Caption = #46020#44396'(&T)'
+      SubMenuImages = sMenuImageList
+      object miOptions: TMenuItem
+        Caption = #50741#49496'(&O)...'
+        SubMenuImages = sMenuImageList
+        ImageIndex = 4
+        OnClick = miOptionsClick
+      end
+    end
+    object mnuHelp: TMenuItem
+      Caption = #46020#50880#47568'(&H)'
+      SubMenuImages = sMenuImageList
+      object miAbout: TMenuItem
+        Caption = #54532#47196#44536#47016' '#51221#48372'(&A)...'
+        SubMenuImages = sMenuImageList
+        ImageIndex = 5
+        OnClick = miAboutClick
       end
     end
   end
@@ -5160,33 +5127,6 @@ object frmMain: TfrmMain
     Left = 88
     Top = 136
   end
-  object sCharImageList: TsCharImageList
-    EmbeddedFonts = <
-      item
-        FontName = 'FontAwesome'
-        FontData = {}
-      end>
-    Items = <
-      item
-        ScalingFactor = 0.800000000000000000
-        Char = 61529
-      end
-      item
-        ScalingFactor = 0.800000000000000000
-        Char = 61584
-      end
-      item
-        ScalingFactor = 0.800000000000000000
-        Char = 61460
-      end
-      item
-        ScalingFactor = 0.800000000000000000
-        Char = 61637
-      end>
-    Left = 75
-    Top = 104
-    Bitmap = {}
-  end
   object sAlphaHints: TsAlphaHints
     MaxWidth = 400
     Templates = <
@@ -5353,8 +5293,28 @@ object frmMain: TfrmMain
       end>
     Items = <
       item
-        ScalingFactor = 0.600000000000000000
+        ScalingFactor = 0.700000000000000000
         Char = 61564
+      end
+      item
+        ScalingFactor = 0.700000000000000000
+        Char = 61584
+      end
+      item
+        ScalingFactor = 0.700000000000000000
+        Char = 61637
+      end
+      item
+        ScalingFactor = 0.700000000000000000
+        Char = 61460
+      end
+      item
+        ScalingFactor = 0.700000000000000000
+        Char = 61459
+      end
+      item
+        ScalingFactor = 0.700000000000000000
+        Char = 61529
       end>
     Left = 209
     Top = 19

@@ -4,6 +4,7 @@ uses
   Winapi.Windows,
   Vcl.Forms,
   uMain in 'uMain.pas' {frmMain},
+  uOptions in 'uOptions.pas' {frmOptions},
   uAppController in 'uAppController.pas',
   uAppMenu in 'uAppMenu.pas',
   uAppSettings in 'uAppSettings.pas',

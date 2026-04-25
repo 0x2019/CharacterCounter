@@ -3,23 +3,19 @@
 interface
 
 uses
-  Winapi.Windows, System.SysUtils, Vcl.Forms, Clipbrd, uMain,
+  Winapi.Windows, System.Math, System.SysUtils, Vcl.Forms, uMain,
 
-  uForms, uMessageBox;
+  uForms;
 
 procedure AppController_UpdateStats(F: TfrmMain);
+procedure AppController_Load(F: TfrmMain);
 
-procedure AppController_Clear(F: TfrmMain);
-procedure AppController_Copy(F: TfrmMain);
-
-procedure AppController_About(F: TfrmMain);
-procedure AppController_Exit(F: TfrmMain);
-procedure AppController_ToggleCP949Encoding(F: TfrmMain);
+procedure AppController_CP949Encoding(F: TfrmMain);
 
 implementation
 
 uses
-  uAppStats, uAppStrings, uTextEncoding, uTextStats;
+  uAppMenu, uAppSettings, uAppStats, uTextEncoding, uTextStats;
 
 procedure AppController_UpdateStats(F: TfrmMain);
 var
@@ -40,50 +36,27 @@ begin
 
   Stats := GetTextStats(InputText);
   F.lblStats.Caption := ShowTextStats(Stats);
-  F.btnClear.Enabled := Trim(InputText) <> '';
-  F.btnCopy.Enabled  := Trim(InputText) <> '';
+  if Assigned(F.miClearAll) then
+    F.miClearAll.Enabled := Trim(InputText) <> '';
+  if Assigned(F.miCopy) then
+    F.miCopy.Enabled := Trim(InputText) <> '';
 end;
 
-procedure AppController_Clear(F: TfrmMain);
+procedure AppController_Load(F: TfrmMain);
 begin
   if F = nil then Exit;
-  if F.mmoText.Text = '' then Exit;
 
-  if UI_ConfirmYesNo(F, SClearConfirmMsg) then
-  begin
-    F.FLoadedFromFile := False;
-    F.FHasTrailingNewLine := False;
-    F.mmoText.Clear;
-    F.mmoTextChange(nil);
-  end;
+  AppSettings_Load(F);
+  UI_SetAlwaysOnTop(F, F.miAlwaysOnTop.Checked);
+  AppMenu_WordWrap(F);
+
+  AppController_CP949Encoding(F);
 end;
 
-procedure AppController_Copy(F: TfrmMain);
+procedure AppController_CP949Encoding(F: TfrmMain);
 begin
   if F = nil then Exit;
-  if F.mmoText.Text = '' then Exit;
-  Clipboard.AsText := F.mmoText.Text;
-end;
-
-procedure AppController_About(F: TfrmMain);
-begin
-  if F = nil then Exit;
-  UI_MessageBox(F, Format(SAboutMsg, [APP_NAME, APP_VERSION, APP_RELEASE, APP_URL]), MB_ICONQUESTION or MB_OK);
-end;
-
-procedure AppController_Exit(F: TfrmMain);
-begin
-  if F = nil then Exit;
-  F.Close;
-end;
-
-procedure AppController_ToggleCP949Encoding(F: TfrmMain);
-begin
-  if F = nil then Exit;
-  if F.chkUseCP949.Checked then
-    SetEncoding(emCP949)
-  else
-    SetEncoding(emUTF8);
+  SetEncoding(TEncodingMode(IfThen(F.FUseCP949, Ord(emCP949), Ord(emUTF8))));
 
   F.mmoTextChange(nil);
 end;

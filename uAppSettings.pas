@@ -18,9 +18,11 @@ begin
 
   Ini := TMemIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'), TEncoding.UTF8);
   try
-    F.miAlwaysOnTop.Checked := Ini.ReadBool('Main', 'AlwaysOnTop', False);
-    F.miWordWrap.Checked := Ini.ReadBool('Main', 'WordWrap', False);
-    F.chkUseCP949.Checked := Ini.ReadBool('Main', 'UseCP949', False);
+    F.miAlwaysOnTop.Checked := Ini.ReadBool('View', 'AlwaysOnTop', False);
+    F.miWordWrap.Checked := Ini.ReadBool('View', 'WordWrap', False);
+
+    F.FUseCP949 := Ini.ReadBool('General', 'UseCP949', False);
+    F.FOptionsSection := Ini.ReadInteger('Options', 'TreeIndex', 0);
   finally
     Ini.Free;
   end;
@@ -34,9 +36,11 @@ begin
 
   Ini := TMemIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'), TEncoding.UTF8);
   try
-    Ini.WriteBool('Main', 'AlwaysOnTop', F.miAlwaysOnTop.Checked);
-    Ini.WriteBool('Main', 'WordWrap', F.miWordWrap.Checked);
-    Ini.WriteBool('Main', 'UseCP949', F.chkUseCP949.Checked);
+    Ini.WriteBool('View', 'AlwaysOnTop', F.miAlwaysOnTop.Checked);
+    Ini.WriteBool('View', 'WordWrap', F.miWordWrap.Checked);
+
+    Ini.WriteBool('General', 'UseCP949', F.FUseCP949);
+    Ini.WriteInteger('Options', 'TreeIndex', F.FOptionsSection);
     Ini.UpdateFile;
   finally
     Ini.Free;

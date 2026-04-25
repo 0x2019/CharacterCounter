@@ -13,6 +13,8 @@ resourcestring
 
   SClearConfirmMsg                    = '모든 입력 내용을 지우시겠습니까?';
 
+  SOptionsNodeGeneral                 = '일반';
+
   SAboutMsg                           = '%s %s' + sLineBreak +
                                         'c0ded by 龍, written in Delphi.' + sLineBreak + sLineBreak +
                                         'Release Date: %s' + sLineBreak +

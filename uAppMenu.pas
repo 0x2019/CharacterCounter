@@ -4,21 +4,32 @@ interface
 
 uses
   Winapi.Windows, System.Classes, System.IOUtils, System.SysUtils, Vcl.Forms,
-  Vcl.StdCtrls, uMain,
+  Vcl.StdCtrls, Clipbrd, uMain,
 
   uEncoding, uForms, uMessageBox;
 
 // File
 procedure AppMenu_OpenFile(F: TfrmMain);
+procedure AppMenu_Exit(F: TfrmMain);
+
+// Edit
+procedure AppMenu_Copy(F: TfrmMain);
+procedure AppMenu_ClearAll(F: TfrmMain);
 
 // View
 procedure AppMenu_AlwaysOnTop(F: TfrmMain);
 procedure AppMenu_WordWrap(F: TfrmMain);
 
+// Tool
+procedure AppMenu_ShowOptions(F: TfrmMain);
+
+// Help
+procedure AppMenu_About(F: TfrmMain);
+
 implementation
 
 uses
-  uAppStrings;
+  uAppStrings, uOptions;
 
 procedure AppMenu_OpenFile(F: TfrmMain);
 var
@@ -83,6 +94,33 @@ begin
   end;
 end;
 
+procedure AppMenu_Exit(F: TfrmMain);
+begin
+  if F = nil then Exit;
+  F.Close;
+end;
+
+procedure AppMenu_Copy(F: TfrmMain);
+begin
+  if F = nil then Exit;
+  if F.mmoText.SelLength <= 0 then Exit;
+  Clipboard.AsText := F.mmoText.SelText;
+end;
+
+procedure AppMenu_ClearAll(F: TfrmMain);
+begin
+  if F = nil then Exit;
+  if F.mmoText.Text = '' then Exit;
+
+  if UI_ConfirmYesNo(F, SClearConfirmMsg) then
+  begin
+    F.FLoadedFromFile := False;
+    F.FHasTrailingNewLine := False;
+    F.mmoText.Clear;
+    F.mmoTextChange(nil);
+  end;
+end;
+
 procedure AppMenu_AlwaysOnTop(F: TfrmMain);
 begin
   if F = nil then Exit;
@@ -101,6 +139,18 @@ begin
     F.mmoText.ScrollBars := ssVertical
   else
     F.mmoText.ScrollBars := ssBoth;
+end;
+
+procedure AppMenu_ShowOptions(F: TfrmMain);
+begin
+  if F = nil then Exit;
+  UI_ShowModalForm(TfrmOptions.Create(F));
+end;
+
+procedure AppMenu_About(F: TfrmMain);
+begin
+  if F = nil then Exit;
+  UI_MessageBox(F, Format(SAboutMsg, [APP_NAME, APP_VERSION, APP_RELEASE, APP_URL]), MB_ICONQUESTION or MB_OK);
 end;
 
 end.
