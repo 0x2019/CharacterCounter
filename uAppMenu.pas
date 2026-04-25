@@ -3,7 +3,7 @@
 interface
 
 uses
-  Winapi.Windows, System.Classes, System.IOUtils, System.SysUtils, Vcl.Forms,
+  Winapi.Windows, System.Classes, System.SysUtils, Vcl.Forms,
   Vcl.StdCtrls, Clipbrd, uMain,
 
   uEncoding, uForms, uMessageBox;
@@ -34,7 +34,6 @@ uses
 procedure AppMenu_OpenFile(F: TfrmMain);
 var
   FileName: string;
-  FileBytes: TBytes;
   InputText: string;
   WindowTitle: string;
 begin
@@ -48,8 +47,7 @@ begin
   if FileName = '' then Exit;
 
   try
-    FileBytes := TFile.ReadAllBytes(FileName);
-    if not TryDecode(FileBytes, InputText) then
+    if not TryReadAllText(FileName, InputText) then
     begin
       UI_MessageBox(F, SUnsupportedFileMsg, MB_ICONERROR or MB_OK);
       Exit;
