@@ -2,8 +2,6 @@ object frmMain: TfrmMain
   Tag = 99
   Left = 0
   Top = 0
-  BorderIcons = [biSystemMenu, biMinimize]
-  BorderStyle = bsSingle
   Caption = 'Character Counter'
   ClientHeight = 358
   ClientWidth = 815
@@ -2356,9 +2354,10 @@ object frmMain: TfrmMain
   TextHeight = 13
   object mmoText: TsMemo
     Left = 0
-    Top = 3
-    Width = 598
-    Height = 352
+    Top = 0
+    Width = 605
+    Height = 358
+    Align = alClient
     Font.Charset = ANSI_CHARSET
     Font.Color = clBlack
     Font.Height = -13
@@ -2370,19 +2369,26 @@ object frmMain: TfrmMain
     ScrollBars = ssVertical
     TabOrder = 0
     OnChange = mmoTextChange
+    ExplicitTop = 3
+    ExplicitWidth = 598
+    ExplicitHeight = 352
   end
   object scrStats: TsScrollBox
     Tag = 99
-    Left = 604
-    Top = 3
+    Left = 605
+    Top = 0
     Width = 210
-    Height = 352
+    Height = 358
     HorzScrollBar.Smooth = True
     HorzScrollBar.Tracking = True
     VertScrollBar.Smooth = True
     VertScrollBar.Tracking = True
+    Align = alRight
     AutoMouseWheel = True
     TabOrder = 1
+    ExplicitLeft = 604
+    ExplicitTop = 3
+    ExplicitHeight = 352
     object lblStats: TsHTMLLabel
       Tag = 99
       Left = 5
