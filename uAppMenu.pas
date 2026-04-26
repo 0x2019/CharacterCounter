@@ -6,11 +6,11 @@ uses
   Winapi.Windows, System.Classes, System.SysUtils, Vcl.Forms, Vcl.StdCtrls,
   Clipbrd, uMain,
 
-  uEncoding, uForms, uMessageBox;
+  uEncoding, uFileUtils, uForms, uMessageBox;
 
 // File
 procedure AppMenu_OpenFile(F: TfrmMain); overload;
-procedure AppMenu_OpenFile(F: TfrmMain; const FileName: string); overload;
+procedure AppMenu_OpenFile(F: TfrmMain; FileName: string); overload;
 procedure AppMenu_Exit(F: TfrmMain);
 
 // Edit
@@ -46,14 +46,16 @@ begin
   AppMenu_OpenFile(F, FileName);
 end;
 
-procedure AppMenu_OpenFile(F: TfrmMain; const FileName: string);
+procedure AppMenu_OpenFile(F: TfrmMain; FileName: string);
 var
   InputText: string;
   WindowTitle: string;
 begin
   if F = nil then Exit;
   if FileName = '' then Exit;
-  if not FileExists(FileName) then Exit;
+
+  FileName := UI_ResolveFileShortcut(FileName);
+  if FileName = '' then Exit;
 
   try
     if not TryReadAllText(FileName, InputText) then
