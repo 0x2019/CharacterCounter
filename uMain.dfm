@@ -2369,9 +2369,6 @@ object frmMain: TfrmMain
     ScrollBars = ssVertical
     TabOrder = 0
     OnChange = mmoTextChange
-    ExplicitTop = 3
-    ExplicitWidth = 598
-    ExplicitHeight = 352
   end
   object scrStats: TsScrollBox
     Tag = 99
@@ -2386,9 +2383,6 @@ object frmMain: TfrmMain
     Align = alRight
     AutoMouseWheel = True
     TabOrder = 1
-    ExplicitLeft = 604
-    ExplicitTop = 3
-    ExplicitHeight = 352
     object lblStats: TsHTMLLabel
       Tag = 99
       Left = 5

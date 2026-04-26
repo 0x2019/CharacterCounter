@@ -14,6 +14,7 @@ uses
   uTextEncoding in 'uTextEncoding.pas',
   uTextStats in 'uTextStats.pas',
   uEncoding in '..\Common\uEncoding.pas',
+  uFileUtils in '..\Common\uFileUtils.pas',
   uForms in '..\Common\uForms.pas',
   uMessageBox in '..\Common\uMessageBox.pas',
   uSettings in '..\Common\uSettings.pas';
@@ -30,7 +31,7 @@ begin
     Application.Initialize;
     Application.MainFormOnTaskbar := True;
     Application.CreateForm(TfrmMain, frmMain);
-  Application.Run;
+    Application.Run;
 
     if uMutex <> 0 then
       CloseHandle(uMutex);

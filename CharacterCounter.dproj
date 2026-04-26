@@ -145,6 +145,7 @@
         <DCCReference Include="uTextEncoding.pas"/>
         <DCCReference Include="uTextStats.pas"/>
         <DCCReference Include="..\Common\uEncoding.pas"/>
+        <DCCReference Include="..\Common\uFileUtils.pas"/>
         <DCCReference Include="..\Common\uForms.pas"/>
         <DCCReference Include="..\Common\uMessageBox.pas"/>
         <DCCReference Include="..\Common\uSettings.pas"/>

@@ -6,9 +6,9 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Controls,
   Vcl.Forms, Vcl.Dialogs, System.Character, sSkinProvider, sSkinManager,
   Vcl.StdCtrls, System.ImageList, Vcl.ImgList, acAlphaImageList, sMemo, acAlphaHints,
-  sLabel, Vcl.ExtCtrls, sScrollBox, Vcl.Menus, sDialogs,
+  sLabel, Vcl.ExtCtrls, sScrollBox, Vcl.Menus, sDialogs, ShellAPI,
 
-  uForms, uMessageBox, uSettings;
+  uFileUtils, uForms, uMessageBox, uSettings;
 
 type
   TfrmMain = class(TForm)
@@ -48,6 +48,7 @@ type
     procedure miExitClick(Sender: TObject);
   private
     { Private declarations }
+    procedure WMDropFiles(var Msg: TWMDropFiles); message WM_DROPFILES;
   public
     FLoadedFromFile: Boolean;
     FHasTrailingNewLine: Boolean;
@@ -74,6 +75,20 @@ uses
 procedure TfrmMain.ChangeMessageBoxPosition(var Msg: TMessage);
 begin
   UI_ChangeMessageBoxPosition(Self);
+end;
+
+procedure TfrmMain.WMDropFiles(var Msg: TWMDropFiles);
+var
+  Files: TStringList;
+begin
+  Files := TStringList.Create;
+  try
+    UI_GetDroppedFiles(Msg.Drop, Files);
+    if (Files.Count > 0) and FileExists(Files[0]) then
+      AppMenu_OpenFile(Self, ExpandFileName(Files[0]));
+  finally
+    Files.Free;
+  end;
 end;
 
 procedure TfrmMain.miAboutClick(Sender: TObject);
@@ -118,6 +133,7 @@ end;
 
 procedure TfrmMain.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
+  DragAcceptFiles(Handle, False);
   UI_SaveFormSettings(Self);
   AppSettings_Save(Self);
 end;
@@ -134,6 +150,7 @@ begin
   UI_EnableDragForm(Self);
 
   AppController_Load(Self);
+  DragAcceptFiles(Handle, True);
 end;
 
 procedure TfrmMain.FormKeyDown(Sender: TObject; var Key: Word;
