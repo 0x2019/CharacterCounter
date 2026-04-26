@@ -30,7 +30,7 @@ procedure AppMenu_About(F: TfrmMain);
 implementation
 
 uses
-  uAppStrings, uOptions;
+  uAppStrings, uOptions, uTextEncoding;
 
 procedure AppMenu_OpenFile(F: TfrmMain);
 var
@@ -61,6 +61,8 @@ begin
       UI_MessageBox(F, SUnsupportedFileMsg, MB_ICONERROR or MB_OK);
       Exit;
     end;
+
+    InputText := ConvertToCRLF(InputText);
 
     F.FLoadedFromFile := True;
     F.FHasTrailingNewLine := (InputText <> '') and

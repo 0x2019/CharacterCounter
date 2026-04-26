@@ -10,6 +10,7 @@ type
 
 // 개행 문자 정규화 (CRLF → LF, CR → LF)
 function ConvertCRLFtoLF(const S: string): string; inline;
+function ConvertToCRLF(const S: string): string; inline;
 
 // 현재 설정된 TEncodingMode에 따라 UTF-8 또는 CP949 기준 바이트 수를 반환
 function GetByteCount(const Text: string): Integer;
@@ -32,6 +33,11 @@ var
 function ConvertCRLFtoLF(const S: string): string; inline;
 begin
   Result := S.Replace(#13#10, #10, [rfReplaceAll]).Replace(#13, #10, [rfReplaceAll]);
+end;
+
+function ConvertToCRLF(const S: string): string; inline;
+begin
+  Result := ConvertCRLFtoLF(S).Replace(#10, sLineBreak, [rfReplaceAll]);
 end;
 
 function GetByteCount(const Text: string): Integer;
