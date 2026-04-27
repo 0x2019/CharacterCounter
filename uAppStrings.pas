@@ -23,6 +23,44 @@ resourcestring
                                         'Release Date: %s' + sLineBreak +
                                         'URL: %s';
 
+// uAppStats
+// 통계
+  SCharCountWithSpaces                = '문자 (공백 포함)';
+  SCharCountNoSpaces                  = '문자 (공백 제외)';
+  SLineCount                          = '줄 수';
+  SWordCount                          = '단어 수';
+  SCharTypes                          = '문자 종류:';
+
+// 한글
+  SHangul                             = '한글';
+  SHangulConsonant                    = '자음';
+  SHangulVowel                        = '모음';
+
+// 한자
+  SHanja                              = '한자';
+
+// 영문
+  SEnglish                            = '영문';
+  SEnglishLowercase                   = '소문자';
+  SEnglishUppercase                   = '대문자';
+
+// 숫자
+  SDigit                              = '숫자';
+
+// 특수 문자
+  SSpecialChar                        = '특수 문자';
+
+// 공백
+  SSpace                              = '공백';
+  SSpaceStandard                      = '스페이스';
+  SSpaceOther                         = '기타';
+
+// 단위
+  SUnitChar                           = '자';
+  SUnitByte                           = '바이트';
+  SUnitLine                           = '줄';
+  SUnitWord                           = '개';
+
 implementation
 
 end.
