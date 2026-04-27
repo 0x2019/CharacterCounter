@@ -32,6 +32,7 @@ type
     mnuHelp: TMenuItem;
     miAbout: TMenuItem;
     miCopy: TMenuItem;
+    miClearClipboard: TMenuItem;
     miClearAll: TMenuItem;
     miExit: TMenuItem;
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -43,12 +44,14 @@ type
     procedure miOpenFileClick(Sender: TObject);
     procedure mmoTextChange(Sender: TObject);
     procedure miCopyClick(Sender: TObject);
+    procedure miClearClipboardClick(Sender: TObject);
     procedure miClearAllClick(Sender: TObject);
     procedure miAboutClick(Sender: TObject);
     procedure miExitClick(Sender: TObject);
   private
     { Private declarations }
     procedure WMDropFiles(var Msg: TWMDropFiles); message WM_DROPFILES;
+    procedure WMClipboardUpdate(var Msg: TMessage); message WM_CLIPBOARDUPDATE;
   public
     FLoadedFromFile: Boolean;
     FHasTrailingNewLine: Boolean;
@@ -91,6 +94,11 @@ begin
   end;
 end;
 
+procedure TfrmMain.WMClipboardUpdate(var Msg: TMessage);
+begin
+  AppMenu_Update(Self);
+end;
+
 procedure TfrmMain.miAboutClick(Sender: TObject);
 begin
   AppMenu_About(Self);
@@ -99,6 +107,11 @@ end;
 procedure TfrmMain.miCopyClick(Sender: TObject);
 begin
   AppMenu_Copy(Self);
+end;
+
+procedure TfrmMain.miClearClipboardClick(Sender: TObject);
+begin
+  AppMenu_ClearClipboard(Self);
 end;
 
 procedure TfrmMain.miClearAllClick(Sender: TObject);
@@ -133,6 +146,7 @@ end;
 
 procedure TfrmMain.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
+  RemoveClipboardFormatListener(Handle);
   DragAcceptFiles(Handle, False);
   UI_SaveFormSettings(Self);
   AppSettings_Save(Self);
@@ -150,6 +164,9 @@ begin
   UI_EnableDragForm(Self);
 
   AppController_Load(Self);
+  AppMenu_Update(Self);
+
+  AddClipboardFormatListener(Handle);
   DragAcceptFiles(Handle, True);
 end;
 

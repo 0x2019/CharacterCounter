@@ -114,6 +114,12 @@ object frmMain: TfrmMain
     object mnuTool: TMenuItem
       Caption = #46020#44396'(&T)'
       SubMenuImages = sMenuImageList
+      object miClearClipboard: TMenuItem
+        Caption = #53364#47549#48372#46300' '#52488#44592#54868'(&C)'
+        SubMenuImages = sMenuImageList
+        ImageIndex = 6
+        OnClick = miClearClipboardClick
+      end
       object miOptions: TMenuItem
         Caption = #50741#49496'(&O)...'
         SubMenuImages = sMenuImageList
@@ -2980,6 +2986,10 @@ object frmMain: TfrmMain
       item
         ScalingFactor = 0.700000000000000000
         Char = 61529
+      end
+      item
+        ScalingFactor = 0.700000000000000000
+        Char = 61674
       end>
     Left = 209
     Top = 19

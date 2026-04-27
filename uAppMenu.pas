@@ -6,7 +6,10 @@ uses
   Winapi.Windows, System.Classes, System.SysUtils, Vcl.Forms, Vcl.StdCtrls,
   Clipbrd, uMain,
 
-  uEncoding, uFileUtils, uForms, uMessageBox;
+  uEncoding, uFileUtils, uForms, uMenu, uMessageBox;
+
+// Global
+procedure AppMenu_Update(F: TfrmMain);
 
 // File
 procedure AppMenu_OpenFile(F: TfrmMain); overload;
@@ -22,6 +25,7 @@ procedure AppMenu_AlwaysOnTop(F: TfrmMain);
 procedure AppMenu_WordWrap(F: TfrmMain);
 
 // Tool
+procedure AppMenu_ClearClipboard(F: TfrmMain);
 procedure AppMenu_ShowOptions(F: TfrmMain);
 
 // Help
@@ -31,6 +35,12 @@ implementation
 
 uses
   uAppStrings, uOptions, uTextEncoding;
+
+procedure AppMenu_Update(F: TfrmMain);
+begin
+  if F = nil then Exit;
+  UI_Menu_UpdateClipboard(F.miClearClipboard);
+end;
 
 procedure AppMenu_OpenFile(F: TfrmMain);
 var
@@ -150,6 +160,20 @@ begin
     F.mmoText.ScrollBars := ssVertical
   else
     F.mmoText.ScrollBars := ssBoth;
+end;
+
+procedure AppMenu_ClearClipboard(F: TfrmMain);
+begin
+  if F = nil then Exit;
+
+  try
+    Clipboard.Clear;
+  except
+    on E: Exception do
+      UI_MessageBox(F, Format(SClipboardClearErrMsg, [E.Message]), MB_ICONWARNING or MB_OK);
+  end;
+
+  AppMenu_Update(F);
 end;
 
 procedure AppMenu_ShowOptions(F: TfrmMain);
