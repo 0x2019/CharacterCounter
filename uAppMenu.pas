@@ -125,7 +125,13 @@ procedure AppMenu_Copy(F: TfrmMain);
 begin
   if F = nil then Exit;
   if F.mmoText.SelLength <= 0 then Exit;
-  Clipboard.AsText := F.mmoText.SelText;
+
+  try
+    Clipboard.AsText := F.mmoText.SelText;
+  except
+    on E: Exception do
+      UI_MessageBox(F, Format(SClipboardCopyErrMsg, [E.Message]), MB_ICONWARNING or MB_OK);
+  end;
 end;
 
 procedure AppMenu_ClearAll(F: TfrmMain);

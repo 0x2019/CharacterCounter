@@ -14,6 +14,7 @@ resourcestring
   SClearConfirmMsg                    = '모든 입력 내용을 지우시겠습니까?';
 
   SClipboardClearErrMsg               = '클립보드를 초기화할 수 없습니다.' + sLineBreak + '%s';
+  SClipboardCopyErrMsg                = '클립보드에 복사할 수 없습니다.' + sLineBreak + '%s';
 
   SOptionsNodeGeneral                 = '일반';
 
