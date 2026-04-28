@@ -3,7 +3,9 @@
 interface
 
 uses
-  System.SysUtils, Vcl.Forms, IniFiles, uMain,
+  Winapi.Windows, System.SysUtils, System.UITypes, Vcl.Forms, Vcl.Graphics, IniFiles,
+  uMain,
+
   uSettings.Menu;
 
 procedure AppSettings_Load(F: TfrmMain);
@@ -25,6 +27,11 @@ begin
     F.FUseCP949 := Ini.ReadBool('General', 'UseCP949', False);
     F.FCloseOnEsc := Ini.ReadBool('General', 'CloseOnEsc', False);
     F.FOptionsSection := Ini.ReadInteger('Options', 'TreeIndex', 0);
+
+    F.mmoText.Font.Name := Ini.ReadString('Font', 'Name', 'Tahoma');
+    F.mmoText.Font.Size := Ini.ReadInteger('Font', 'Size', 8);
+    F.mmoText.Font.Style := TFontStyles(Byte(Ini.ReadInteger('Font', 'Style', 0)));
+    F.mmoText.Font.Charset := Ini.ReadInteger('Font', 'Charset', DEFAULT_CHARSET);
   finally
     Ini.Free;
   end;
@@ -46,6 +53,12 @@ begin
     Ini.WriteBool('General', 'UseCP949', F.FUseCP949);
     Ini.WriteBool('General', 'CloseOnEsc', F.FCloseOnEsc);
     Ini.WriteInteger('Options', 'TreeIndex', F.FOptionsSection);
+
+    Ini.WriteString('Font', 'Name', F.mmoText.Font.Name);
+    Ini.WriteInteger('Font', 'Size', F.mmoText.Font.Size);
+    Ini.WriteInteger('Font', 'Style', Integer(Byte(F.mmoText.Font.Style)));
+    Ini.WriteInteger('Font', 'Charset', F.mmoText.Font.Charset);
+
     Ini.UpdateFile;
   finally
     Ini.Free;

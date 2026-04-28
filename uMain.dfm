@@ -115,13 +115,21 @@ object frmMain: TfrmMain
         Caption = #54637#49345' '#50948'(&A)'
         OnClick = miAlwaysOnTopClick
       end
-      object N1: TMenuItem
-        Caption = '-'
-      end
+    end
+    object mnuFormat: TMenuItem
+      Caption = #49436#49885'(&O)'
+      SubMenuImages = sMenuImageList
       object miWordWrap: TMenuItem
         AutoCheck = True
         Caption = #51460' '#48148#45000'(&W)'
+        SubMenuImages = sMenuImageList
         OnClick = miWordWrapClick
+      end
+      object miFont: TMenuItem
+        Caption = #44544#44852'(&F)...'
+        SubMenuImages = sMenuImageList
+        ImageIndex = 8
+        OnClick = miFontClick
       end
     end
     object mnuTool: TMenuItem
@@ -3007,9 +3015,24 @@ object frmMain: TfrmMain
       item
         ScalingFactor = 0.700000000000000000
         Char = 61714
+      end
+      item
+        ScalingFactor = 0.700000000000000000
+        Char = 61489
       end>
     Left = 209
     Top = 19
     Bitmap = {}
+  end
+  object FontDlg: TFontDialog
+    Ctl3D = False
+    OnShow = FontDlgShow
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -12
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    Left = 416
+    Top = 72
   end
 end

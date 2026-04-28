@@ -38,6 +38,9 @@ type
     miClearClipboard: TMenuItem;
     miClearAll: TMenuItem;
     miExit: TMenuItem;
+    mnuFormat: TMenuItem;
+    miFont: TMenuItem;
+    FontDlg: TFontDialog;
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -53,6 +56,8 @@ type
     procedure miClearAllClick(Sender: TObject);
     procedure miAboutClick(Sender: TObject);
     procedure miExitClick(Sender: TObject);
+    procedure miFontClick(Sender: TObject);
+    procedure FontDlgShow(Sender: TObject);
   private
     { Private declarations }
     procedure WMDropFiles(var Msg: TWMDropFiles); message WM_DROPFILES;
@@ -135,6 +140,11 @@ begin
   AppMenu_Exit(Self);
 end;
 
+procedure TfrmMain.miFontClick(Sender: TObject);
+begin
+  AppMenu_SetFont(Self);
+end;
+
 procedure TfrmMain.miOptionsClick(Sender: TObject);
 begin
   AppMenu_ShowOptions(Self);
@@ -193,6 +203,11 @@ procedure TfrmMain.FormKeyDown(Sender: TObject; var Key: Word;
 begin
   if (Key = VK_ESCAPE) and FCloseOnEsc then
     AppMenu_Exit(Self);
+end;
+
+procedure TfrmMain.FontDlgShow(Sender: TObject);
+begin
+  UI_CenterDialog(Self, FontDlg.Handle);
 end;
 
 procedure TfrmMain.mmoTextChange(Sender: TObject);

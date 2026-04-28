@@ -28,7 +28,10 @@ procedure AppMenu_ClearAll(F: TfrmMain);
 
 // View
 procedure AppMenu_AlwaysOnTop(F: TfrmMain);
+
+// Format
 procedure AppMenu_WordWrap(F: TfrmMain);
+procedure AppMenu_SetFont(F: TfrmMain);
 
 // Tool
 procedure AppMenu_ClearClipboard(F: TfrmMain);
@@ -211,6 +214,17 @@ begin
     F.mmoText.ScrollBars := ssVertical
   else
     F.mmoText.ScrollBars := ssBoth;
+end;
+
+procedure AppMenu_SetFont(F: TfrmMain);
+begin
+  if F = nil then Exit;
+  if not Assigned(F.mmoText) then Exit;
+
+  F.FontDlg.Font.Assign(F.mmoText.Font);
+
+  if F.FontDlg.Execute(F.Handle) then
+    F.mmoText.Font.Assign(F.FontDlg.Font);
 end;
 
 procedure AppMenu_ClearClipboard(F: TfrmMain);
