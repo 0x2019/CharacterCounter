@@ -5,9 +5,11 @@ interface
 uses
   Winapi.Windows, System.Math, System.SysUtils, Vcl.Forms, uMain,
 
-  uForms;
+  uForms, uMenu;
 
 procedure AppController_UpdateStats(F: TfrmMain);
+
+procedure AppController_Init(F: TfrmMain);
 procedure AppController_Load(F: TfrmMain);
 
 procedure AppController_CP949Encoding(F: TfrmMain);
@@ -40,6 +42,13 @@ begin
     F.miClearAll.Enabled := Trim(InputText) <> '';
   if Assigned(F.miCopy) then
     F.miCopy.Enabled := Trim(InputText) <> '';
+end;
+
+procedure AppController_Init(F: TfrmMain);
+begin
+  if F = nil then Exit;
+  if Assigned(F.miRecentSep) then F.miRecentSep.Tag := UI_RECENT_MENU_SEP_TAG;
+  if Assigned(F.miClearHistory) then F.miClearHistory.Tag := UI_RECENT_MENU_CLEAR_TAG;
 end;
 
 procedure AppController_Load(F: TfrmMain);

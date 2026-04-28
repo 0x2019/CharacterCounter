@@ -18,6 +18,7 @@ uses
   uForms in '..\Common\uForms.pas',
   uMenu in '..\Common\uMenu.pas',
   uMessageBox in '..\Common\uMessageBox.pas',
+  uSettings.Menu in '..\Common\uSettings.Menu.pas',
   uSettings in '..\Common\uSettings.pas';
 
 var
@@ -32,7 +33,7 @@ begin
     Application.Initialize;
     Application.MainFormOnTaskbar := True;
     Application.CreateForm(TfrmMain, frmMain);
-  Application.Run;
+    Application.Run;
 
     if uMutex <> 0 then
       CloseHandle(uMutex);

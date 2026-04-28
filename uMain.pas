@@ -8,7 +8,7 @@ uses
   Vcl.StdCtrls, System.ImageList, Vcl.ImgList, acAlphaImageList, sMemo, acAlphaHints,
   sLabel, Vcl.ExtCtrls, sScrollBox, Vcl.Menus, sDialogs, ShellAPI,
 
-  uFileUtils, uForms, uMessageBox, uSettings;
+  uFileUtils, uForms, uMenu, uMessageBox, uSettings;
 
 type
   TfrmMain = class(TForm)
@@ -20,6 +20,9 @@ type
     MainMenu: TMainMenu;
     mnuFile: TMenuItem;
     miOpenFile: TMenuItem;
+    miRecent: TMenuItem;
+    miRecentSep: TMenuItem;
+    miClearHistory: TMenuItem;
     miOptions: TMenuItem;
     mnuView: TMenuItem;
     miAlwaysOnTop: TMenuItem;
@@ -42,6 +45,8 @@ type
     procedure miOptionsClick(Sender: TObject);
     procedure miWordWrapClick(Sender: TObject);
     procedure miOpenFileClick(Sender: TObject);
+    procedure miRecentItems(Sender: TObject);
+    procedure miClearHistoryClick(Sender: TObject);
     procedure mmoTextChange(Sender: TObject);
     procedure miCopyClick(Sender: TObject);
     procedure miClearClipboardClick(Sender: TObject);
@@ -144,6 +149,16 @@ begin
   AppMenu_OpenFile(Self);
 end;
 
+procedure TfrmMain.miRecentItems(Sender: TObject);
+begin
+  AppMenu_RecentItems(Self, Sender);
+end;
+
+procedure TfrmMain.miClearHistoryClick(Sender: TObject);
+begin
+  AppMenu_Recent_Clear(Self);
+end;
+
 procedure TfrmMain.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   RemoveClipboardFormatListener(Handle);
@@ -163,6 +178,7 @@ begin
   UI_LoadFormSettings(Self);
   UI_EnableDragForm(Self);
 
+  AppController_Init(Self);
   AppController_Load(Self);
   AppMenu_Update(Self);
 

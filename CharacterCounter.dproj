@@ -149,6 +149,7 @@
         <DCCReference Include="..\Common\uForms.pas"/>
         <DCCReference Include="..\Common\uMenu.pas"/>
         <DCCReference Include="..\Common\uMessageBox.pas"/>
+        <DCCReference Include="..\Common\uSettings.Menu.pas"/>
         <DCCReference Include="..\Common\uSettings.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>

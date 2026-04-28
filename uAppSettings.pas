@@ -3,7 +3,8 @@
 interface
 
 uses
-  System.SysUtils, Vcl.Forms, IniFiles, uMain;
+  System.SysUtils, Vcl.Forms, IniFiles, uMain,
+  uSettings.Menu;
 
 procedure AppSettings_Load(F: TfrmMain);
 procedure AppSettings_Save(F: TfrmMain);
@@ -26,6 +27,8 @@ begin
   finally
     Ini.Free;
   end;
+
+  UI_LoadMenuSettings(F.miRecent, F.miRecentItems);
 end;
 
 procedure AppSettings_Save(F: TfrmMain);
@@ -45,6 +48,8 @@ begin
   finally
     Ini.Free;
   end;
+
+  UI_SaveMenuSettings(F.miRecent);
 end;
 
 end.

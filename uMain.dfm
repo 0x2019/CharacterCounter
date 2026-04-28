@@ -69,6 +69,20 @@ object frmMain: TfrmMain
         ShortCut = 16463
         OnClick = miOpenFileClick
       end
+      object miRecent: TMenuItem
+        Caption = #52572#44540' '#54637#47785'(&R)'
+        SubMenuImages = sMenuImageList
+        ImageIndex = 7
+        object miRecentSep: TMenuItem
+          Caption = '-'
+        end
+        object miClearHistory: TMenuItem
+          Caption = #51648#50864#44592'(&C)'
+          SubMenuImages = sMenuImageList
+          ImageIndex = 3
+          OnClick = miClearHistoryClick
+        end
+      end
       object N2: TMenuItem
         Caption = '-'
       end
@@ -2990,6 +3004,10 @@ object frmMain: TfrmMain
       item
         ScalingFactor = 0.700000000000000000
         Char = 61674
+      end
+      item
+        ScalingFactor = 0.700000000000000000
+        Char = 61714
       end>
     Left = 209
     Top = 19

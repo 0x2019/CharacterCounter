@@ -3,7 +3,7 @@
 interface
 
 uses
-  Winapi.Windows, System.Classes, System.SysUtils, Vcl.Forms, Vcl.StdCtrls,
+  Winapi.Windows, System.Classes, System.SysUtils, Vcl.Forms, Vcl.StdCtrls, Vcl.Menus,
   Clipbrd, uMain,
 
   uEncoding, uFileUtils, uForms, uMenu, uMessageBox;
@@ -14,6 +14,11 @@ procedure AppMenu_Update(F: TfrmMain);
 // File
 procedure AppMenu_OpenFile(F: TfrmMain); overload;
 procedure AppMenu_OpenFile(F: TfrmMain; FileName: string); overload;
+
+procedure AppMenu_RecentItems(F: TfrmMain; Sender: TObject);
+procedure AppMenu_Recent_Add(F: TfrmMain; const FilePath: string);
+procedure AppMenu_Recent_Clear(F: TfrmMain);
+
 procedure AppMenu_Exit(F: TfrmMain);
 
 // Edit
@@ -109,10 +114,45 @@ begin
         end;
       end;
     end;
+
+    AppMenu_Recent_Add(F, FileName);
   except
     on E: Exception do
       UI_MessageBox(F, Format(SOpenFileErrorMsg, [E.Message]), MB_ICONERROR or MB_OK);
   end;
+end;
+
+procedure AppMenu_RecentItems(F: TfrmMain; Sender: TObject);
+var
+  MI: TMenuItem;
+begin
+  if F = nil then Exit;
+  if not (Sender is TMenuItem) then Exit;
+
+  MI := TMenuItem(Sender);
+  if Assigned(F.miClearHistory) and (MI = F.miClearHistory) then
+  begin
+    AppMenu_Recent_Clear(F);
+    Exit;
+  end;
+
+  AppMenu_OpenFile(F, MI.Hint);
+end;
+
+procedure AppMenu_Recent_Add(F: TfrmMain; const FilePath: string);
+begin
+  if F = nil then Exit;
+  if not Assigned(F.miRecent) then Exit;
+  if Trim(FilePath) = '' then Exit;
+
+  UI_Menu_Recent_Add(F.miRecent, FilePath, ExtractFileName(FilePath), F.miRecentItems);
+end;
+
+procedure AppMenu_Recent_Clear(F: TfrmMain);
+begin
+  if F = nil then Exit;
+  if not Assigned(F.miRecent) then Exit;
+  UI_Menu_Recent_Clear(F.miRecent);
 end;
 
 procedure AppMenu_Exit(F: TfrmMain);
