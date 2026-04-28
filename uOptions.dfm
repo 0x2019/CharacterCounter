@@ -80,6 +80,14 @@ object frmOptions: TfrmOptions
         ShowHint = True
         TabOrder = 0
       end
+      object chkCloseOnEsc: TsCheckBox
+        Left = 5
+        Top = 29
+        Width = 147
+        Height = 17
+        Caption = '&Esc '#53412#47196' '#54532#47196#44536#47016' '#51333#47308
+        TabOrder = 1
+      end
     end
   end
   object sSkinProvider: TsSkinProvider

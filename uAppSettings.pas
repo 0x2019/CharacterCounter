@@ -23,6 +23,7 @@ begin
     F.miWordWrap.Checked := Ini.ReadBool('View', 'WordWrap', False);
 
     F.FUseCP949 := Ini.ReadBool('General', 'UseCP949', False);
+    F.FCloseOnEsc := Ini.ReadBool('General', 'CloseOnEsc', False);
     F.FOptionsSection := Ini.ReadInteger('Options', 'TreeIndex', 0);
   finally
     Ini.Free;
@@ -43,6 +44,7 @@ begin
     Ini.WriteBool('View', 'WordWrap', F.miWordWrap.Checked);
 
     Ini.WriteBool('General', 'UseCP949', F.FUseCP949);
+    Ini.WriteBool('General', 'CloseOnEsc', F.FCloseOnEsc);
     Ini.WriteInteger('Options', 'TreeIndex', F.FOptionsSection);
     Ini.UpdateFile;
   finally

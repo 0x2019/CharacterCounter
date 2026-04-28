@@ -66,6 +66,7 @@ type
 
 // uOptions - General
     FUseCP949: Boolean;
+    FCloseOnEsc: Boolean;
 
     procedure ChangeMessageBoxPosition(var Msg: TMessage); message mbMessage;
   end;
@@ -172,6 +173,7 @@ begin
   FLoadedFromFile := False;
   FHasTrailingNewLine := False;
   FUseCP949 := False;
+  FCloseOnEsc := False;
   FOptionsSection := 0;
 
   UI_SetMinConstraints(Self);
@@ -189,7 +191,7 @@ end;
 procedure TfrmMain.FormKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
-  if Key = VK_ESCAPE then
+  if (Key = VK_ESCAPE) and FCloseOnEsc then
     AppMenu_Exit(Self);
 end;
 

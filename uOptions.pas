@@ -19,6 +19,7 @@ type
     pnlOptions: TsPanel;
     grpGeneral: TsGroupBox;
     chkUseCP949: TsCheckBox;
+    chkCloseOnEsc: TsCheckBox;
     procedure btnOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure tvOptionsChange(Sender: TObject; Node: TTreeNode);
@@ -73,6 +74,7 @@ begin
 
 // General
   chkUseCP949.Checked := F.FUseCP949;
+  chkCloseOnEsc.Checked := F.FCloseOnEsc;
 end;
 
 procedure TfrmOptions.SaveOptions(const F: TfrmMain);
@@ -81,6 +83,7 @@ begin
 
 // General
   F.FUseCP949 := chkUseCP949.Checked;
+  F.FCloseOnEsc := chkCloseOnEsc.Checked;
   AppController_CP949Encoding(F);
 end;
 
