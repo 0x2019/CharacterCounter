@@ -9,7 +9,8 @@ uses
   uEncoding, uFileUtils, uForms, uMenu, uMessageBox;
 
 // Global
-procedure AppMenu_Update(F: TfrmMain);
+procedure AppMenu_UpdateCaption(F: TfrmMain; const ACaption: string);
+procedure AppMenu_UpdateClipboard(F: TfrmMain);
 
 // File
 procedure AppMenu_OpenFile(F: TfrmMain); overload;
@@ -41,7 +42,27 @@ implementation
 uses
   uAppStrings, uOptions, uTextEncoding;
 
-procedure AppMenu_Update(F: TfrmMain);
+procedure AppMenu_UpdateCaption(F: TfrmMain; const ACaption: string);
+begin
+  if F = nil then Exit;
+
+  try
+    F.Caption := ACaption;
+  except
+    F.Caption := APP_NAME;
+  end;
+
+  if Assigned(F.sSkinProvider) then
+  begin
+    try
+      F.sSkinProvider.AddedTitle.Text := ACaption;
+    except
+      try F.sSkinProvider.AddedTitle.Text := APP_NAME; except end;
+    end;
+  end;
+end;
+
+procedure AppMenu_UpdateClipboard(F: TfrmMain);
 begin
   if F = nil then Exit;
   UI_Menu_UpdateClipboard(F.miClearClipboard);
@@ -97,23 +118,7 @@ begin
     end;
 
     WindowTitle := ExtractFileName(FileName) + ' - ' + APP_NAME;
-    try
-      F.Caption := WindowTitle;
-    except
-      F.Caption := APP_NAME;
-    end;
-
-    if Assigned(F.sSkinProvider) then
-    begin
-      try
-        F.sSkinProvider.AddedTitle.Text := WindowTitle;
-      except
-        try
-          F.sSkinProvider.AddedTitle.Text := APP_NAME;
-        except
-        end;
-      end;
-    end;
+    AppMenu_UpdateCaption(F, WindowTitle);
 
     AppMenu_Recent_Add(F, FileName);
   except
@@ -219,7 +224,7 @@ begin
       UI_MessageBox(F, Format(SClipboardClearErrMsg, [E.Message]), MB_ICONWARNING or MB_OK);
   end;
 
-  AppMenu_Update(F);
+  AppMenu_UpdateClipboard(F);
 end;
 
 procedure AppMenu_ShowOptions(F: TfrmMain);

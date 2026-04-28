@@ -71,7 +71,7 @@ var
 begin
   Code := Ord(ch);
   Result :=
-    ((Code >= $AC00) and (Code <= $D7A3)) or  // 한글 완성형 음절 (가-힣)
+    IsHangulSyllable(Code) or
     ((Code >= $1100) and (Code <= $11FF)) or  // 한글 자모 (초성, 중성, 종성 개별)
     ((Code >= $3130) and (Code <= $318F)) or  // 한글 호환 자모 (옛 자모, 반각 자모 등)
     ((Code >= $A960) and (Code <= $A97F)) or  // 한글 자모 확장 A

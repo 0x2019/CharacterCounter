@@ -102,7 +102,7 @@ end;
 
 procedure TfrmMain.WMClipboardUpdate(var Msg: TMessage);
 begin
-  AppMenu_Update(Self);
+  AppMenu_UpdateClipboard(Self);
 end;
 
 procedure TfrmMain.miAboutClick(Sender: TObject);
@@ -182,7 +182,7 @@ begin
 
   AppController_Init(Self);
   AppController_Load(Self);
-  AppMenu_Update(Self);
+  AppMenu_UpdateClipboard(Self);
 
   AddClipboardFormatListener(Handle);
   DragAcceptFiles(Handle, True);

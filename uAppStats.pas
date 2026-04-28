@@ -72,6 +72,12 @@ function ShowTextStats(const TextInfo: TTextStats): string;
 var
   SB: TStringBuilder;
   CharTypes: Boolean;
+
+  procedure AppendStat(const Title: string; Count: Integer; const LineBreak: string);
+  begin
+    SB.AppendFormat(FMT_STAT_ITEM, [Title, AddComma(Count), SUnitChar, LineBreak]);
+  end;
+
 begin
   SB := TStringBuilder.Create;
   try
@@ -111,28 +117,28 @@ begin
 
       if TextInfo.HangulCount > 0 then
       begin
-        SB.AppendFormat(FMT_STAT_ITEM, [SHangul, AddComma(TextInfo.HangulCount), SUnitChar, HTML_BR]);
+        AppendStat(SHangul, TextInfo.HangulCount, HTML_BR);
         SB.Append(FormatSubStats(SHangulConsonant, TextInfo.HangulConsonantCount, SHangulVowel, TextInfo.HangulVowelCount));
       end;
 
       if TextInfo.HanjaCharCount > 0 then
-        SB.AppendFormat(FMT_STAT_ITEM, [SHanja, AddComma(TextInfo.HanjaCharCount), SUnitChar, HTML_BR2]);
+        AppendStat(SHanja, TextInfo.HanjaCharCount, HTML_BR2);
 
       if TextInfo.AsciiLetterCount > 0 then
       begin
-        SB.AppendFormat(FMT_STAT_ITEM, [SEnglish, AddComma(TextInfo.AsciiLetterCount), SUnitChar, HTML_BR]);
+        AppendStat(SEnglish, TextInfo.AsciiLetterCount, HTML_BR);
         SB.Append(FormatSubStats(SEnglishLowercase, TextInfo.AsciiLowerCount, SEnglishUppercase, TextInfo.AsciiUpperCount));
       end;
 
       if TextInfo.AsciiDigitCount > 0 then
-        SB.AppendFormat(FMT_STAT_ITEM, [SDigit, AddComma(TextInfo.AsciiDigitCount), SUnitChar, HTML_BR2]);
+        AppendStat(SDigit, TextInfo.AsciiDigitCount, HTML_BR2);
 
       if TextInfo.SpecialCharCount > 0 then
-        SB.AppendFormat(FMT_STAT_ITEM, [SSpecialChar, AddComma(TextInfo.SpecialCharCount), SUnitChar, HTML_BR2]);
+        AppendStat(SSpecialChar, TextInfo.SpecialCharCount, HTML_BR2);
 
       if (TextInfo.SpaceCount + TextInfo.OtherSpaceCount) > 0 then
       begin
-        SB.AppendFormat(FMT_STAT_ITEM, [SSpace, AddComma(TextInfo.SpaceCount + TextInfo.OtherSpaceCount), SUnitChar, HTML_BR]);
+        AppendStat(SSpace, TextInfo.SpaceCount + TextInfo.OtherSpaceCount, HTML_BR);
         SB.Append(FormatSubStats(SSpaceStandard, TextInfo.SpaceCount, SSpaceOther, TextInfo.OtherSpaceCount, True));
       end;
     end;
