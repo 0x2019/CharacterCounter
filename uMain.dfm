@@ -28,7 +28,6 @@ object frmMain: TfrmMain
     Font.Height = -13
     Font.Name = 'Tahoma'
     Font.Style = []
-    MaxLength = 50000
     ParentFont = False
     CanUndoSelText = True
     ScrollBars = ssVertical
