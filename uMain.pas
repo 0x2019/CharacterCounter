@@ -8,7 +8,7 @@ uses
   Vcl.StdCtrls, System.ImageList, Vcl.ImgList, acAlphaImageList, sMemo, acAlphaHints,
   sLabel, Vcl.ExtCtrls, sScrollBox, Vcl.Menus, sDialogs, ShellAPI, sStatusBar,
 
-  uFileUtils, uForms, uMenu, uMessageBox, uSettings;
+  uFileUtils, uForms, uMenu, uMenu.Popup, uMessageBox, uSettings;
 
 type
   TfrmMain = class(TForm)
@@ -43,6 +43,8 @@ type
     miFont: TMenuItem;
     FontDlg: TFontDialog;
     stsbr: TsStatusBar;
+    pmCopy: TPopupMenu;
+    pmiCopyOnSelect: TMenuItem;
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -65,6 +67,8 @@ type
     procedure mmoTextKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure mmoTextMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
     procedure mmoTextMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+    procedure pmiCopyOnSelectClick(Sender: TObject);
+    procedure pmCopyPopup(Sender: TObject);
   private
     { Private declarations }
     procedure WMDropFiles(var Msg: TWMDropFiles); message WM_DROPFILES;
@@ -91,7 +95,7 @@ implementation
 {$R *.dfm}
 
 uses
-  uAppController, uAppMenu, uAppSettings, uAppStatusBar, uAppStats, uTextStats;
+  uAppController, uAppMenu, uAppMenu.Popup, uAppSettings, uAppStatusBar, uAppStats, uTextStats;
 
 procedure TfrmMain.ChangeMessageBoxPosition(var Msg: TMessage);
 begin
@@ -202,9 +206,9 @@ begin
   UI_LoadFormSettings(Self);
   UI_EnableDragForm(Self);
 
-  AppController_Init(Self);
-  AppController_Load(Self);
+  AppMenu_Init(Self);
   AppMenu_UpdateClipboard(Self);
+  AppController_Init(Self);
   AppStatusBar_UpdateCaret(Self);
 
   AddClipboardFormatListener(Handle);
@@ -248,6 +252,20 @@ end;
 procedure TfrmMain.mmoTextMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
   AppStatusBar_UpdateCaret(Self);
+end;
+
+procedure TfrmMain.pmiCopyOnSelectClick(Sender: TObject);
+begin
+  AppMenu_Popup_Copy(Self, Sender);
+end;
+
+procedure TfrmMain.pmCopyPopup(Sender: TObject);
+var
+  PopupItems: TPopupItems;
+begin
+  PopupItems := Default(TPopupItems);
+  PopupItems.Copy := pmiCopyOnSelect;
+  AppMenu_Popup_Update(Self, Sender, PopupItems);
 end;
 
 end.

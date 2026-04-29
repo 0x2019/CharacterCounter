@@ -73,6 +73,7 @@ object frmMain: TfrmMain
       item
         Width = 780
       end>
+    PopupMenu = pmCopy
     SizeGrip = False
     UseSystemFont = False
   end
@@ -3060,5 +3061,17 @@ object frmMain: TfrmMain
     Font.Style = []
     Left = 416
     Top = 72
+  end
+  object pmCopy: TPopupMenu
+    Images = sMenuImageList
+    OnPopup = pmCopyPopup
+    Left = 448
+    Top = 72
+    object pmiCopyOnSelect: TMenuItem
+      Caption = #48373#49324'(&C)'
+      SubMenuImages = sMenuImageList
+      ImageIndex = 2
+      OnClick = pmiCopyOnSelectClick
+    end
   end
 end

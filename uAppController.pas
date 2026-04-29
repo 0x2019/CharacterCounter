@@ -5,12 +5,10 @@ interface
 uses
   Winapi.Windows, System.Math, System.SysUtils, Vcl.Forms, uMain,
 
-  uForms, uMenu, uStatusBar;
-
-procedure AppController_UpdateStats(F: TfrmMain);
+  uForms, uStatusBar;
 
 procedure AppController_Init(F: TfrmMain);
-procedure AppController_Load(F: TfrmMain);
+procedure AppController_UpdateStats(F: TfrmMain);
 
 procedure AppController_CP949Encoding(F: TfrmMain);
 
@@ -18,6 +16,20 @@ implementation
 
 uses
   uAppMenu, uAppSettings, uAppStatusBar, uAppStats, uTextEncoding, uTextStats;
+
+procedure AppController_Init(F: TfrmMain);
+begin
+  if F = nil then Exit;
+
+  AppSettings_Load(F);
+  UI_SetAlwaysOnTop(F, F.miAlwaysOnTop.Checked);
+  AppMenu_WordWrap(F);
+  AppStatusBar_Init(F);
+  if Assigned(F.stsbr) then
+    UI_StatusBar_SetVisible(F, F.stsbr, F.miShowStatusBar.Checked, False);
+
+  AppController_CP949Encoding(F);
+end;
 
 procedure AppController_UpdateStats(F: TfrmMain);
 var
@@ -42,27 +54,6 @@ begin
     F.miClearAll.Enabled := Trim(InputText) <> '';
   if Assigned(F.miCopy) then
     F.miCopy.Enabled := Trim(InputText) <> '';
-end;
-
-procedure AppController_Init(F: TfrmMain);
-begin
-  if F = nil then Exit;
-  if Assigned(F.miRecentSep) then F.miRecentSep.Tag := UI_RECENT_MENU_SEP_TAG;
-  if Assigned(F.miClearHistory) then F.miClearHistory.Tag := UI_RECENT_MENU_CLEAR_TAG;
-end;
-
-procedure AppController_Load(F: TfrmMain);
-begin
-  if F = nil then Exit;
-
-  AppSettings_Load(F);
-  UI_SetAlwaysOnTop(F, F.miAlwaysOnTop.Checked);
-  AppMenu_WordWrap(F);
-  AppStatusBar_Init(F);
-  if Assigned(F.stsbr) then
-    UI_StatusBar_SetVisible(F, F.stsbr, F.miShowStatusBar.Checked, False);
-
-  AppController_CP949Encoding(F);
 end;
 
 procedure AppController_CP949Encoding(F: TfrmMain);

@@ -4,7 +4,7 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.Classes, System.SysUtils, System.IOUtils,
-  System.Types, uMain,
+  System.Types, Vcl.Clipbrd, uMain,
 
   uEncoding, uFileUtils;
 
@@ -13,6 +13,7 @@ const
 
 // Global
 procedure AppStatusBar_Init(F: TfrmMain);
+procedure AppStatusBar_Copy(F: TfrmMain);
 procedure AppStatusBar_Update(F: TfrmMain; const FilePath, SourceText: string);
 
 // Caret
@@ -50,6 +51,17 @@ end;
 procedure AppStatusBar_Init(F: TfrmMain);
 begin
   AppStatusBar_SetStatusText(F, '');
+end;
+
+procedure AppStatusBar_Copy(F: TfrmMain);
+var
+  StatusText: string;
+begin
+  StatusText := Trim(AppStatusBar_GetStatusText(F));
+  if StatusText = '' then
+    Exit;
+
+  Clipboard.AsText := StatusText;
 end;
 
 procedure AppStatusBar_Update(F: TfrmMain; const FilePath, SourceText: string);

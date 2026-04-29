@@ -9,6 +9,7 @@ uses
   uEncoding, uFileUtils, uForms, uMenu, uMessageBox, uStatusBar;
 
 // Global
+procedure AppMenu_Init(F: TfrmMain);
 procedure AppMenu_UpdateCaption(F: TfrmMain; const ACaption: string);
 procedure AppMenu_UpdateClipboard(F: TfrmMain);
 
@@ -44,7 +45,15 @@ procedure AppMenu_About(F: TfrmMain);
 implementation
 
 uses
-  uAppStatusBar, uAppStrings, uOptions, uTextEncoding;
+  uAppMenu.Popup, uAppStatusBar, uAppStrings, uOptions, uTextEncoding;
+
+procedure AppMenu_Init(F: TfrmMain);
+begin
+  if F = nil then Exit;
+  if Assigned(F.miRecentSep) then F.miRecentSep.Tag := UI_RECENT_MENU_SEP_TAG;
+  if Assigned(F.miClearHistory) then F.miClearHistory.Tag := UI_RECENT_MENU_CLEAR_TAG;
+  AppMenu_Popup_Init(F);
+end;
 
 procedure AppMenu_UpdateCaption(F: TfrmMain; const ACaption: string);
 begin

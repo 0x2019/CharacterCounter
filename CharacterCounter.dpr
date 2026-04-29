@@ -7,6 +7,7 @@ uses
   uOptions in 'uOptions.pas' {frmOptions},
   uAppController in 'uAppController.pas',
   uAppMenu in 'uAppMenu.pas',
+  uAppMenu.Popup in 'uAppMenu.Popup.pas',
   uAppSettings in 'uAppSettings.pas',
   uAppStats in 'uAppStats.pas',
   uAppStatusBar in 'uAppStatusBar.pas',
