@@ -140,6 +140,7 @@
         <DCCReference Include="uAppMenu.pas"/>
         <DCCReference Include="uAppSettings.pas"/>
         <DCCReference Include="uAppStats.pas"/>
+        <DCCReference Include="uAppStatusBar.pas"/>
         <DCCReference Include="uAppStrings.pas"/>
         <DCCReference Include="uChars.pas"/>
         <DCCReference Include="uTextEncoding.pas"/>
@@ -151,6 +152,7 @@
         <DCCReference Include="..\Common\uMessageBox.pas"/>
         <DCCReference Include="..\Common\uSettings.Menu.pas"/>
         <DCCReference Include="..\Common\uSettings.pas"/>
+        <DCCReference Include="..\Common\uStatusBar.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

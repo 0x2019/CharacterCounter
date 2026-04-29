@@ -3,10 +3,10 @@
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Controls,
-  Vcl.Forms, Vcl.Dialogs, System.Character, sSkinProvider, sSkinManager,
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.ComCtrls,
+  Vcl.Controls, Vcl.Dialogs, Vcl.Forms, System.Character, sSkinProvider, sSkinManager,
   Vcl.StdCtrls, System.ImageList, Vcl.ImgList, acAlphaImageList, sMemo, acAlphaHints,
-  sLabel, Vcl.ExtCtrls, sScrollBox, Vcl.Menus, sDialogs, ShellAPI,
+  sLabel, Vcl.ExtCtrls, sScrollBox, Vcl.Menus, sDialogs, ShellAPI, sStatusBar,
 
   uFileUtils, uForms, uMenu, uMessageBox, uSettings;
 
@@ -26,6 +26,7 @@ type
     miOptions: TMenuItem;
     mnuView: TMenuItem;
     miAlwaysOnTop: TMenuItem;
+    miShowStatusBar: TMenuItem;
     miWordWrap: TMenuItem;
     scrStats: TsScrollBox;
     lblStats: TsHTMLLabel;
@@ -41,10 +42,12 @@ type
     mnuFormat: TMenuItem;
     miFont: TMenuItem;
     FontDlg: TFontDialog;
+    stsbr: TsStatusBar;
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure miAlwaysOnTopClick(Sender: TObject);
+    procedure miShowStatusBarClick(Sender: TObject);
     procedure miOptionsClick(Sender: TObject);
     procedure miWordWrapClick(Sender: TObject);
     procedure miOpenFileClick(Sender: TObject);
@@ -58,6 +61,10 @@ type
     procedure miExitClick(Sender: TObject);
     procedure miFontClick(Sender: TObject);
     procedure FontDlgShow(Sender: TObject);
+    procedure mmoTextClick(Sender: TObject);
+    procedure mmoTextKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure mmoTextMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
+    procedure mmoTextMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
   private
     { Private declarations }
     procedure WMDropFiles(var Msg: TWMDropFiles); message WM_DROPFILES;
@@ -84,7 +91,7 @@ implementation
 {$R *.dfm}
 
 uses
-  uAppController, uAppMenu, uAppSettings, uAppStats, uTextStats;
+  uAppController, uAppMenu, uAppSettings, uAppStatusBar, uAppStats, uTextStats;
 
 procedure TfrmMain.ChangeMessageBoxPosition(var Msg: TMessage);
 begin
@@ -133,6 +140,11 @@ end;
 procedure TfrmMain.miAlwaysOnTopClick(Sender: TObject);
 begin
   AppMenu_AlwaysOnTop(Self);
+end;
+
+procedure TfrmMain.miShowStatusBarClick(Sender: TObject);
+begin
+  AppMenu_ShowStatusBar(Self);
 end;
 
 procedure TfrmMain.miExitClick(Sender: TObject);
@@ -193,6 +205,7 @@ begin
   AppController_Init(Self);
   AppController_Load(Self);
   AppMenu_UpdateClipboard(Self);
+  AppStatusBar_UpdateCaret(Self);
 
   AddClipboardFormatListener(Handle);
   DragAcceptFiles(Handle, True);
@@ -213,6 +226,28 @@ end;
 procedure TfrmMain.mmoTextChange(Sender: TObject);
 begin
   AppController_UpdateStats(Self);
+  AppStatusBar_UpdateCaret(Self);
+end;
+
+procedure TfrmMain.mmoTextClick(Sender: TObject);
+begin
+  AppStatusBar_UpdateCaret(Self);
+end;
+
+procedure TfrmMain.mmoTextKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+  AppStatusBar_UpdateCaret(Self);
+end;
+
+procedure TfrmMain.mmoTextMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
+begin
+  if ssLeft in Shift then
+    AppStatusBar_UpdateCaret(Self);
+end;
+
+procedure TfrmMain.mmoTextMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  AppStatusBar_UpdateCaret(Self);
 end;
 
 end.

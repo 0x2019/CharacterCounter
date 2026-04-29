@@ -9,6 +9,7 @@ uses
   uAppMenu in 'uAppMenu.pas',
   uAppSettings in 'uAppSettings.pas',
   uAppStats in 'uAppStats.pas',
+  uAppStatusBar in 'uAppStatusBar.pas',
   uAppStrings in 'uAppStrings.pas',
   uChars in 'uChars.pas',
   uTextEncoding in 'uTextEncoding.pas',
@@ -19,7 +20,8 @@ uses
   uMenu in '..\Common\uMenu.pas',
   uMessageBox in '..\Common\uMessageBox.pas',
   uSettings.Menu in '..\Common\uSettings.Menu.pas',
-  uSettings in '..\Common\uSettings.pas';
+  uSettings in '..\Common\uSettings.pas',
+  uStatusBar in '..\Common\uStatusBar.pas';
 
 var
   uMutex: THandle;

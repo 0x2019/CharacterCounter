@@ -21,7 +21,7 @@ object frmMain: TfrmMain
     Left = 0
     Top = 0
     Width = 605
-    Height = 358
+    Height = 339
     Align = alClient
     Font.Charset = ANSI_CHARSET
     Font.Color = clBlack
@@ -33,13 +33,17 @@ object frmMain: TfrmMain
     ScrollBars = ssVertical
     TabOrder = 0
     OnChange = mmoTextChange
+    OnClick = mmoTextClick
+    OnKeyUp = mmoTextKeyUp
+    OnMouseMove = mmoTextMouseMove
+    OnMouseUp = mmoTextMouseUp
   end
   object scrStats: TsScrollBox
     Tag = 99
     Left = 605
     Top = 0
     Width = 210
-    Height = 358
+    Height = 339
     HorzScrollBar.Smooth = True
     HorzScrollBar.Tracking = True
     VertScrollBar.Smooth = True
@@ -54,6 +58,23 @@ object frmMain: TfrmMain
       Width = 120
       Height = 13
     end
+  end
+  object stsbr: TsStatusBar
+    Left = 0
+    Top = 339
+    Width = 815
+    Height = 19
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clBtnText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    Panels = <
+      item
+        Width = 780
+      end>
+    SizeGrip = False
+    UseSystemFont = False
   end
   object MainMenu: TMainMenu
     Left = 176
@@ -114,6 +135,11 @@ object frmMain: TfrmMain
       object miAlwaysOnTop: TMenuItem
         Caption = #54637#49345' '#50948'(&A)'
         OnClick = miAlwaysOnTopClick
+      end
+      object miShowStatusBar: TMenuItem
+        Caption = #49345#53468' '#54364#49884#51460' '#54364#49884'(&S)'
+        Checked = True
+        OnClick = miShowStatusBarClick
       end
     end
     object mnuFormat: TMenuItem

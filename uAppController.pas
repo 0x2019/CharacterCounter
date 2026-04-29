@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, System.Math, System.SysUtils, Vcl.Forms, uMain,
 
-  uForms, uMenu;
+  uForms, uMenu, uStatusBar;
 
 procedure AppController_UpdateStats(F: TfrmMain);
 
@@ -17,7 +17,7 @@ procedure AppController_CP949Encoding(F: TfrmMain);
 implementation
 
 uses
-  uAppMenu, uAppSettings, uAppStats, uTextEncoding, uTextStats;
+  uAppMenu, uAppSettings, uAppStatusBar, uAppStats, uTextEncoding, uTextStats;
 
 procedure AppController_UpdateStats(F: TfrmMain);
 var
@@ -58,6 +58,9 @@ begin
   AppSettings_Load(F);
   UI_SetAlwaysOnTop(F, F.miAlwaysOnTop.Checked);
   AppMenu_WordWrap(F);
+  AppStatusBar_Init(F);
+  if Assigned(F.stsbr) then
+    UI_StatusBar_SetVisible(F, F.stsbr, F.miShowStatusBar.Checked, False);
 
   AppController_CP949Encoding(F);
 end;

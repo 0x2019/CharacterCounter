@@ -6,7 +6,7 @@ uses
   Winapi.Windows, System.Classes, System.SysUtils, Vcl.Forms, Vcl.StdCtrls, Vcl.Menus,
   Clipbrd, uMain,
 
-  uEncoding, uFileUtils, uForms, uMenu, uMessageBox;
+  uEncoding, uFileUtils, uForms, uMenu, uMessageBox, uStatusBar;
 
 // Global
 procedure AppMenu_UpdateCaption(F: TfrmMain; const ACaption: string);
@@ -28,6 +28,7 @@ procedure AppMenu_ClearAll(F: TfrmMain);
 
 // View
 procedure AppMenu_AlwaysOnTop(F: TfrmMain);
+procedure AppMenu_ShowStatusBar(F: TfrmMain);
 
 // Format
 procedure AppMenu_WordWrap(F: TfrmMain);
@@ -43,7 +44,7 @@ procedure AppMenu_About(F: TfrmMain);
 implementation
 
 uses
-  uAppStrings, uOptions, uTextEncoding;
+  uAppStatusBar, uAppStrings, uOptions, uTextEncoding;
 
 procedure AppMenu_UpdateCaption(F: TfrmMain; const ACaption: string);
 begin
@@ -88,6 +89,7 @@ end;
 procedure AppMenu_OpenFile(F: TfrmMain; FileName: string);
 var
   InputText: string;
+  SourceText: string;
   WindowTitle: string;
 begin
   if F = nil then Exit;
@@ -103,6 +105,7 @@ begin
       Exit;
     end;
 
+    SourceText := InputText;
     InputText := ConvertToCRLF(InputText);
 
     F.FLoadedFromFile := True;
@@ -122,6 +125,7 @@ begin
 
     WindowTitle := ExtractFileName(FileName) + ' - ' + APP_NAME;
     AppMenu_UpdateCaption(F, WindowTitle);
+    AppStatusBar_Update(F, FileName, SourceText);
 
     AppMenu_Recent_Add(F, FileName);
   except
@@ -201,6 +205,15 @@ begin
   if F = nil then Exit;
   F.miAlwaysOnTop.Checked := not F.miAlwaysOnTop.Checked;
   UI_SetAlwaysOnTop(F, F.miAlwaysOnTop.Checked);
+end;
+
+procedure AppMenu_ShowStatusBar(F: TfrmMain);
+begin
+  if F = nil then Exit;
+  if not Assigned(F.stsbr) then Exit;
+
+  F.miShowStatusBar.Checked := not F.miShowStatusBar.Checked;
+  UI_StatusBar_SetVisible(F, F.stsbr, F.miShowStatusBar.Checked, False);
 end;
 
 procedure AppMenu_WordWrap(F: TfrmMain);

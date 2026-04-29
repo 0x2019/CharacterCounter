@@ -61,6 +61,11 @@ resourcestring
   SUnitLine                           = '줄';
   SUnitWord                           = '개';
 
+// uAppStatusBar
+  SCaret                              = '줄 %d, 열 %d';
+  SNotAvailable                       = 'N/A';
+  SSeparator                          = ' | ';
+
 implementation
 
 end.
