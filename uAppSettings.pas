@@ -23,7 +23,8 @@ begin
   try
     F.miAlwaysOnTop.Checked := Ini.ReadBool('View', 'AlwaysOnTop', False);
     F.miShowStatusBar.Checked := Ini.ReadBool('View', 'ShowStatusBar', True);
-    F.miWordWrap.Checked := Ini.ReadBool('View', 'WordWrap', False);
+
+    F.miWordWrap.Checked := Ini.ReadBool('Format', 'WordWrap', False);
 
     F.FUseCP949 := Ini.ReadBool('General', 'UseCP949', False);
     F.FCloseOnEsc := Ini.ReadBool('General', 'CloseOnEsc', False);
@@ -50,7 +51,8 @@ begin
   try
     Ini.WriteBool('View', 'AlwaysOnTop', F.miAlwaysOnTop.Checked);
     Ini.WriteBool('View', 'ShowStatusBar', F.miShowStatusBar.Checked);
-    Ini.WriteBool('View', 'WordWrap', F.miWordWrap.Checked);
+
+    Ini.WriteBool('Format', 'WordWrap', F.miWordWrap.Checked);
 
     Ini.WriteBool('General', 'UseCP949', F.FUseCP949);
     Ini.WriteBool('General', 'CloseOnEsc', F.FCloseOnEsc);
