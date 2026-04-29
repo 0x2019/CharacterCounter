@@ -13,16 +13,17 @@ uses
   uAppStatusBar in 'uAppStatusBar.pas',
   uAppStrings in 'uAppStrings.pas',
   uChars in 'uChars.pas',
-  uTextEncoding in 'uTextEncoding.pas',
+  uTextByteCount in 'uTextByteCount.pas',
   uTextStats in 'uTextStats.pas',
-  uEncoding in '..\Common\uEncoding.pas',
   uFileUtils in '..\Common\uFileUtils.pas',
   uForms in '..\Common\uForms.pas',
   uMenu in '..\Common\uMenu.pas',
   uMessageBox in '..\Common\uMessageBox.pas',
   uSettings.Menu in '..\Common\uSettings.Menu.pas',
   uSettings in '..\Common\uSettings.pas',
-  uStatusBar in '..\Common\uStatusBar.pas';
+  uStatusBar in '..\Common\uStatusBar.pas',
+  uTextEncoding in '..\Common\uTextEncoding.pas',
+  uTextDecoding in '..\Common\uTextDecoding.pas';
 
 var
   uMutex: THandle;
@@ -42,3 +43,4 @@ begin
       CloseHandle(uMutex);
   end;
 end.
+

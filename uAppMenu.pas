@@ -6,7 +6,7 @@ uses
   Winapi.Windows, System.Classes, System.SysUtils, Vcl.Forms, Vcl.StdCtrls, Vcl.Menus,
   Clipbrd, uMain,
 
-  uEncoding, uFileUtils, uForms, uMenu, uMessageBox, uStatusBar;
+  uFileUtils, uForms, uMenu, uMessageBox, uStatusBar, uTextDecoding, uTextEncoding;
 
 // Global
 procedure AppMenu_Init(F: TfrmMain);
@@ -45,7 +45,7 @@ procedure AppMenu_About(F: TfrmMain);
 implementation
 
 uses
-  uAppMenu.Popup, uAppStatusBar, uAppStrings, uOptions, uTextEncoding;
+  uAppMenu.Popup, uAppStatusBar, uAppStrings, uOptions, uTextByteCount;
 
 procedure AppMenu_Init(F: TfrmMain);
 begin
@@ -108,7 +108,7 @@ begin
   if FileName = '' then Exit;
 
   try
-    if not TryReadAllText(FileName, InputText) then
+    if not DecodeFile(FileName, InputText) then
     begin
       UI_MessageBox(F, SUnsupportedFileMsg, MB_ICONERROR or MB_OK);
       Exit;
@@ -276,3 +276,4 @@ begin
 end;
 
 end.
+

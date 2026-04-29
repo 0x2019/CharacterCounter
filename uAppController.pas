@@ -15,7 +15,7 @@ procedure AppController_CP949Encoding(F: TfrmMain);
 implementation
 
 uses
-  uAppMenu, uAppSettings, uAppStatusBar, uAppStats, uTextEncoding, uTextStats;
+  uAppMenu, uAppSettings, uAppStatusBar, uAppStats, uTextByteCount, uTextStats;
 
 procedure AppController_Init(F: TfrmMain);
 begin
@@ -65,3 +65,4 @@ begin
 end;
 
 end.
+

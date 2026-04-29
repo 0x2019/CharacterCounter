@@ -1,4 +1,4 @@
-﻿unit uTextEncoding;
+﻿unit uTextByteCount;
 
 interface
 
@@ -73,3 +73,4 @@ finalization
   FreeAndNil(EncCP949);
 
 end.
+

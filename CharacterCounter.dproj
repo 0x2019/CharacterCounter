@@ -144,9 +144,8 @@
         <DCCReference Include="uAppStatusBar.pas"/>
         <DCCReference Include="uAppStrings.pas"/>
         <DCCReference Include="uChars.pas"/>
-        <DCCReference Include="uTextEncoding.pas"/>
+        <DCCReference Include="uTextByteCount.pas"/>
         <DCCReference Include="uTextStats.pas"/>
-        <DCCReference Include="..\Common\uEncoding.pas"/>
         <DCCReference Include="..\Common\uFileUtils.pas"/>
         <DCCReference Include="..\Common\uForms.pas"/>
         <DCCReference Include="..\Common\uMenu.pas"/>
@@ -154,6 +153,8 @@
         <DCCReference Include="..\Common\uSettings.Menu.pas"/>
         <DCCReference Include="..\Common\uSettings.pas"/>
         <DCCReference Include="..\Common\uStatusBar.pas"/>
+        <DCCReference Include="..\Common\uTextEncoding.pas"/>
+        <DCCReference Include="..\Common\uTextDecoding.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.Classes, System.SysUtils, System.IOUtils,
   System.Types, Vcl.Clipbrd, uMain,
 
-  uEncoding, uFileUtils;
+  uFileUtils, uTextEncoding;
 
 const
   STATUS_PANEL_MAIN = 0;
@@ -188,3 +188,4 @@ begin
 end;
 
 end.
+
