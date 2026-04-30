@@ -22,6 +22,7 @@ uses
   uForms in '..\Common\uForms.pas',
   uMenu in '..\Common\uMenu.pas',
   uMessageBox in '..\Common\uMessageBox.pas',
+  uProcessUtils in '..\Common\uProcessUtils.pas',
   uSettings.Menu in '..\Common\uSettings.Menu.pas',
   uSettings in '..\Common\uSettings.pas',
   uStatusBar in '..\Common\uStatusBar.pas',

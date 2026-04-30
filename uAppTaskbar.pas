@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.Classes, System.SysUtils, Vcl.Menus,
   uMain,
 
-  uMenu, uTaskbar;
+  uMenu, uProcessUtils, uTaskbar;
 
 procedure AppTaskbar_Init(F: TfrmMain);
 procedure AppTaskbar_OpenFile(const FilePath: string; MainWnd: HWND = 0);
@@ -35,15 +35,21 @@ end;
 procedure AppTaskbar_OpenFile(const FilePath: string; MainWnd: HWND);
 var
   CopyDataStruct: TAppCopyDataStruct;
+  MainPID: Cardinal;
 begin
   if Trim(FilePath) = '' then
     Exit;
 
   if MainWnd = 0 then
   begin
-    MainWnd := FindWindow(PChar(APP_NAME), nil);
-    if MainWnd = 0 then
-      MainWnd := FindWindow('TfrmMain', nil);
+    MainPID := 0;
+    if FindWindowByCaption(APP_NAME, MainWnd, MainPID) then
+    begin
+      if not SameText(GetProcessNameByPID(MainPID), ExtractFileName(ParamStr(0))) then
+        MainWnd := 0;
+    end
+    else
+      MainWnd := 0;
   end;
   if MainWnd = 0 then
     Exit;
