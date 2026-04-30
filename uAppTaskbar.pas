@@ -48,16 +48,16 @@ begin
   if MainWnd = 0 then
     Exit;
 
-  CopyDataStruct.dwData := 1;
-  CopyDataStruct.cbData := (Length(FilePath) + 1) * SizeOf(Char);
-  CopyDataStruct.lpData := PChar(FilePath);
-  SendMessage(MainWnd, WM_COPYDATA, 0, LPARAM(@CopyDataStruct));
-
   if IsIconic(MainWnd) then
     ShowWindow(MainWnd, SW_RESTORE)
   else
     ShowWindow(MainWnd, SW_SHOW);
   SetForegroundWindow(MainWnd);
+
+  CopyDataStruct.dwData := 1;
+  CopyDataStruct.cbData := (Length(FilePath) + 1) * SizeOf(Char);
+  CopyDataStruct.lpData := PChar(FilePath);
+  SendMessage(MainWnd, WM_COPYDATA, 0, LPARAM(@CopyDataStruct));
 end;
 
 procedure AppTaskbar_Sync(F: TfrmMain);

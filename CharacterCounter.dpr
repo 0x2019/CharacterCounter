@@ -2,6 +2,7 @@
 
 uses
   Winapi.Windows,
+  System.Classes,
   System.SysUtils,
   Vcl.Forms,
   uMain in 'uMain.pas' {frmMain},
@@ -30,6 +31,7 @@ uses
 
 var
   uMutex: THandle;
+  OpenFilePath: string;
 
 {$R *.res}
 
@@ -48,6 +50,18 @@ begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TfrmMain, frmMain);
+
+  if ParamCount >= 1 then
+  begin
+    OpenFilePath := ParamStr(1);
+    if FileExists(OpenFilePath) then
+      TThread.Queue(nil,
+        procedure
+        begin
+          if Assigned(frmMain) and FileExists(OpenFilePath) then
+            AppMenu_OpenFile(frmMain, OpenFilePath);
+        end);
+  end;
 
   Application.Run;
 
