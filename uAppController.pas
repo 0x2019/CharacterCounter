@@ -15,18 +15,20 @@ procedure AppController_CP949Encoding(F: TfrmMain);
 implementation
 
 uses
-  uAppMenu, uAppSettings, uAppStatusBar, uAppStats, uTextByteCount, uTextStats;
+  uAppMenu, uAppSettings, uAppStatusBar, uAppStats, uAppTaskbar, uTextByteCount, uTextStats;
 
 procedure AppController_Init(F: TfrmMain);
 begin
   if F = nil then Exit;
 
   AppSettings_Load(F);
+  AppTaskbar_Init(F);
   UI_SetAlwaysOnTop(F, F.miAlwaysOnTop.Checked);
   AppMenu_WordWrap(F);
   AppStatusBar_Init(F);
   if Assigned(F.stsbr) then
     UI_StatusBar_SetVisible(F, F.stsbr, F.miShowStatusBar.Checked, False);
+  AppTaskbar_Sync(F);
 
   AppController_CP949Encoding(F);
 end;

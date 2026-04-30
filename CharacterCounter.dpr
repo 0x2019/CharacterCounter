@@ -2,6 +2,7 @@
 
 uses
   Winapi.Windows,
+  System.SysUtils,
   Vcl.Forms,
   uMain in 'uMain.pas' {frmMain},
   uOptions in 'uOptions.pas' {frmOptions},
@@ -12,6 +13,7 @@ uses
   uAppStats in 'uAppStats.pas',
   uAppStatusBar in 'uAppStatusBar.pas',
   uAppStrings in 'uAppStrings.pas',
+  uAppTaskbar in 'uAppTaskbar.pas',
   uChars in 'uChars.pas',
   uTextByteCount in 'uTextByteCount.pas',
   uTextStats in 'uTextStats.pas',
@@ -22,6 +24,7 @@ uses
   uSettings.Menu in '..\Common\uSettings.Menu.pas',
   uSettings in '..\Common\uSettings.pas',
   uStatusBar in '..\Common\uStatusBar.pas',
+  uTaskbar in '..\Common\uTaskbar.pas',
   uTextEncoding in '..\Common\uTextEncoding.pas',
   uTextDecoding in '..\Common\uTextDecoding.pas';
 
@@ -32,15 +35,23 @@ var
 
 begin
   uMutex := CreateMutex(nil, True, 'CC!');
-  if (uMutex <> 0) and (GetLastError = 0) then
+  if (uMutex = 0) or (GetLastError <> 0) then
   begin
-    Application.Initialize;
-    Application.MainFormOnTaskbar := True;
-    Application.CreateForm(TfrmMain, frmMain);
-    Application.Run;
+    if (ParamCount >= 1) and FileExists(ParamStr(1)) then
+      AppTaskbar_OpenFile(ParamStr(1));
 
     if uMutex <> 0 then
       CloseHandle(uMutex);
+    Exit;
   end;
+
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TfrmMain, frmMain);
+
+  Application.Run;
+
+  if uMutex <> 0 then
+    CloseHandle(uMutex);
 end.
 

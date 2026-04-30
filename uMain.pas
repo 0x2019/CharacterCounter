@@ -70,9 +70,10 @@ type
     procedure pmiCopyOnSelectClick(Sender: TObject);
     procedure pmCopyPopup(Sender: TObject);
   private
-    { Private declarations }
-    procedure WMDropFiles(var Msg: TWMDropFiles); message WM_DROPFILES;
+    procedure WMActivateApp(var Msg: TWMActivateApp); message WM_ACTIVATEAPP;
     procedure WMClipboardUpdate(var Msg: TMessage); message WM_CLIPBOARDUPDATE;
+    procedure WMCopyData(var Msg: TWMCopyData); message WM_COPYDATA;
+    procedure WMDropFiles(var Msg: TWMDropFiles); message WM_DROPFILES;
   public
     FLoadedFromFile: Boolean;
     FHasTrailingNewLine: Boolean;
@@ -95,11 +96,42 @@ implementation
 {$R *.dfm}
 
 uses
-  uAppController, uAppMenu, uAppMenu.Popup, uAppSettings, uAppStatusBar, uAppStats, uTextStats;
+  uAppController, uAppMenu, uAppMenu.Popup, uAppSettings, uAppStatusBar,
+  uAppStats, uAppTaskbar, uTextStats;
 
 procedure TfrmMain.ChangeMessageBoxPosition(var Msg: TMessage);
 begin
   UI_ChangeMessageBoxPosition(Self);
+end;
+
+procedure TfrmMain.WMActivateApp(var Msg: TWMActivateApp);
+begin
+  inherited;
+
+  if Msg.Active then
+    AppTaskbar_Sync(Self);
+end;
+
+procedure TfrmMain.WMClipboardUpdate(var Msg: TMessage);
+begin
+  AppMenu_UpdateClipboard(Self);
+end;
+
+procedure TfrmMain.WMCopyData(var Msg: TWMCopyData);
+var
+  FilePath: string;
+begin
+  Msg.Result := 0;
+
+  if (Msg.CopyDataStruct = nil) or (Msg.CopyDataStruct.cbData = 0) then
+    Exit;
+
+  FilePath := PChar(Msg.CopyDataStruct.lpData);
+  if not FileExists(FilePath) then
+    Exit;
+
+  AppMenu_OpenFile(Self, FilePath);
+  Msg.Result := 1;
 end;
 
 procedure TfrmMain.WMDropFiles(var Msg: TWMDropFiles);
@@ -114,11 +146,6 @@ begin
   finally
     Files.Free;
   end;
-end;
-
-procedure TfrmMain.WMClipboardUpdate(var Msg: TMessage);
-begin
-  AppMenu_UpdateClipboard(Self);
 end;
 
 procedure TfrmMain.miAboutClick(Sender: TObject);

@@ -143,6 +143,7 @@
         <DCCReference Include="uAppStats.pas"/>
         <DCCReference Include="uAppStatusBar.pas"/>
         <DCCReference Include="uAppStrings.pas"/>
+        <DCCReference Include="uAppTaskbar.pas"/>
         <DCCReference Include="uChars.pas"/>
         <DCCReference Include="uTextByteCount.pas"/>
         <DCCReference Include="uTextStats.pas"/>
@@ -153,6 +154,7 @@
         <DCCReference Include="..\Common\uSettings.Menu.pas"/>
         <DCCReference Include="..\Common\uSettings.pas"/>
         <DCCReference Include="..\Common\uStatusBar.pas"/>
+        <DCCReference Include="..\Common\uTaskbar.pas"/>
         <DCCReference Include="..\Common\uTextEncoding.pas"/>
         <DCCReference Include="..\Common\uTextDecoding.pas"/>
         <BuildConfiguration Include="Base">

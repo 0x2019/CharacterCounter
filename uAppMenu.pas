@@ -45,7 +45,7 @@ procedure AppMenu_About(F: TfrmMain);
 implementation
 
 uses
-  uAppMenu.Popup, uAppStatusBar, uAppStrings, uOptions, uTextByteCount;
+  uAppMenu.Popup, uAppStatusBar, uAppStrings, uAppTaskbar, uOptions, uTextByteCount;
 
 procedure AppMenu_Init(F: TfrmMain);
 begin
@@ -167,6 +167,7 @@ begin
   if Trim(FilePath) = '' then Exit;
 
   UI_Menu_Recent_Add(F.miRecent, FilePath, ExtractFileName(FilePath), F.miRecentItems);
+  AppTaskbar_Sync(F);
 end;
 
 procedure AppMenu_Recent_Clear(F: TfrmMain);
@@ -174,6 +175,7 @@ begin
   if F = nil then Exit;
   if not Assigned(F.miRecent) then Exit;
   UI_Menu_Recent_Clear(F.miRecent);
+  AppTaskbar_Sync(F);
 end;
 
 procedure AppMenu_Exit(F: TfrmMain);
