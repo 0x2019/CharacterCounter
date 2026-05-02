@@ -22,6 +22,7 @@ begin
   Ini := TMemIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'), TEncoding.UTF8);
   try
     F.miAlwaysOnTop.Checked := Ini.ReadBool('View', 'AlwaysOnTop', False);
+    F.miShowMagnifier.Checked := Ini.ReadBool('View', 'ShowMagnifier', False);
     F.miShowStatusBar.Checked := Ini.ReadBool('View', 'ShowStatusBar', True);
 
     F.miWordWrap.Checked := Ini.ReadBool('Format', 'WordWrap', False);
@@ -50,6 +51,7 @@ begin
   Ini := TMemIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'), TEncoding.UTF8);
   try
     Ini.WriteBool('View', 'AlwaysOnTop', F.miAlwaysOnTop.Checked);
+    Ini.WriteBool('View', 'ShowMagnifier', F.miShowMagnifier.Checked);
     Ini.WriteBool('View', 'ShowStatusBar', F.miShowStatusBar.Checked);
 
     Ini.WriteBool('Format', 'WordWrap', F.miWordWrap.Checked);

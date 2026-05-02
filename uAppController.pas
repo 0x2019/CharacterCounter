@@ -25,6 +25,7 @@ begin
   AppTaskbar_Init(F);
   UI_SetAlwaysOnTop(F, F.miAlwaysOnTop.Checked);
   AppMenu_WordWrap(F);
+  AppMenu_ShowMagnifier(F);
   AppStatusBar_Init(F);
   if Assigned(F.stsbr) then
     UI_StatusBar_SetVisible(F, F.stsbr, F.miShowStatusBar.Checked, False);

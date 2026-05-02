@@ -29,6 +29,7 @@ procedure AppMenu_ClearAll(F: TfrmMain);
 
 // View
 procedure AppMenu_AlwaysOnTop(F: TfrmMain);
+procedure AppMenu_ShowMagnifier(F: TfrmMain);
 procedure AppMenu_ShowStatusBar(F: TfrmMain);
 
 // Format
@@ -218,6 +219,18 @@ begin
   UI_SetAlwaysOnTop(F, F.miAlwaysOnTop.Checked);
 end;
 
+procedure AppMenu_ShowMagnifier(F: TfrmMain);
+begin
+  if F = nil then Exit;
+  if not Assigned(F.sMagnifier) then Exit;
+  if not Assigned(F.miShowMagnifier) then Exit;
+
+  if F.miShowMagnifier.Checked then
+    F.sMagnifier.Execute
+  else
+    F.sMagnifier.Hide;
+end;
+
 procedure AppMenu_ShowStatusBar(F: TfrmMain);
 begin
   if F = nil then Exit;
@@ -278,4 +291,3 @@ begin
 end;
 
 end.
-

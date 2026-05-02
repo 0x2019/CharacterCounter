@@ -137,8 +137,16 @@ object frmMain: TfrmMain
         Caption = #54637#49345' '#50948'(&A)'
         OnClick = miAlwaysOnTopClick
       end
+      object N1: TMenuItem
+        Caption = '-'
+      end
+      object miShowMagnifier: TMenuItem
+        AutoCheck = True
+        Caption = #46027#48372#44592'(&M)'
+        OnClick = miShowMagnifierClick
+      end
       object miShowStatusBar: TMenuItem
-        Caption = #49345#53468' '#54364#49884#51460' '#54364#49884'(&S)'
+        Caption = #49345#53468' '#54364#49884#51460'(&S)'
         Checked = True
         OnClick = miShowStatusBarClick
       end
@@ -3002,6 +3010,12 @@ object frmMain: TfrmMain
     SkinSection = 'HINT'
     Left = 95
     Top = 57
+  end
+  object sMagnifier: TsMagnifier
+    Width = 350
+    Height = 350
+    Left = 520
+    Top = 112
   end
   object sMenuImageList: TsCharImageList
     ShareImages = True

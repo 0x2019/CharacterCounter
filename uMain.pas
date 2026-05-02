@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.ComCtrls,
   Vcl.Controls, Vcl.Dialogs, Vcl.Forms, System.Character, sSkinProvider, sSkinManager,
   Vcl.StdCtrls, System.ImageList, Vcl.ImgList, acAlphaImageList, sMemo, acAlphaHints,
-  sLabel, Vcl.ExtCtrls, sScrollBox, Vcl.Menus, sDialogs, ShellAPI, sStatusBar,
+  sLabel, Vcl.ExtCtrls, sScrollBox, Vcl.Menus, sDialogs, ShellAPI, sStatusBar, acMagn,
 
   uFileUtils, uForms, uMenu, uMenu.Popup, uMessageBox, uSettings;
 
@@ -16,6 +16,7 @@ type
     sSkinProvider: TsSkinProvider;
     mmoText: TsMemo;
     sAlphaHints: TsAlphaHints;
+    sMagnifier: TsMagnifier;
     OpenFileDlg: TsOpenDialog;
     MainMenu: TMainMenu;
     mnuFile: TMenuItem;
@@ -27,6 +28,7 @@ type
     mnuView: TMenuItem;
     miAlwaysOnTop: TMenuItem;
     miShowStatusBar: TMenuItem;
+    miShowMagnifier: TMenuItem;
     miWordWrap: TMenuItem;
     scrStats: TsScrollBox;
     lblStats: TsHTMLLabel;
@@ -45,11 +47,13 @@ type
     stsbr: TsStatusBar;
     pmCopy: TPopupMenu;
     pmiCopyOnSelect: TMenuItem;
+    N1: TMenuItem;
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure miAlwaysOnTopClick(Sender: TObject);
     procedure miShowStatusBarClick(Sender: TObject);
+    procedure miShowMagnifierClick(Sender: TObject);
     procedure miOptionsClick(Sender: TObject);
     procedure miWordWrapClick(Sender: TObject);
     procedure miOpenFileClick(Sender: TObject);
@@ -176,6 +180,11 @@ end;
 procedure TfrmMain.miShowStatusBarClick(Sender: TObject);
 begin
   AppMenu_ShowStatusBar(Self);
+end;
+
+procedure TfrmMain.miShowMagnifierClick(Sender: TObject);
+begin
+  AppMenu_ShowMagnifier(Self);
 end;
 
 procedure TfrmMain.miExitClick(Sender: TObject);
