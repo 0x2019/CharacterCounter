@@ -60,6 +60,7 @@ object frmMain: TfrmMain
     end
   end
   object stsbr: TsStatusBar
+    Tag = 99
     Left = 0
     Top = 339
     Width = 815
@@ -78,6 +79,7 @@ object frmMain: TfrmMain
     UseSystemFont = False
   end
   object MainMenu: TMainMenu
+    Tag = 99
     Left = 176
     Top = 61
     object mnuFile: TMenuItem
