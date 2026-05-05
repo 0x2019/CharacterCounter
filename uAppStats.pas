@@ -29,7 +29,7 @@ const
   FMT_SUB_DUAL        = '(%s: ' + FMT_VAL + ' / %s: ' + FMT_VAL + ')';
   FMT_SUB_SINGLE      = '(%s: ' + FMT_VAL + ')';
 
-function ShowTextStats(const TextInfo: TTextStats): string;
+function ShowTextStats(const TextInfo: TTextStats; UseCP949: Boolean = False): string;
 
 implementation
 
@@ -68,9 +68,10 @@ begin
   end;
 end;
 
-function ShowTextStats(const TextInfo: TTextStats): string;
+function ShowTextStats(const TextInfo: TTextStats; UseCP949: Boolean = False): string;
 var
   SB: TStringBuilder;
+  ByteEncoding: string;
   CharTypes: Boolean;
 
   procedure AppendStat(const Title: string; Count: Integer; const LineBreak: string);
@@ -79,17 +80,22 @@ var
   end;
 
 begin
+  if UseCP949 then
+    ByteEncoding := SEncodingCP949
+  else
+    ByteEncoding := SEncodingUTF8;
+
   SB := TStringBuilder.Create;
   try
     SB.AppendFormat(FMT_MAIN_BYTE, [
-      Bold(SCharCountWithSpaces),
+      Bold(Format(SCharCountWithSpaces, [ByteEncoding])),
       AddColor(COLOR_GREEN, AddComma(TextInfo.CharCountWithSpaces)),
       AddColor(COLOR_GREEN, AddComma(TextInfo.ByteCountWithSpaces)),
       SUnitByte
     ]);
 
     SB.AppendFormat(FMT_MAIN_BYTE, [
-      Bold(SCharCountNoSpaces),
+      Bold(Format(SCharCountNoSpaces, [ByteEncoding])),
       AddColor(COLOR_GREEN, AddComma(TextInfo.CharCountNoSpaces)),
       AddColor(COLOR_GREEN, AddComma(TextInfo.ByteCountNoSpaces)),
       SUnitByte

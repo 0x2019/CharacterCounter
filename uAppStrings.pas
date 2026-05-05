@@ -24,9 +24,14 @@ resourcestring
                                         'URL: %s';
 
 // uAppStats
+
+// 인코딩
+  SEncodingCP949                      = 'CP949';
+  SEncodingUTF8                       = 'UTF-8';
+
 // 통계
-  SCharCountWithSpaces                = '문자 (공백 포함)';
-  SCharCountNoSpaces                  = '문자 (공백 제외)';
+  SCharCountWithSpaces                = '문자 (%s | 공백 포함)';
+  SCharCountNoSpaces                  = '문자 (%s | 공백 제외)';
   SLineCount                          = '줄 수';
   SWordCount                          = '단어 수';
   SCharTypes                          = '문자 종류:';

@@ -52,7 +52,7 @@ begin
     end;
 
   Stats := GetTextStats(InputText);
-  F.lblStats.Caption := ShowTextStats(Stats);
+  F.lblStats.Caption := ShowTextStats(Stats, F.FUseCP949);
   if Assigned(F.miClearAll) then
     F.miClearAll.Enabled := InputText <> '';
   if Assigned(F.miCopy) then
