@@ -54,9 +54,9 @@ begin
   Stats := GetTextStats(InputText);
   F.lblStats.Caption := ShowTextStats(Stats);
   if Assigned(F.miClearAll) then
-    F.miClearAll.Enabled := Trim(InputText) <> '';
+    F.miClearAll.Enabled := InputText <> '';
   if Assigned(F.miCopy) then
-    F.miCopy.Enabled := Trim(InputText) <> '';
+    F.miCopy.Enabled := F.mmoText.SelLength > 0;
 end;
 
 procedure AppController_CP949Encoding(F: TfrmMain);

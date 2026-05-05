@@ -275,22 +275,32 @@ end;
 
 procedure TfrmMain.mmoTextClick(Sender: TObject);
 begin
+  if Assigned(miCopy) then
+    miCopy.Enabled := mmoText.SelLength > 0;
   AppStatusBar_UpdateCaret(Self);
 end;
 
 procedure TfrmMain.mmoTextKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
+  if Assigned(miCopy) then
+    miCopy.Enabled := mmoText.SelLength > 0;
   AppStatusBar_UpdateCaret(Self);
 end;
 
 procedure TfrmMain.mmoTextMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
 begin
   if ssLeft in Shift then
+  begin
+    if Assigned(miCopy) then
+      miCopy.Enabled := mmoText.SelLength > 0;
     AppStatusBar_UpdateCaret(Self);
+  end;
 end;
 
 procedure TfrmMain.mmoTextMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
+  if Assigned(miCopy) then
+    miCopy.Enabled := mmoText.SelLength > 0;
   AppStatusBar_UpdateCaret(Self);
 end;
 
