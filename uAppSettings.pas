@@ -35,6 +35,16 @@ begin
     F.mmoText.Font.Size := Ini.ReadInteger('Font', 'Size', 8);
     F.mmoText.Font.Style := TFontStyles(Byte(Ini.ReadInteger('Font', 'Style', 0)));
     F.mmoText.Font.Charset := Ini.ReadInteger('Font', 'Charset', DEFAULT_CHARSET);
+
+    // 돋보기
+    if Assigned(F.sMagnifier) then
+    begin
+      F.sMagnifier.Width := Ini.ReadInteger('Magnifier', 'Width', F.sMagnifier.Width);
+      F.sMagnifier.Height := Ini.ReadInteger('Magnifier', 'Height', F.sMagnifier.Height);
+    end;
+
+    F.FMagnifierLeft := Ini.ReadInteger('Magnifier', 'Left', F.FMagnifierLeft);
+    F.FMagnifierTop := Ini.ReadInteger('Magnifier', 'Top', F.FMagnifierTop);
   finally
     Ini.Free;
   end;
@@ -45,6 +55,7 @@ end;
 procedure AppSettings_Save(F: TfrmMain);
 var
   Ini: TMemIniFile;
+  MagnifierPos: TPoint;
 begin
   if F = nil then Exit;
 
@@ -65,6 +76,24 @@ begin
     Ini.WriteInteger('Font', 'Style', Integer(Byte(F.mmoText.Font.Style)));
     Ini.WriteInteger('Font', 'Charset', F.mmoText.Font.Charset);
 
+
+    // 돋보기
+    if Assigned(F.sMagnifier) then
+    begin
+      if F.sMagnifier.IsVisible then
+      begin
+        MagnifierPos := F.sMagnifier.GetPosition;
+        F.FMagnifierLeft := MagnifierPos.X;
+        F.FMagnifierTop := MagnifierPos.Y;
+      end;
+
+      Ini.WriteInteger('Magnifier', 'Width', F.sMagnifier.Width);
+      Ini.WriteInteger('Magnifier', 'Height', F.sMagnifier.Height);
+    end;
+
+    Ini.WriteInteger('Magnifier', 'Left', F.FMagnifierLeft);
+    Ini.WriteInteger('Magnifier', 'Top', F.FMagnifierTop);
+
     Ini.UpdateFile;
   finally
     Ini.Free;
@@ -74,3 +103,4 @@ begin
 end;
 
 end.
+

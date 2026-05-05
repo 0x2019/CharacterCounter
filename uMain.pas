@@ -81,6 +81,8 @@ type
   public
     FLoadedFromFile: Boolean;
     FHasTrailingNewLine: Boolean;
+    FMagnifierLeft: Integer;
+    FMagnifierTop: Integer;
 
 // uOptions - Global
     FOptionsSection: Integer;
@@ -234,6 +236,8 @@ procedure TfrmMain.FormCreate(Sender: TObject);
 begin
   FLoadedFromFile := False;
   FHasTrailingNewLine := False;
+  FMagnifierLeft := -1;
+  FMagnifierTop := -1;
   FUseCP949 := False;
   FCloseOnEsc := False;
   FOptionsSection := 0;

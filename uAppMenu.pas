@@ -220,15 +220,26 @@ begin
 end;
 
 procedure AppMenu_ShowMagnifier(F: TfrmMain);
+var
+  MagnifierPos: TPoint;
 begin
   if F = nil then Exit;
   if not Assigned(F.sMagnifier) then Exit;
   if not Assigned(F.miShowMagnifier) then Exit;
 
   if F.miShowMagnifier.Checked then
-    F.sMagnifier.Execute
+    F.sMagnifier.Execute(F.FMagnifierLeft, F.FMagnifierTop)
   else
+  begin
+    if F.sMagnifier.IsVisible then
+    begin
+      MagnifierPos := F.sMagnifier.GetPosition;
+      F.FMagnifierLeft := MagnifierPos.X;
+      F.FMagnifierTop := MagnifierPos.Y;
+    end;
+
     F.sMagnifier.Hide;
+  end;
 end;
 
 procedure AppMenu_ShowStatusBar(F: TfrmMain);
