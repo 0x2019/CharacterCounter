@@ -3,7 +3,7 @@
 interface
 
 uses
-  Winapi.Windows, System.SysUtils, Vcl.Forms, uMain,
+  System.SysUtils, Vcl.Forms, uMain,
 
   uForms, uStatusBar;
 
