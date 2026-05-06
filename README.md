@@ -12,7 +12,7 @@ Character Counter - A simple utility that counts characters and bytes by disting
 Korean
 
 ## 📷 Screenshot
-![Character Counter Screenshot](https://i.imgur.com/txhPFKw.png)
+![Character Counter Screenshot](https://i.imgur.com/KdOnp0c.png)
 
 ## 📥 Download
 [Windows](https://github.com/0x2019/CharacterCounter/releases)
