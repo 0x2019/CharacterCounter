@@ -2815,6 +2815,7 @@ object frmMain: TfrmMain
     SkinDirectory = 'c:\Skins'
     SkinName = 'GPlus (internal)'
     SkinInfo = '15'
+    SkinningRules = [srStdDialogs, srThirdParty]
     ThirdParty.ThirdEdits = ' '#13#10
     ThirdParty.ThirdButtons = 'TButton'#13#10
     ThirdParty.ThirdBitBtns = ' '#13#10

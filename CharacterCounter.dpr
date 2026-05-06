@@ -6,6 +6,7 @@ uses
   System.SysUtils,
   Vcl.Forms,
   uMain in 'uMain.pas' {frmMain},
+  uAbout in 'uAbout.pas' {frmAbout},
   uOptions in 'uOptions.pas' {frmOptions},
   uAppController in 'uAppController.pas',
   uAppMenu in 'uAppMenu.pas',
@@ -28,7 +29,8 @@ uses
   uStatusBar in '..\Common\uStatusBar.pas',
   uTaskbar in '..\Common\uTaskbar.pas',
   uTextEncoding in '..\Common\uTextEncoding.pas',
-  uTextDecoding in '..\Common\uTextDecoding.pas';
+  uTextDecoding in '..\Common\uTextDecoding.pas',
+  uMetaballs in '..\Common\About\uMetaballs.pas';
 
 var
   uMutex: THandle;
@@ -51,7 +53,6 @@ begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TfrmMain, frmMain);
-
   if ParamCount >= 1 then
   begin
     OpenFilePath := ParamStr(1);

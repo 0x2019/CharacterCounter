@@ -120,7 +120,7 @@
         <VerInfo_Locale>1033</VerInfo_Locale>
         <VerInfo_Keys>CompanyName=;FileDescription=Character Counter;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=;ProductName=Character Counter;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <Icon_MainIcon>CharacterCounter_Icon.ico</Icon_MainIcon>
-        <DCC_UnitSearchPath>..\Common;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+        <DCC_UnitSearchPath>..\Common;..\Common\About;..\Common\uFMOD;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win64)'!=''">
         <AppDPIAwarenessMode>PerMonitorV2</AppDPIAwarenessMode>
@@ -132,6 +132,9 @@
         <DCCReference Include="uMain.pas">
             <Form>frmMain</Form>
             <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="uAbout.pas">
+            <Form>frmAbout</Form>
         </DCCReference>
         <DCCReference Include="uOptions.pas">
             <Form>frmOptions</Form>
@@ -151,12 +154,14 @@
         <DCCReference Include="..\Common\uForms.pas"/>
         <DCCReference Include="..\Common\uMenu.pas"/>
         <DCCReference Include="..\Common\uMessageBox.pas"/>
+        <DCCReference Include="..\Common\uProcessUtils.pas"/>
         <DCCReference Include="..\Common\uSettings.Menu.pas"/>
         <DCCReference Include="..\Common\uSettings.pas"/>
         <DCCReference Include="..\Common\uStatusBar.pas"/>
         <DCCReference Include="..\Common\uTaskbar.pas"/>
         <DCCReference Include="..\Common\uTextEncoding.pas"/>
         <DCCReference Include="..\Common\uTextDecoding.pas"/>
+        <DCCReference Include="..\Common\About\uMetaballs.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

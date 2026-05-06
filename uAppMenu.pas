@@ -46,6 +46,7 @@ procedure AppMenu_About(F: TfrmMain);
 implementation
 
 uses
+  uAbout,
   uAppMenu.Popup, uAppStatusBar, uAppStrings, uAppTaskbar, uOptions, uTextByteCount;
 
 procedure AppMenu_Init(F: TfrmMain);
@@ -298,7 +299,7 @@ end;
 procedure AppMenu_About(F: TfrmMain);
 begin
   if F = nil then Exit;
-  UI_MessageBox(F, Format(SAboutMsg, [APP_NAME, APP_VERSION, APP_RELEASE, APP_URL]), MB_ICONQUESTION or MB_OK);
+  UI_ShowModalForm(TfrmAbout.Create(F));
 end;
 
 end.

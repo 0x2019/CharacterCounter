@@ -18,13 +18,7 @@ resourcestring
 
   SOptionsNodeGeneral                 = '일반';
 
-  SAboutMsg                           = '%s %s' + sLineBreak +
-                                        'c0ded by 龍, written in Delphi.' + sLineBreak + sLineBreak +
-                                        'Release Date: %s' + sLineBreak +
-                                        'URL: %s';
-
 // uAppStats
-
 // 인코딩
   SEncodingCP949                      = 'CP949';
   SEncodingUTF8                       = 'UTF-8';
