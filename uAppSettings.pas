@@ -4,7 +4,7 @@ interface
 
 uses
   Winapi.Windows, System.SysUtils, System.UITypes, Vcl.Forms, Vcl.Graphics, IniFiles,
-  uMain,
+  uMain, uTextByteCount,
 
   uSettings.Menu;
 
@@ -27,7 +27,7 @@ begin
 
     F.miWordWrap.Checked := Ini.ReadBool('Format', 'WordWrap', False);
 
-    F.FUseCP949 := Ini.ReadBool('General', 'UseCP949', False);
+    F.FByteEncoding := TEncodingMode(Ini.ReadInteger('General', 'ByteEncoding', Ord(emUTF8)));
     F.FCloseOnEsc := Ini.ReadBool('General', 'CloseOnEsc', False);
     F.FOptionsSection := Ini.ReadInteger('Options', 'TreeIndex', 0);
 
@@ -67,7 +67,7 @@ begin
 
     Ini.WriteBool('Format', 'WordWrap', F.miWordWrap.Checked);
 
-    Ini.WriteBool('General', 'UseCP949', F.FUseCP949);
+    Ini.WriteInteger('General', 'ByteEncoding', Ord(F.FByteEncoding));
     Ini.WriteBool('General', 'CloseOnEsc', F.FCloseOnEsc);
     Ini.WriteInteger('Options', 'TreeIndex', F.FOptionsSection);
 

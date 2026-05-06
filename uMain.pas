@@ -7,6 +7,7 @@ uses
   Vcl.Controls, Vcl.Dialogs, Vcl.Forms, System.Character, sSkinProvider, sSkinManager,
   Vcl.StdCtrls, System.ImageList, Vcl.ImgList, acAlphaImageList, sMemo, acAlphaHints,
   sLabel, Vcl.ExtCtrls, sScrollBox, Vcl.Menus, sDialogs, ShellAPI, sStatusBar, acMagn,
+  uTextByteCount,
 
   uFileUtils, uForms, uMenu, uMenu.Popup, uMessageBox, uSettings;
 
@@ -88,7 +89,7 @@ type
     FOptionsSection: Integer;
 
 // uOptions - General
-    FUseCP949: Boolean;
+    FByteEncoding: TEncodingMode;
     FCloseOnEsc: Boolean;
 
     procedure ChangeMessageBoxPosition(var Msg: TMessage); message mbMessage;
@@ -238,7 +239,7 @@ begin
   FHasTrailingNewLine := False;
   FMagnifierLeft := -1;
   FMagnifierTop := -1;
-  FUseCP949 := False;
+  FByteEncoding := emUTF8;
   FCloseOnEsc := False;
   FOptionsSection := 0;
 

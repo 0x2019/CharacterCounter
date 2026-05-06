@@ -5,7 +5,8 @@ interface
 uses
   Winapi.Windows, System.Classes, Vcl.Buttons, Vcl.ComCtrls, Vcl.Controls,
   Vcl.ExtCtrls, Vcl.Forms, Vcl.StdCtrls, sSkinProvider, sBitBtn, sCheckBox,
-  sPanel, sTreeView, sGroupBox, uMain;
+  sPanel, sTreeView, sGroupBox, sLabel, sComboBox, uMain, uTextByteCount,
+  Vcl.Mask, sMaskEdit, sCustomComboEdit;
 
 const
   SectionGeneral = 1;
@@ -18,7 +19,8 @@ type
     tvOptions: TsTreeView;
     pnlOptions: TsPanel;
     grpGeneral: TsGroupBox;
-    chkUseCP949: TsCheckBox;
+    lblByteEncoding: TsLabel;
+    cbByteEncoding: TsComboBox;
     chkCloseOnEsc: TsCheckBox;
     procedure btnOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -73,7 +75,20 @@ begin
   if F = nil then Exit;
 
 // General
-  chkUseCP949.Checked := F.FUseCP949;
+  cbByteEncoding.Items.BeginUpdate;
+  try
+    cbByteEncoding.Items.Clear;
+    cbByteEncoding.Items.Add(SEncodingCP949);
+    cbByteEncoding.Items.Add(SEncodingUTF8);
+  finally
+    cbByteEncoding.Items.EndUpdate;
+  end;
+
+  if F.FByteEncoding = emCP949 then
+    cbByteEncoding.ItemIndex := 0
+  else
+    cbByteEncoding.ItemIndex := 1;
+
   chkCloseOnEsc.Checked := F.FCloseOnEsc;
 end;
 
@@ -82,9 +97,12 @@ begin
   if F = nil then Exit;
 
 // General
-  F.FUseCP949 := chkUseCP949.Checked;
+  if cbByteEncoding.ItemIndex = 0 then
+    F.FByteEncoding := emCP949
+  else
+    F.FByteEncoding := emUTF8;
   F.FCloseOnEsc := chkCloseOnEsc.Checked;
-  AppController_CP949Encoding(F);
+  AppController_ByteEncoding(F);
 end;
 
 procedure TfrmOptions.tvOptionsChange(Sender: TObject; Node: TTreeNode);

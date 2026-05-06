@@ -69,24 +69,29 @@ object frmOptions: TfrmOptions
       Height = 263
       Align = alClient
       TabOrder = 0
-      object chkUseCP949: TsCheckBox
-        Left = 5
+      object lblByteEncoding: TsLabel
+        Left = 8
         Top = 13
-        Width = 126
-        Height = 17
-        Hint = #44544#51088' '#49688#50752' '#48148#51060#53944' '#44228#49328' '#48169#49885#51012' <b>UTF-8</b>'#50640#49436' <b>CP949</b>'#47196' '#48320#44221#54633#45768#45796'.'
-        Caption = '&CP949 '#51064#53076#46377' '#49324#50857
-        ParentShowHint = False
-        ShowHint = True
-        TabOrder = 0
+        Width = 101
+        Height = 13
+        Caption = #48148#51060#53944' '#44228#49328' '#48169#49885'(&B):'
+        FocusControl = cbByteEncoding
+      end
+      object cbByteEncoding: TsComboBox
+        Left = 8
+        Top = 30
+        Width = 121
+        Height = 21
+        TabOrder = 1
+        Style = csDropDownList
       end
       object chkCloseOnEsc: TsCheckBox
-        Left = 5
-        Top = 29
+        Left = 3
+        Top = 57
         Width = 147
         Height = 17
         Caption = '&Esc '#53412#47196' '#54532#47196#44536#47016' '#51333#47308
-        TabOrder = 1
+        TabOrder = 0
       end
     end
   end

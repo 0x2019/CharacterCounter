@@ -3,14 +3,14 @@
 interface
 
 uses
-  Winapi.Windows, System.Math, System.SysUtils, Vcl.Forms, uMain,
+  Winapi.Windows, System.SysUtils, Vcl.Forms, uMain,
 
   uForms, uStatusBar;
 
 procedure AppController_Init(F: TfrmMain);
 procedure AppController_UpdateStats(F: TfrmMain);
 
-procedure AppController_CP949Encoding(F: TfrmMain);
+procedure AppController_ByteEncoding(F: TfrmMain);
 
 implementation
 
@@ -31,7 +31,7 @@ begin
     UI_StatusBar_SetVisible(F, F.stsbr, F.miShowStatusBar.Checked, False);
   AppTaskbar_Sync(F);
 
-  AppController_CP949Encoding(F);
+  AppController_ByteEncoding(F);
 end;
 
 procedure AppController_UpdateStats(F: TfrmMain);
@@ -52,17 +52,17 @@ begin
     end;
 
   Stats := GetTextStats(InputText);
-  F.lblStats.Caption := ShowTextStats(Stats, F.FUseCP949);
+  F.lblStats.Caption := ShowTextStats(Stats, F.FByteEncoding = emCP949);
   if Assigned(F.miClearAll) then
     F.miClearAll.Enabled := InputText <> '';
   if Assigned(F.miCopy) then
     F.miCopy.Enabled := F.mmoText.SelLength > 0;
 end;
 
-procedure AppController_CP949Encoding(F: TfrmMain);
+procedure AppController_ByteEncoding(F: TfrmMain);
 begin
   if F = nil then Exit;
-  SetEncoding(TEncodingMode(IfThen(F.FUseCP949, Ord(emCP949), Ord(emUTF8))));
+  SetEncoding(F.FByteEncoding);
 
   F.mmoTextChange(nil);
 end;
