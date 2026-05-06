@@ -50,6 +50,7 @@ object frmMain: TfrmMain
     VertScrollBar.Tracking = True
     Align = alRight
     AutoMouseWheel = True
+    PopupMenu = pmCopy
     TabOrder = 1
     object lblStats: TsHTMLLabel
       Tag = 99
@@ -57,6 +58,7 @@ object frmMain: TfrmMain
       Top = 5
       Width = 120
       Height = 13
+      PopupMenu = pmCopy
     end
   end
   object stsbr: TsStatusBar
