@@ -2814,6 +2814,7 @@ object frmMain: TfrmMain
     MenuSupport.Font.Height = -11
     MenuSupport.Font.Name = 'Segoe UI'
     MenuSupport.Font.Style = []
+    Options.NoMouseHover = True
     SkinDirectory = 'c:\Skins'
     SkinName = 'GPlus (internal)'
     SkinInfo = '15'
