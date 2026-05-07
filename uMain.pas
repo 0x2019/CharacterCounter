@@ -48,6 +48,10 @@ type
     stsbr: TsStatusBar;
     pmCopy: TPopupMenu;
     pmiCopyOnSelect: TMenuItem;
+    pmiCopySep: TMenuItem;
+    pmiByteEncoding: TMenuItem;
+    pmiEncodingCP949: TMenuItem;
+    pmiEncodingUTF8: TMenuItem;
     N1: TMenuItem;
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormCreate(Sender: TObject);
@@ -73,6 +77,7 @@ type
     procedure mmoTextMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
     procedure mmoTextMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure pmiCopyOnSelectClick(Sender: TObject);
+    procedure pmiByteEncodingClick(Sender: TObject);
     procedure pmCopyPopup(Sender: TObject);
   private
     procedure WMActivateApp(var Msg: TWMActivateApp); message WM_ACTIVATEAPP;
@@ -308,6 +313,11 @@ end;
 procedure TfrmMain.pmiCopyOnSelectClick(Sender: TObject);
 begin
   AppMenu_Popup_Copy(Self, Sender);
+end;
+
+procedure TfrmMain.pmiByteEncodingClick(Sender: TObject);
+begin
+  AppMenu_Popup_ByteEncoding(Self, Sender);
 end;
 
 procedure TfrmMain.pmCopyPopup(Sender: TObject);

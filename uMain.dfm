@@ -3052,7 +3052,7 @@ object frmMain: TfrmMain
         Char = 61459
       end
       item
-        ScalingFactor = 0.700000000000000000
+        ScalingFactor = 0.800000000000000000
         Char = 61529
       end
       item
@@ -3066,6 +3066,10 @@ object frmMain: TfrmMain
       item
         ScalingFactor = 0.700000000000000000
         Char = 61489
+      end
+      item
+        ScalingFactor = 0.700000000000000000
+        Char = 61932
       end>
     Left = 209
     Top = 19
@@ -3092,6 +3096,26 @@ object frmMain: TfrmMain
       SubMenuImages = sMenuImageList
       ImageIndex = 2
       OnClick = pmiCopyOnSelectClick
+    end
+    object pmiCopySep: TMenuItem
+      Caption = '-'
+    end
+    object pmiByteEncoding: TMenuItem
+      Caption = #48148#51060#53944' '#44228#49328' '#48169#49885'(&B)'
+      SubMenuImages = sMenuImageList
+      ImageIndex = 9
+      object pmiEncodingCP949: TMenuItem
+        AutoCheck = True
+        Caption = 'CP949'
+        RadioItem = True
+        OnClick = pmiByteEncodingClick
+      end
+      object pmiEncodingUTF8: TMenuItem
+        AutoCheck = True
+        Caption = 'UTF-8'
+        RadioItem = True
+        OnClick = pmiByteEncodingClick
+      end
     end
   end
 end
