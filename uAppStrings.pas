@@ -4,8 +4,8 @@ interface
 
 resourcestring
   APP_NAME                            = 'Character Counter';
-  APP_VERSION                         = 'v1.0.0.0';
-  APP_RELEASE                         = 'September 21, 2025';
+  APP_VERSION                         = 'v1.1.0.0';
+  APP_RELEASE                         = 'May 09, 2026';
   APP_URL                             = 'https://github.com/0x2019/CharacterCounter';
 
   SOpenFileErrorMsg                   = '파일을 열 수 없습니다.' + sLineBreak + '%s';
