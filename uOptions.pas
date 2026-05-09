@@ -22,6 +22,7 @@ type
     lblByteEncoding: TsLabel;
     cbByteEncoding: TsComboBox;
     chkCloseOnEsc: TsCheckBox;
+    chkConfirmOnExit: TsCheckBox;
     procedure btnOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure tvOptionsChange(Sender: TObject; Node: TTreeNode);
@@ -90,6 +91,7 @@ begin
     cbByteEncoding.ItemIndex := 1;
 
   chkCloseOnEsc.Checked := F.FCloseOnEsc;
+  chkConfirmOnExit.Checked := not F.FConfirmOnExit;
 end;
 
 procedure TfrmOptions.SaveOptions(const F: TfrmMain);
@@ -102,6 +104,7 @@ begin
   else
     F.FByteEncoding := emUTF8;
   F.FCloseOnEsc := chkCloseOnEsc.Checked;
+  F.FConfirmOnExit := not chkConfirmOnExit.Checked;
   AppController_ByteEncoding(F);
 end;
 

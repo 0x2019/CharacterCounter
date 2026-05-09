@@ -93,6 +93,14 @@ object frmOptions: TfrmOptions
         Caption = '&Esc '#53412#47196' '#54532#47196#44536#47016' '#51333#47308
         TabOrder = 0
       end
+      object chkConfirmOnExit: TsCheckBox
+        Left = 3
+        Top = 73
+        Width = 203
+        Height = 17
+        Caption = #54532#47196#44536#47016' '#51333#47308' '#54869#51064' '#47700#49884#51648' '#49373#47029'(&S)'
+        TabOrder = 2
+      end
     end
   end
   object sSkinProvider: TsSkinProvider

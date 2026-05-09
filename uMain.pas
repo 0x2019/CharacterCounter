@@ -85,6 +85,7 @@ type
     procedure WMCopyData(var Msg: TWMCopyData); message WM_COPYDATA;
     procedure WMDropFiles(var Msg: TWMDropFiles); message WM_DROPFILES;
   public
+    FExit: Boolean;
     FLoadedFromFile: Boolean;
     FHasTrailingNewLine: Boolean;
     FMagnifierLeft: Integer;
@@ -96,6 +97,7 @@ type
 // uOptions - General
     FByteEncoding: TEncodingMode;
     FCloseOnEsc: Boolean;
+    FConfirmOnExit: Boolean;
 
     procedure ChangeMessageBoxPosition(var Msg: TMessage); message mbMessage;
   end;
@@ -232,6 +234,15 @@ end;
 
 procedure TfrmMain.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
+  if not FExit then
+    if not AppController_Exit(Self, True) then
+    begin
+      Action := caNone;
+      Exit;
+    end
+    else
+      FExit := True;
+
   RemoveClipboardFormatListener(Handle);
   DragAcceptFiles(Handle, False);
   UI_SaveFormSettings(Self);
@@ -240,12 +251,14 @@ end;
 
 procedure TfrmMain.FormCreate(Sender: TObject);
 begin
+  FExit := False;
   FLoadedFromFile := False;
   FHasTrailingNewLine := False;
   FMagnifierLeft := -1;
   FMagnifierTop := -1;
   FByteEncoding := emUTF8;
   FCloseOnEsc := False;
+  FConfirmOnExit := True;
   FOptionsSection := 0;
 
   UI_SetMinConstraints(Self);
