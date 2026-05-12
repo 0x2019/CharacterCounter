@@ -152,38 +152,8 @@ begin
 end;
 
 procedure TfrmAbout.DrawText;
-const
-  NL = sLineBreak;
-  N2 = NL + NL;
-  N3 = NL + NL + NL;
-  N10 = N3 + N3 + N3 + NL;
 begin
-  FAboutText := Concat(
-    NL,
-    APP_NAME, NL,
-    APP_VERSION, NL,
-    N10,
-    'c0ded by:', NL,
-    '?', N10,
-    'Release Date:', NL,
-    APP_RELEASE, N10,
-    'Music:', NL,
-    'Tiger M. Hi-score', N10,
-    '-= [Greetz fly out to] =-', N10,
-    'A***', NL,
-    'M****', NL,
-    'O*******', NL,
-    'P****', NL,
-    'S*****', NL,
-    'T**', NL,
-    'X*****', NL,
-    'Z*****', NL,
-    'and you.', N10,
-    'Have fun with this', NL,
-    'and', NL,
-    'have a nice day.', N10,
-    APP_URL, N3
-  );
+  Metaballs_DrawText(FAboutText, APP_NAME, APP_VERSION, APP_RELEASE, APP_URL);
 end;
 
 procedure TfrmAbout.Init;
