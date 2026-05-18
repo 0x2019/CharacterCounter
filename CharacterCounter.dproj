@@ -155,6 +155,7 @@
         <DCCReference Include="..\Common\uForms.pas"/>
         <DCCReference Include="..\Common\uMenu.pas"/>
         <DCCReference Include="..\Common\uMessageBox.pas"/>
+        <DCCReference Include="..\Common\uMutex.pas"/>
         <DCCReference Include="..\Common\uProcessUtils.pas"/>
         <DCCReference Include="..\Common\uSettings.Menu.pas"/>
         <DCCReference Include="..\Common\uSettings.pas"/>

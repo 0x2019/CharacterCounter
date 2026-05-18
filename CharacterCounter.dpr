@@ -23,6 +23,7 @@ uses
   uForms in '..\Common\uForms.pas',
   uMenu in '..\Common\uMenu.pas',
   uMessageBox in '..\Common\uMessageBox.pas',
+  uMutex in '..\Common\uMutex.pas',
   uProcessUtils in '..\Common\uProcessUtils.pas',
   uSettings.Menu in '..\Common\uSettings.Menu.pas',
   uSettings in '..\Common\uSettings.pas',
@@ -39,14 +40,14 @@ var
 {$R *.res}
 
 begin
-  uMutex := CreateMutex(nil, True, 'CC!');
-  if (uMutex = 0) or (GetLastError <> 0) then
+  if not UI_CreateMutex('CC!', uMutex) then
   begin
     if (ParamCount >= 1) and FileExists(ParamStr(1)) then
-      AppTaskbar_OpenFile(ParamStr(1));
+      AppTaskbar_OpenFile(ParamStr(1))
+    else
+      UI_ActivateInstance(TfrmMain.ClassName, '', WM_SHOWME);
 
-    if uMutex <> 0 then
-      CloseHandle(uMutex);
+    UI_CloseMutex(uMutex);
     Exit;
   end;
 
@@ -67,7 +68,6 @@ begin
 
   Application.Run;
 
-  if uMutex <> 0 then
-    CloseHandle(uMutex);
+  UI_CloseMutex(uMutex);
 end.
 

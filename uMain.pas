@@ -11,6 +11,9 @@ uses
 
   uFileUtils, uForms, uMenu, uMenu.Popup, uMessageBox, uSettings;
 
+const
+  WM_SHOWME = WM_APP + 206;
+
 type
   TfrmMain = class(TForm)
     sSkinManager: TsSkinManager;
@@ -81,6 +84,7 @@ type
     procedure pmCopyPopup(Sender: TObject);
   private
     procedure WMActivateApp(var Msg: TWMActivateApp); message WM_ACTIVATEAPP;
+    procedure WMShowMe(var Message: TMessage); message WM_SHOWME;
     procedure WMClipboardUpdate(var Msg: TMessage); message WM_CLIPBOARDUPDATE;
     procedure WMCopyData(var Msg: TWMCopyData); message WM_COPYDATA;
     procedure WMDropFiles(var Msg: TWMDropFiles); message WM_DROPFILES;
@@ -124,6 +128,17 @@ begin
 
   if Msg.Active then
     AppTaskbar_Sync(Self);
+end;
+
+procedure TfrmMain.WMShowMe(var Message: TMessage);
+begin
+  if IsIconic(Handle) then
+    SendMessage(Handle, WM_SYSCOMMAND, SC_RESTORE, 0)
+  else
+    ShowWindow(Handle, SW_SHOW);
+
+  BringWindowToTop(Handle);
+  SetForegroundWindow(Handle);
 end;
 
 procedure TfrmMain.WMClipboardUpdate(var Msg: TMessage);

@@ -55,9 +55,11 @@ begin
     Exit;
 
   if IsIconic(MainWnd) then
-    ShowWindow(MainWnd, SW_RESTORE)
+    SendMessage(MainWnd, WM_SYSCOMMAND, SC_RESTORE, 0)
   else
     ShowWindow(MainWnd, SW_SHOW);
+
+  BringWindowToTop(MainWnd);
   SetForegroundWindow(MainWnd);
 
   CopyDataStruct.dwData := 1;
