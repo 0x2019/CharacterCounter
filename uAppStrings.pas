@@ -9,6 +9,7 @@ resourcestring
   APP_URL                             = 'https://github.com/0x2019/CharacterCounter';
 
   SOpenFileErrorMsg                   = '파일을 열 수 없습니다.' + sLineBreak + '%s';
+  SSaveFileErrorMsg                   = '파일을 저장할 수 없습니다.' + sLineBreak + '%s';
   SUnsupportedFileMsg                 = '지원하지 않는 파일 형식입니다.';
 
   SClearConfirmMsg                    = '모든 입력 내용을 지우시겠습니까?';

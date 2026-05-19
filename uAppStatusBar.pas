@@ -68,6 +68,7 @@ procedure AppStatusBar_Update(F: TfrmMain; const FilePath, SourceText: string);
 var
   Bytes: TBytes;
   Size: string;
+  Encoding: string;
   SplitPos: Integer;
   StatusText: string;
 begin
@@ -84,8 +85,12 @@ begin
   if Size = '' then
     Size := SNotAvailable;
 
+  Encoding := GetEncodingName(F.FSaveEncoding);
+  if not SameText(FilePath, F.FCurrentFileName) then
+    Encoding := GetEncodingName(Bytes);
+
   StatusText := GetFileExt(FilePath) + SSeparator +
-                GetEncodingName(Bytes) + SSeparator +
+                Encoding + SSeparator +
                 GetLineBreak(SourceText) + SSeparator +
                 Size;
   AppStatusBar_SetStatusText(F, StatusText);

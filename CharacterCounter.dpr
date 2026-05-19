@@ -19,6 +19,7 @@ uses
   uChars in 'uChars.pas',
   uTextByteCount in 'uTextByteCount.pas',
   uTextStats in 'uTextStats.pas',
+  uFileDialog in '..\Common\uFileDialog.pas',
   uFileUtils in '..\Common\uFileUtils.pas',
   uForms in '..\Common\uForms.pas',
   uMenu in '..\Common\uMenu.pas',

@@ -9,7 +9,8 @@ uses
   sLabel, Vcl.ExtCtrls, sScrollBox, Vcl.Menus, sDialogs, ShellAPI, sStatusBar, acMagn,
   uTextByteCount,
 
-  uFileUtils, uForms, uMenu, uMenu.Popup, uMessageBox, uMutex, uSettings;
+  uFileDialog, uFileUtils, uForms, uMenu, uMenu.Popup, uMessageBox, uMutex, uSettings,
+  uTextEncoding;
 
 type
   TfrmMain = class(TForm)
@@ -19,9 +20,12 @@ type
     sAlphaHints: TsAlphaHints;
     sMagnifier: TsMagnifier;
     OpenFileDlg: TsOpenDialog;
+    SaveFileDlg: TFileSaveDialog;
     MainMenu: TMainMenu;
     mnuFile: TMenuItem;
     miOpenFile: TMenuItem;
+    miSave: TMenuItem;
+    miSaveAs: TMenuItem;
     miRecent: TMenuItem;
     miRecentSep: TMenuItem;
     miClearHistory: TMenuItem;
@@ -59,6 +63,8 @@ type
     ApplicationEvents: TApplicationEvents;
     N3: TMenuItem;
     N1: TMenuItem;
+    N4: TMenuItem;
+    N5: TMenuItem;
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -68,6 +74,8 @@ type
     procedure miOptionsClick(Sender: TObject);
     procedure miWordWrapClick(Sender: TObject);
     procedure miOpenFileClick(Sender: TObject);
+    procedure miSaveClick(Sender: TObject);
+    procedure miSaveAsClick(Sender: TObject);
     procedure miRecentItems(Sender: TObject);
     procedure miClearHistoryClick(Sender: TObject);
     procedure mmoTextChange(Sender: TObject);
@@ -91,6 +99,8 @@ type
     procedure pmCopyPopup(Sender: TObject);
     procedure FindDlgFind(Sender: TObject);
     procedure AppMessage(var Msg: TMsg; var Handled: Boolean);
+    procedure SaveFileDlgExecute(Sender: TObject);
+    procedure SaveFileDlgFileOkClick(Sender: TObject; var CanClose: Boolean);
   private
     procedure WMActivateApp(var Msg: TWMActivateApp); message WM_ACTIVATEAPP;
     procedure WMShowMe(var Message: TMessage); message WM_SHOWME;
@@ -98,9 +108,13 @@ type
     procedure WMCopyData(var Msg: TWMCopyData); message WM_COPYDATA;
     procedure WMDropFiles(var Msg: TWMDropFiles); message WM_DROPFILES;
   public
+
+// File
     FExit: Boolean;
     FLoadedFromFile: Boolean;
     FHasTrailingNewLine: Boolean;
+    FCurrentFileName: string;
+    FSaveEncoding: TSaveEncoding;
 
 // Edit
     FFindText: string;
@@ -280,6 +294,16 @@ begin
   AppMenu_OpenFile(Self);
 end;
 
+procedure TfrmMain.miSaveClick(Sender: TObject);
+begin
+  AppMenu_Save(Self);
+end;
+
+procedure TfrmMain.miSaveAsClick(Sender: TObject);
+begin
+  AppMenu_SaveAs(Self);
+end;
+
 procedure TfrmMain.miRecentItems(Sender: TObject);
 begin
   AppMenu_RecentItems(Self, Sender);
@@ -312,6 +336,8 @@ begin
   FExit := False;
   FLoadedFromFile := False;
   FHasTrailingNewLine := False;
+  FCurrentFileName := '';
+  FSaveEncoding := seUTF8;
   FMagnifierLeft := -1;
   FMagnifierTop := -1;
   FByteEncoding := emUTF8;
@@ -332,6 +358,19 @@ begin
 
   AddClipboardFormatListener(Handle);
   DragAcceptFiles(Handle, True);
+end;
+
+procedure TfrmMain.SaveFileDlgExecute(Sender: TObject);
+begin
+  if Sender is TFileSaveDialog then
+    UI_SetEncoding(TFileSaveDialog(Sender), FSaveEncoding);
+end;
+
+procedure TfrmMain.SaveFileDlgFileOkClick(Sender: TObject; var CanClose: Boolean);
+begin
+  CanClose := True;
+  if Sender is TFileSaveDialog then
+    UI_GetEncoding(TFileSaveDialog(Sender), FSaveEncoding);
 end;
 
 procedure TfrmMain.FormKeyDown(Sender: TObject; var Key: Word;

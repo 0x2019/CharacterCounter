@@ -3,19 +3,22 @@
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.Classes, System.SysUtils,
+  Winapi.Windows, Winapi.Messages, System.Classes, System.SysUtils, System.IOUtils,
   Vcl.Forms, Vcl.StdCtrls, Vcl.Menus, Vcl.Dialogs, Clipbrd, uMain,
 
-  uFileUtils, uForms, uMenu, uMessageBox, uStatusBar, uTextDecoding, uTextEncoding;
+  uFileDialog, uFileUtils, uForms, uMenu, uMessageBox, uStatusBar, uTextDecoding, uTextEncoding;
 
 // Global
 procedure AppMenu_Init(F: TfrmMain);
 procedure AppMenu_UpdateCaption(F: TfrmMain; const ACaption: string);
 procedure AppMenu_UpdateClipboard(F: TfrmMain);
+procedure AppMenu_UpdateFile(F: TfrmMain; const FileName: string);
 
 // File
 procedure AppMenu_OpenFile(F: TfrmMain); overload;
 procedure AppMenu_OpenFile(F: TfrmMain; FileName: string); overload;
+procedure AppMenu_Save(F: TfrmMain);
+procedure AppMenu_SaveAs(F: TfrmMain);
 
 procedure AppMenu_RecentItems(F: TfrmMain; Sender: TObject);
 procedure AppMenu_Recent_Add(F: TfrmMain; const FilePath: string);
@@ -94,25 +97,39 @@ begin
   UI_Menu_UpdateClipboard(F.miClearClipboard);
 end;
 
+procedure AppMenu_UpdateFile(F: TfrmMain; const FileName: string);
+var
+  SourceText: string;
+begin
+  if F = nil then Exit;
+  if FileName = '' then Exit;
+  if not Assigned(F.mmoText) then Exit;
+
+  F.FCurrentFileName := FileName;
+  F.FLoadedFromFile := True;
+  F.FHasTrailingNewLine := (F.mmoText.Text <> '') and
+    CharInSet(F.mmoText.Text[Length(F.mmoText.Text)], [#10, #13]);
+
+  AppMenu_UpdateCaption(F, ExtractFileName(FileName) + ' - ' + APP_NAME);
+  AppMenu_Recent_Add(F, FileName);
+
+  SourceText := F.mmoText.Text;
+  AppStatusBar_Update(F, FileName, SourceText);
+end;
+
 procedure AppMenu_OpenFile(F: TfrmMain);
 var
   FileName: string;
 begin
   if F = nil then Exit;
   if not Assigned(F.OpenFileDlg) then Exit;
-
-  F.OpenFileDlg.FileName := '';
-  if not F.OpenFileDlg.Execute then Exit;
-
-  FileName := F.OpenFileDlg.FileName;
+  if not UI_OpenFileDialog(F.OpenFileDlg, FileName) then Exit;
   AppMenu_OpenFile(F, FileName);
 end;
 
 procedure AppMenu_OpenFile(F: TfrmMain; FileName: string);
 var
   InputText: string;
-  SourceText: string;
-  WindowTitle: string;
 begin
   if F = nil then Exit;
   if FileName = '' then Exit;
@@ -127,12 +144,7 @@ begin
       Exit;
     end;
 
-    SourceText := InputText;
     InputText := ConvertToCRLF(InputText);
-
-    F.FLoadedFromFile := True;
-    F.FHasTrailingNewLine := (InputText <> '') and
-      CharInSet(InputText[Length(InputText)], [#10, #13]);
 
     F.mmoText.Text := InputText;
     F.mmoText.Modified := False;
@@ -145,14 +157,52 @@ begin
 
     end;
 
-    WindowTitle := ExtractFileName(FileName) + ' - ' + APP_NAME;
-    AppMenu_UpdateCaption(F, WindowTitle);
-    AppStatusBar_Update(F, FileName, SourceText);
-
-    AppMenu_Recent_Add(F, FileName);
+    UI_DetectEncoding(FileName, F.FSaveEncoding);
+    AppMenu_UpdateFile(F, FileName);
   except
     on E: Exception do
       UI_MessageBox(F, Format(SOpenFileErrorMsg, [E.Message]), MB_ICONERROR or MB_OK);
+  end;
+end;
+
+procedure AppMenu_SaveAs(F: TfrmMain);
+var
+  FileName: string;
+begin
+  if F = nil then Exit;
+  if not Assigned(F.SaveFileDlg) then Exit;
+  if not Assigned(F.mmoText) then Exit;
+  if not UI_SaveFileDialog(F.SaveFileDlg, F.Handle, F.FCurrentFileName, FileName) then Exit;
+  if FileName = '' then Exit;
+
+  try
+    TFile.WriteAllBytes(FileName, GetEncodedBytes(F.mmoText.Text, F.FSaveEncoding));
+    F.mmoText.Modified := False;
+    AppMenu_UpdateFile(F, FileName);
+  except
+    on E: Exception do
+      UI_MessageBox(F, Format(SSaveFileErrorMsg, [E.Message]), MB_ICONERROR or MB_OK);
+  end;
+end;
+
+procedure AppMenu_Save(F: TfrmMain);
+begin
+  if F = nil then Exit;
+  if not Assigned(F.mmoText) then Exit;
+
+  if F.FCurrentFileName = '' then
+  begin
+    AppMenu_SaveAs(F);
+    Exit;
+  end;
+
+  try
+    TFile.WriteAllBytes(F.FCurrentFileName, GetEncodedBytes(F.mmoText.Text, F.FSaveEncoding));
+    F.mmoText.Modified := False;
+    AppMenu_UpdateFile(F, F.FCurrentFileName);
+  except
+    on E: Exception do
+      UI_MessageBox(F, Format(SSaveFileErrorMsg, [E.Message]), MB_ICONERROR or MB_OK);
   end;
 end;
 

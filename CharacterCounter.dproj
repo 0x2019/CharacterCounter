@@ -151,6 +151,7 @@
         <DCCReference Include="uChars.pas"/>
         <DCCReference Include="uTextByteCount.pas"/>
         <DCCReference Include="uTextStats.pas"/>
+        <DCCReference Include="..\Common\uFileDialog.pas"/>
         <DCCReference Include="..\Common\uFileUtils.pas"/>
         <DCCReference Include="..\Common\uForms.pas"/>
         <DCCReference Include="..\Common\uMenu.pas"/>

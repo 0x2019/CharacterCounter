@@ -94,6 +94,24 @@ object frmMain: TfrmMain
         ShortCut = 16463
         OnClick = miOpenFileClick
       end
+      object N5: TMenuItem
+        Caption = '-'
+      end
+      object miSave: TMenuItem
+        Caption = #51200#51109'(&S)'
+        SubMenuImages = sMenuImageList
+        ImageIndex = 13
+        ShortCut = 16467
+        OnClick = miSaveClick
+      end
+      object miSaveAs: TMenuItem
+        Caption = #45796#47480' '#51060#47492#51004#47196' '#51200#51109'(&A)...'
+        ShortCut = 24659
+        OnClick = miSaveAsClick
+      end
+      object N4: TMenuItem
+        Caption = '-'
+      end
       object miRecent: TMenuItem
         Caption = #52572#44540' '#54637#47785'(&R)'
         SubMenuImages = sMenuImageList
@@ -228,6 +246,24 @@ object frmMain: TfrmMain
     Filter = #53581#49828#53944' '#47928#49436' (*.txt)|*.txt|'#47784#46304' '#54028#51068' (*.*)|*.*'
     Left = 296
     Top = 69
+  end
+  object SaveFileDlg: TFileSaveDialog
+    DefaultExtension = 'txt'
+    FavoriteLinks = <>
+    FileTypes = <
+      item
+        DisplayName = #53581#49828#53944' '#47928#49436' (*.txt)'
+        FileMask = '*.txt'
+      end
+      item
+        DisplayName = #47784#46304' '#54028#51068' (*.*)'
+        FileMask = '*.*'
+      end>
+    Options = [fdoOverWritePrompt, fdoPathMustExist]
+    OnExecute = SaveFileDlgExecute
+    OnFileOkClick = SaveFileDlgFileOkClick
+    Left = 312
+    Top = 125
   end
   object sSkinManager: TsSkinManager
     AnimEffects.BlendOnMoving.Active = True
@@ -3108,6 +3144,10 @@ object frmMain: TfrmMain
       item
         ScalingFactor = 0.700000000000000000
         Char = 61752
+      end
+      item
+        ScalingFactor = 0.700000000000000000
+        Char = 61639
       end>
     Left = 209
     Top = 19
