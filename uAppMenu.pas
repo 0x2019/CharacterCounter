@@ -10,15 +10,15 @@ uses
 
 // Global
 procedure AppMenu_Init(F: TfrmMain);
-procedure AppMenu_UpdateCaption(F: TfrmMain; const ACaption: string);
+procedure AppMenu_UpdateCaption(F: TfrmMain);
 procedure AppMenu_UpdateClipboard(F: TfrmMain);
 procedure AppMenu_UpdateFile(F: TfrmMain; const FileName: string);
 
 // File
 procedure AppMenu_OpenFile(F: TfrmMain); overload;
 procedure AppMenu_OpenFile(F: TfrmMain; FileName: string); overload;
-procedure AppMenu_Save(F: TfrmMain);
-procedure AppMenu_SaveAs(F: TfrmMain);
+function AppMenu_Save(F: TfrmMain): Boolean;
+function AppMenu_SaveAs(F: TfrmMain): Boolean;
 
 procedure AppMenu_RecentItems(F: TfrmMain; Sender: TObject);
 procedure AppMenu_Recent_Add(F: TfrmMain; const FilePath: string);
@@ -68,15 +68,27 @@ begin
 
   if Assigned(F.miRecentSep) then F.miRecentSep.Tag := UI_RECENT_MENU_SEP_TAG;
   if Assigned(F.miClearHistory) then F.miClearHistory.Tag := UI_RECENT_MENU_CLEAR_TAG;
+  AppMenu_UpdateCaption(F);
   AppMenu_Popup_Init(F);
 end;
 
-procedure AppMenu_UpdateCaption(F: TfrmMain; const ACaption: string);
+procedure AppMenu_UpdateCaption(F: TfrmMain);
+var
+  Title: string;
 begin
   if F = nil then Exit;
+  if F.FCurrentFileName <> '' then
+    Title := ExtractFileName(F.FCurrentFileName)
+  else
+    Title := SUntitled;
+
+  if Assigned(F.mmoText) and F.mmoText.Modified then
+    Title := '*' + Title;
+
+  Title := Title + ' - ' + APP_NAME;
 
   try
-    F.Caption := ACaption;
+    F.Caption := Title;
   except
     F.Caption := APP_NAME;
   end;
@@ -84,7 +96,7 @@ begin
   if Assigned(F.sSkinProvider) then
   begin
     try
-      F.sSkinProvider.AddedTitle.Text := ACaption;
+      F.sSkinProvider.AddedTitle.Text := Title;
     except
       try F.sSkinProvider.AddedTitle.Text := APP_NAME; except end;
     end;
@@ -110,7 +122,7 @@ begin
   F.FHasTrailingNewLine := (F.mmoText.Text <> '') and
     CharInSet(F.mmoText.Text[Length(F.mmoText.Text)], [#10, #13]);
 
-  AppMenu_UpdateCaption(F, ExtractFileName(FileName) + ' - ' + APP_NAME);
+  AppMenu_UpdateCaption(F);
   AppMenu_Recent_Add(F, FileName);
 
   SourceText := F.mmoText.Text;
@@ -165,10 +177,11 @@ begin
   end;
 end;
 
-procedure AppMenu_SaveAs(F: TfrmMain);
+function AppMenu_SaveAs(F: TfrmMain): Boolean;
 var
   FileName: string;
 begin
+  Result := False;
   if F = nil then Exit;
   if not Assigned(F.SaveFileDlg) then Exit;
   if not Assigned(F.mmoText) then Exit;
@@ -179,20 +192,22 @@ begin
     TFile.WriteAllBytes(FileName, GetEncodedBytes(F.mmoText.Text, F.FSaveEncoding));
     F.mmoText.Modified := False;
     AppMenu_UpdateFile(F, FileName);
+    Result := True;
   except
     on E: Exception do
       UI_MessageBox(F, Format(SSaveFileErrorMsg, [E.Message]), MB_ICONERROR or MB_OK);
   end;
 end;
 
-procedure AppMenu_Save(F: TfrmMain);
+function AppMenu_Save(F: TfrmMain): Boolean;
 begin
+  Result := False;
   if F = nil then Exit;
   if not Assigned(F.mmoText) then Exit;
 
   if F.FCurrentFileName = '' then
   begin
-    AppMenu_SaveAs(F);
+    Result := AppMenu_SaveAs(F);
     Exit;
   end;
 
@@ -200,6 +215,7 @@ begin
     TFile.WriteAllBytes(F.FCurrentFileName, GetEncodedBytes(F.mmoText.Text, F.FSaveEncoding));
     F.mmoText.Modified := False;
     AppMenu_UpdateFile(F, F.FCurrentFileName);
+    Result := True;
   except
     on E: Exception do
       UI_MessageBox(F, Format(SSaveFileErrorMsg, [E.Message]), MB_ICONERROR or MB_OK);

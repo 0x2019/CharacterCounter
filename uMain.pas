@@ -130,7 +130,6 @@ type
 // uOptions - General
     FByteEncoding: TEncodingMode;
     FCloseOnEsc: Boolean;
-    FConfirmOnExit: Boolean;
 
     procedure ChangeMessageBoxPosition(var Msg: TMessage); message mbMessage;
   end;
@@ -317,7 +316,7 @@ end;
 procedure TfrmMain.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   if not FExit then
-    if not AppController_Exit(Self, True) then
+    if not AppController_Exit(Self) then
     begin
       Action := caNone;
       Exit;
@@ -342,7 +341,6 @@ begin
   FMagnifierTop := -1;
   FByteEncoding := emUTF8;
   FCloseOnEsc := False;
-  FConfirmOnExit := True;
   FOptionsSection := 0;
 
   UI_SetMinConstraints(Self);
@@ -400,12 +398,16 @@ end;
 
 procedure TfrmMain.mmoTextChange(Sender: TObject);
 begin
+  if (FCurrentFileName = '') and (mmoText.Text = '') then
+    mmoText.Modified := False;
+
   if Assigned(miFind) then
     miFind.Enabled := mmoText.Text <> '';
   if Assigned(miFindNext) and (mmoText.Text = '') then
     miFindNext.Enabled := False;
   if Assigned(miFindPrev) and (mmoText.Text = '') then
     miFindPrev.Enabled := False;
+  AppMenu_UpdateCaption(Self);
   AppController_UpdateStats(Self);
   AppStatusBar_UpdateCaret(Self);
 end;

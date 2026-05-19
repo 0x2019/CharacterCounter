@@ -8,12 +8,15 @@ resourcestring
   APP_RELEASE                         = 'May 09, 2026';
   APP_URL                             = 'https://github.com/0x2019/CharacterCounter';
 
+  SUntitled                           = 'Untitled';
+
   SOpenFileErrorMsg                   = '파일을 열 수 없습니다.' + sLineBreak + '%s';
-  SSaveFileErrorMsg                   = '파일을 저장할 수 없습니다.' + sLineBreak + '%s';
   SUnsupportedFileMsg                 = '지원하지 않는 파일 형식입니다.';
 
+  SSaveFileConfirmMsg                 = '변경 내용을 "%s"에 저장하시겠습니까?';
+  SSaveFileErrorMsg                   = '파일을 저장할 수 없습니다.' + sLineBreak + '%s';
+
   SClearConfirmMsg                    = '모든 입력 내용을 지우시겠습니까?';
-  SConfirmOnExitMsg                   = '프로그램을 종료하시겠습니까?';
 
   STextNotFoundMsg                    = '"%s"을(를) 찾을 수 없습니다.';
 

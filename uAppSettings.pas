@@ -29,7 +29,6 @@ begin
 
     F.FByteEncoding := TEncodingMode(Ini.ReadInteger('General', 'ByteEncoding', Ord(emUTF8)));
     F.FCloseOnEsc := Ini.ReadBool('General', 'CloseOnEsc', False);
-    F.FConfirmOnExit := Ini.ReadBool('General', 'ConfirmOnExit', True);
     F.FOptionsSection := Ini.ReadInteger('Options', 'TreeIndex', 0);
 
     F.mmoText.Font.Name := Ini.ReadString('Font', 'Name', 'Tahoma');
@@ -70,7 +69,6 @@ begin
 
     Ini.WriteInteger('General', 'ByteEncoding', Ord(F.FByteEncoding));
     Ini.WriteBool('General', 'CloseOnEsc', F.FCloseOnEsc);
-    Ini.WriteBool('General', 'ConfirmOnExit', F.FConfirmOnExit);
     Ini.WriteInteger('Options', 'TreeIndex', F.FOptionsSection);
 
     Ini.WriteString('Font', 'Name', F.mmoText.Font.Name);

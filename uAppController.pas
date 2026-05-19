@@ -3,12 +3,12 @@
 interface
 
 uses
-  System.SysUtils, Vcl.Forms, uMain,
+  Winapi.Windows, System.SysUtils, Vcl.Forms, uMain,
 
   uForms, uMessageBox, uStatusBar;
 
 procedure AppController_Init(F: TfrmMain);
-function AppController_Exit(F: TfrmMain; const ConfirmExit: Boolean = False): Boolean;
+function AppController_Exit(F: TfrmMain): Boolean;
 
 procedure AppController_ByteEncoding(F: TfrmMain);
 procedure AppController_UpdateStats(F: TfrmMain);
@@ -36,13 +36,30 @@ begin
   AppController_ByteEncoding(F);
 end;
 
-function AppController_Exit(F: TfrmMain; const ConfirmExit: Boolean): Boolean;
+function AppController_Exit(F: TfrmMain): Boolean;
+var
+  ConfirmResult: Integer;
+  FileName: string;
 begin
   Result := False;
   if F = nil then Exit;
 
-  if ConfirmExit and F.FConfirmOnExit and not UI_ConfirmYesNo(F, SConfirmOnExitMsg) then
-    Exit;
+  if Assigned(F.mmoText) and F.mmoText.Modified then
+  begin
+    if F.FCurrentFileName <> '' then
+      FileName := ExtractFileName(F.FCurrentFileName)
+    else
+      FileName := SUntitled;
+
+    ConfirmResult := UI_ConfirmYesNoCancel(F, Format(SSaveFileConfirmMsg, [FileName]));
+    case ConfirmResult of
+      IDYES:
+        if not AppMenu_Save(F) then
+          Exit;
+      IDCANCEL:
+        Exit;
+    end;
+  end;
 
   Result := True;
 end;
