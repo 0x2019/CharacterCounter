@@ -101,6 +101,7 @@ function AppStatusBar_GetCaret(F: TfrmMain): string;
 var
   CaretPoint: TPoint;
   CaretIndex: Integer;
+  CharIndex: LRESULT;
   LineIndex: Integer;
   LineStart: Integer;
   ColumnIndex: Integer;
@@ -109,12 +110,21 @@ begin
   if (F = nil) or not Assigned(F.mmoText) then Exit;
 
   CaretIndex := F.mmoText.SelStart;
-  if F.mmoText.Focused and GetCaretPos(CaretPoint) then
-    CaretIndex := F.mmoText.Perform(
+  if (F.mmoText.SelStart = 0) and
+     (F.mmoText.SelLength > 0) and
+     (F.mmoText.SelLength = Length(F.mmoText.Text)) then
+    CaretIndex := F.mmoText.SelLength
+  else if F.mmoText.Focused and GetCaretPos(CaretPoint) then
+  begin
+    CharIndex := F.mmoText.Perform(
       EM_CHARFROMPOS,
       0,
       LPARAM((CaretPoint.Y shl 16) or (CaretPoint.X and $FFFF))
-    ) and $FFFF;
+    );
+
+    if CharIndex <> -1 then
+      CaretIndex := SmallInt(CharIndex and $FFFF);
+  end;
 
   if CaretIndex < 0 then
     CaretIndex := 0;
