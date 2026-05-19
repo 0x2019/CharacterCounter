@@ -31,6 +31,7 @@ uses
   uTaskbar in '..\Common\uTaskbar.pas',
   uTextEncoding in '..\Common\uTextEncoding.pas',
   uTextDecoding in '..\Common\uTextDecoding.pas',
+  uTextSearch in '..\Common\uTextSearch.pas',
   uMetaballs in '..\Common\About\uMetaballs.pas';
 
 var

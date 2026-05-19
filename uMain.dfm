@@ -121,6 +121,32 @@ object frmMain: TfrmMain
     object mnuEdit: TMenuItem
       Caption = #54200#51665'(&E)'
       SubMenuImages = sMenuImageList
+      object miFind: TMenuItem
+        Caption = #52286#44592'(&F)...'
+        SubMenuImages = sMenuImageList
+        ImageIndex = 10
+        ShortCut = 16454
+        OnClick = miFindClick
+      end
+      object miFindNext: TMenuItem
+        Caption = #45796#51020' '#52286#44592'(&N)'
+        SubMenuImages = sMenuImageList
+        Enabled = False
+        ImageIndex = 12
+        ShortCut = 114
+        OnClick = miFindNextClick
+      end
+      object miFindPrev: TMenuItem
+        Caption = #51060#51204' '#52286#44592'(&P)'
+        SubMenuImages = sMenuImageList
+        Enabled = False
+        ImageIndex = 11
+        ShortCut = 8306
+        OnClick = miFindPrevClick
+      end
+      object N3: TMenuItem
+        Caption = '-'
+      end
       object miCopy: TMenuItem
         Caption = #48373#49324'(&C)'
         SubMenuImages = sMenuImageList
@@ -3070,6 +3096,18 @@ object frmMain: TfrmMain
       item
         ScalingFactor = 0.700000000000000000
         Char = 61932
+      end
+      item
+        ScalingFactor = 0.700000000000000000
+        Char = 61442
+      end
+      item
+        ScalingFactor = 0.700000000000000000
+        Char = 61751
+      end
+      item
+        ScalingFactor = 0.700000000000000000
+        Char = 61752
       end>
     Left = 209
     Top = 19
@@ -3084,6 +3122,17 @@ object frmMain: TfrmMain
     Font.Name = 'Segoe UI'
     Font.Style = []
     Left = 416
+    Top = 72
+  end
+  object FindDlg: TFindDialog
+    OnShow = FindDlgShow
+    OnFind = FindDlgFind
+    Left = 384
+    Top = 72
+  end
+  object ApplicationEvents: TApplicationEvents
+    OnMessage = AppMessage
+    Left = 352
     Top = 72
   end
   object pmCopy: TPopupMenu

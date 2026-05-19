@@ -3,8 +3,8 @@
 interface
 
 uses
-  Winapi.Windows, System.Classes, System.SysUtils, Vcl.Forms, Vcl.StdCtrls, Vcl.Menus,
-  Clipbrd, uMain,
+  Winapi.Windows, Winapi.Messages, System.Classes, System.SysUtils,
+  Vcl.Forms, Vcl.StdCtrls, Vcl.Menus, Vcl.Dialogs, Clipbrd, uMain,
 
   uFileUtils, uForms, uMenu, uMessageBox, uStatusBar, uTextDecoding, uTextEncoding;
 
@@ -24,6 +24,8 @@ procedure AppMenu_Recent_Clear(F: TfrmMain);
 procedure AppMenu_Exit(F: TfrmMain);
 
 // Edit
+procedure AppMenu_Find(F: TfrmMain);
+procedure AppMenu_FindNext(F: TfrmMain; SearchBackward: Boolean = False; Focus: Boolean = False);
 procedure AppMenu_Copy(F: TfrmMain);
 procedure AppMenu_ClearAll(F: TfrmMain);
 
@@ -47,11 +49,20 @@ implementation
 
 uses
   uAbout,
-  uAppMenu.Popup, uAppStatusBar, uAppStrings, uAppTaskbar, uOptions, uTextByteCount;
+  uAppMenu.Popup, uAppStatusBar, uAppStrings, uAppTaskbar, uOptions, uTextByteCount, uTextSearch;
 
 procedure AppMenu_Init(F: TfrmMain);
 begin
   if F = nil then Exit;
+
+  F.FFindText := '';
+  F.FFindOptions := [frDown];
+  if Assigned(F.mmoText) then F.mmoText.HideSelection := False;
+  if Assigned(F.miFind) and Assigned(F.mmoText) then
+    F.miFind.Enabled := F.mmoText.Text <> '';
+  if Assigned(F.miFindNext) then F.miFindNext.Enabled := False;
+  if Assigned(F.miFindPrev) then F.miFindPrev.Enabled := False;
+
   if Assigned(F.miRecentSep) then F.miRecentSep.Tag := UI_RECENT_MENU_SEP_TAG;
   if Assigned(F.miClearHistory) then F.miClearHistory.Tag := UI_RECENT_MENU_CLEAR_TAG;
   AppMenu_Popup_Init(F);
@@ -184,6 +195,83 @@ procedure AppMenu_Exit(F: TfrmMain);
 begin
   if F = nil then Exit;
   F.Close;
+end;
+
+procedure AppMenu_Find(F: TfrmMain);
+begin
+  if F = nil then Exit;
+  if not Assigned(F.FindDlg) then Exit;
+  if not Assigned(F.mmoText) then Exit;
+
+  if F.mmoText.SelLength > 0 then
+    F.FindDlg.FindText := F.mmoText.SelText
+  else
+    F.FindDlg.FindText := F.FFindText;
+
+  F.FindDlg.Options := F.FFindOptions;
+
+  SendMessage(F.mmoText.Handle, WM_SETREDRAW, 0, 0);
+  try
+    F.FindDlg.Execute;
+  finally
+    SendMessage(F.mmoText.Handle, WM_SETREDRAW, 1, 0);
+    F.mmoText.Invalidate;
+  end;
+end;
+
+procedure AppMenu_FindNext(F: TfrmMain; SearchBackward: Boolean; Focus: Boolean);
+var
+  SourceText: string;
+  SearchText: string;
+  MatchCase: Boolean;
+  WholeWord: Boolean;
+  StartIndex: Integer;
+  FoundIndex: Integer;
+begin
+  if F = nil then Exit;
+  if not Assigned(F.mmoText) then Exit;
+
+  SearchText := Trim(F.FFindText);
+  if SearchText = '' then
+  begin
+    AppMenu_Find(F);
+    Exit;
+  end;
+
+  if Assigned(F.miFindNext) then
+    F.miFindNext.Enabled := True;
+  if Assigned(F.miFindPrev) then
+    F.miFindPrev.Enabled := True;
+
+  SourceText := F.mmoText.Text;
+  MatchCase := frMatchCase in F.FFindOptions;
+  WholeWord := frWholeWord in F.FFindOptions;
+
+  if SearchBackward then
+  begin
+    StartIndex := F.mmoText.SelStart;
+    FoundIndex := FindBackward(SourceText, SearchText, StartIndex, MatchCase, WholeWord);
+  end
+  else
+  begin
+    StartIndex := F.mmoText.SelStart + F.mmoText.SelLength + 1;
+    FoundIndex := FindForward(SourceText, SearchText, StartIndex, MatchCase, WholeWord);
+  end;
+
+  if FoundIndex > 0 then
+  begin
+    if Focus and Assigned(F.mmoText) and not F.mmoText.Focused then
+      F.mmoText.SetFocus;
+    F.mmoText.SelStart := FoundIndex - 1;
+    F.mmoText.SelLength := Length(SearchText);
+    SendMessage(F.mmoText.Handle, EM_SCROLLCARET, 0, 0);
+    Exit;
+  end;
+
+  if Assigned(F.FindDlg) and (F.FindDlg.Handle <> 0) and IsWindowVisible(F.FindDlg.Handle) then
+    UI_MessageBox(F.FindDlg.Handle, Format(STextNotFoundMsg, [SearchText]), MB_ICONINFORMATION or MB_OK, '', WRAP_MAX_CHARS)
+  else
+    UI_MessageBox(F, Format(STextNotFoundMsg, [SearchText]), MB_ICONINFORMATION or MB_OK, '', WRAP_MAX_CHARS);
 end;
 
 procedure AppMenu_Copy(F: TfrmMain);

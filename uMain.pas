@@ -4,15 +4,12 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.ComCtrls,
-  Vcl.Controls, Vcl.Dialogs, Vcl.Forms, sSkinProvider, sSkinManager, Vcl.StdCtrls,
-  System.ImageList, Vcl.ImgList, acAlphaImageList, sMemo, acAlphaHints, sLabel,
-  Vcl.ExtCtrls, sScrollBox, Vcl.Menus, sDialogs, ShellAPI, sStatusBar, acMagn,
+  Vcl.Controls, Vcl.Dialogs, Vcl.Forms, Vcl.AppEvnts, sSkinProvider, sSkinManager,
+  Vcl.StdCtrls, System.ImageList, Vcl.ImgList, acAlphaImageList, sMemo, acAlphaHints,
+  sLabel, Vcl.ExtCtrls, sScrollBox, Vcl.Menus, sDialogs, ShellAPI, sStatusBar, acMagn,
   uTextByteCount,
 
-  uFileUtils, uForms, uMenu, uMenu.Popup, uMessageBox, uSettings;
-
-const
-  WM_SHOWME = WM_APP + 206;
+  uFileUtils, uForms, uMenu, uMenu.Popup, uMessageBox, uMutex, uSettings;
 
 type
   TfrmMain = class(TForm)
@@ -41,6 +38,9 @@ type
     mnuEdit: TMenuItem;
     mnuHelp: TMenuItem;
     miAbout: TMenuItem;
+    miFind: TMenuItem;
+    miFindNext: TMenuItem;
+    miFindPrev: TMenuItem;
     miCopy: TMenuItem;
     miClearClipboard: TMenuItem;
     miClearAll: TMenuItem;
@@ -48,6 +48,7 @@ type
     mnuFormat: TMenuItem;
     miFont: TMenuItem;
     FontDlg: TFontDialog;
+    FindDlg: TFindDialog;
     stsbr: TsStatusBar;
     pmCopy: TPopupMenu;
     pmiCopyOnSelect: TMenuItem;
@@ -55,6 +56,8 @@ type
     pmiByteEncoding: TMenuItem;
     pmiEncodingCP949: TMenuItem;
     pmiEncodingUTF8: TMenuItem;
+    ApplicationEvents: TApplicationEvents;
+    N3: TMenuItem;
     N1: TMenuItem;
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormCreate(Sender: TObject);
@@ -72,9 +75,13 @@ type
     procedure miClearClipboardClick(Sender: TObject);
     procedure miClearAllClick(Sender: TObject);
     procedure miAboutClick(Sender: TObject);
+    procedure miFindClick(Sender: TObject);
+    procedure miFindNextClick(Sender: TObject);
+    procedure miFindPrevClick(Sender: TObject);
     procedure miExitClick(Sender: TObject);
     procedure miFontClick(Sender: TObject);
     procedure FontDlgShow(Sender: TObject);
+    procedure FindDlgShow(Sender: TObject);
     procedure mmoTextClick(Sender: TObject);
     procedure mmoTextKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure mmoTextMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
@@ -82,6 +89,8 @@ type
     procedure pmiCopyOnSelectClick(Sender: TObject);
     procedure pmiByteEncodingClick(Sender: TObject);
     procedure pmCopyPopup(Sender: TObject);
+    procedure FindDlgFind(Sender: TObject);
+    procedure AppMessage(var Msg: TMsg; var Handled: Boolean);
   private
     procedure WMActivateApp(var Msg: TWMActivateApp); message WM_ACTIVATEAPP;
     procedure WMShowMe(var Message: TMessage); message WM_SHOWME;
@@ -92,6 +101,12 @@ type
     FExit: Boolean;
     FLoadedFromFile: Boolean;
     FHasTrailingNewLine: Boolean;
+
+// Edit
+    FFindText: string;
+    FFindOptions: TFindOptions;
+
+// View
     FMagnifierLeft: Integer;
     FMagnifierTop: Integer;
 
@@ -116,6 +131,19 @@ implementation
 uses
   uAppController, uAppMenu, uAppMenu.Popup, uAppSettings, uAppStatusBar,
   uAppStats, uAppTaskbar, uTextStats;
+
+procedure TfrmMain.AppMessage(var Msg: TMsg; var Handled: Boolean);
+begin
+  if not Assigned(FindDlg) then Exit;
+  if FindDlg.Handle = 0 then Exit;
+  if not IsWindowVisible(FindDlg.Handle) then Exit;
+  if Msg.message <> WM_KEYDOWN then Exit;
+  if Msg.wParam <> VK_RETURN then Exit;
+  if (Msg.hwnd <> FindDlg.Handle) and (not IsChild(FindDlg.Handle, Msg.hwnd)) then Exit;
+
+  PostMessage(FindDlg.Handle, WM_COMMAND, IDOK, 0);
+  Handled := True;
+end;
 
 procedure TfrmMain.ChangeMessageBoxPosition(var Msg: TMessage);
 begin
@@ -180,6 +208,21 @@ end;
 procedure TfrmMain.miAboutClick(Sender: TObject);
 begin
   AppMenu_About(Self);
+end;
+
+procedure TfrmMain.miFindClick(Sender: TObject);
+begin
+  AppMenu_Find(Self);
+end;
+
+procedure TfrmMain.miFindNextClick(Sender: TObject);
+begin
+  AppMenu_FindNext(Self, not (frDown in FFindOptions), True);
+end;
+
+procedure TfrmMain.miFindPrevClick(Sender: TObject);
+begin
+  AppMenu_FindNext(Self, True, True);
 end;
 
 procedure TfrmMain.miCopyClick(Sender: TObject);
@@ -284,6 +327,8 @@ begin
   AppMenu_UpdateClipboard(Self);
   AppController_Init(Self);
   AppStatusBar_UpdateCaret(Self);
+  if Assigned(ApplicationEvents) then
+    ApplicationEvents.OnMessage := AppMessage;
 
   AddClipboardFormatListener(Handle);
   DragAcceptFiles(Handle, True);
@@ -292,6 +337,13 @@ end;
 procedure TfrmMain.FormKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
+  if Key = VK_F3 then
+  begin
+    AppMenu_FindNext(Self, ssShift in Shift);
+    Key := 0;
+    Exit;
+  end;
+
   if (Key = VK_ESCAPE) and FCloseOnEsc then
     AppMenu_Exit(Self);
 end;
@@ -301,8 +353,20 @@ begin
   UI_CenterDialog(Self, FontDlg.Handle);
 end;
 
+procedure TfrmMain.FindDlgShow(Sender: TObject);
+begin
+  UI_CenterDialog(Self, FindDlg.Handle);
+  SendMessage(FindDlg.Handle, DM_SETDEFID, IDOK, 0);
+end;
+
 procedure TfrmMain.mmoTextChange(Sender: TObject);
 begin
+  if Assigned(miFind) then
+    miFind.Enabled := mmoText.Text <> '';
+  if Assigned(miFindNext) and (mmoText.Text = '') then
+    miFindNext.Enabled := False;
+  if Assigned(miFindPrev) and (mmoText.Text = '') then
+    miFindPrev.Enabled := False;
   AppController_UpdateStats(Self);
   AppStatusBar_UpdateCaret(Self);
 end;
@@ -355,6 +419,21 @@ begin
   PopupItems := Default(TPopupItems);
   PopupItems.Copy := pmiCopyOnSelect;
   AppMenu_Popup_Update(Self, Sender, PopupItems);
+end;
+
+procedure TfrmMain.FindDlgFind(Sender: TObject);
+begin
+  if not Assigned(FindDlg) then
+    Exit;
+
+  FFindText := FindDlg.FindText;
+  FFindOptions := FindDlg.Options;
+  if Assigned(miFindNext) then
+    miFindNext.Enabled := Trim(FFindText) <> '';
+  if Assigned(miFindPrev) then
+    miFindPrev.Enabled := Trim(FFindText) <> '';
+
+  AppMenu_FindNext(Self, not (frDown in FFindOptions));
 end;
 
 end.

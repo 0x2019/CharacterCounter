@@ -163,6 +163,7 @@
         <DCCReference Include="..\Common\uTaskbar.pas"/>
         <DCCReference Include="..\Common\uTextEncoding.pas"/>
         <DCCReference Include="..\Common\uTextDecoding.pas"/>
+        <DCCReference Include="..\Common\uTextSearch.pas"/>
         <DCCReference Include="..\Common\About\uMetaballs.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
