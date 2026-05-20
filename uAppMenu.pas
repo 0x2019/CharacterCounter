@@ -52,7 +52,8 @@ implementation
 
 uses
   uAbout,
-  uAppMenu.Popup, uAppStatusBar, uAppStrings, uAppTaskbar, uOptions, uTextByteCount, uTextSearch;
+  uAppController, uAppMenu.Popup, uAppStatusBar, uAppStrings, uAppTaskbar, uOptions,
+  uTextByteCount, uTextSearch;
 
 procedure AppMenu_Init(F: TfrmMain);
 begin
@@ -148,6 +149,9 @@ begin
 
   FileName := UI_ResolveFileShortcut(FileName);
   if FileName = '' then Exit;
+
+  if not AppController_Exit(F) then
+    Exit;
 
   try
     if not DecodeFile(FileName, InputText) then
