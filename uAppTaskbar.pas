@@ -54,14 +54,6 @@ begin
   if MainWnd = 0 then
     Exit;
 
-  if IsIconic(MainWnd) then
-    SendMessage(MainWnd, WM_SYSCOMMAND, SC_RESTORE, 0)
-  else
-    ShowWindow(MainWnd, SW_SHOW);
-
-  BringWindowToTop(MainWnd);
-  SetForegroundWindow(MainWnd);
-
   CopyDataStruct.dwData := 1;
   CopyDataStruct.cbData := (Length(FilePath) + 1) * SizeOf(Char);
   CopyDataStruct.lpData := PChar(FilePath);

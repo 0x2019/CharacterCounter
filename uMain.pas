@@ -172,14 +172,34 @@ begin
 end;
 
 procedure TfrmMain.WMShowMe(var Message: TMessage);
+var
+  ForegroundWnd: HWND;
+  ForegroundThreadID: Cardinal;
+  CurrentThreadID: Cardinal;
+  Attached: Boolean;
 begin
   if IsIconic(Handle) then
     SendMessage(Handle, WM_SYSCOMMAND, SC_RESTORE, 0)
   else
     ShowWindow(Handle, SW_SHOW);
 
-  BringWindowToTop(Handle);
-  SetForegroundWindow(Handle);
+  ForegroundWnd := GetForegroundWindow;
+  ForegroundThreadID := 0;
+  if ForegroundWnd <> 0 then
+    ForegroundThreadID := GetWindowThreadProcessId(ForegroundWnd, nil);
+
+  CurrentThreadID := GetWindowThreadProcessId(Handle, nil);
+  Attached := (ForegroundThreadID <> 0) and (ForegroundThreadID <> CurrentThreadID);
+  if Attached then
+    AttachThreadInput(ForegroundThreadID, CurrentThreadID, True);
+  try
+    BringWindowToTop(Handle);
+    SetForegroundWindow(Handle);
+    SetActiveWindow(Handle);
+  finally
+    if Attached then
+      AttachThreadInput(ForegroundThreadID, CurrentThreadID, False);
+  end;
 end;
 
 procedure TfrmMain.WMClipboardUpdate(var Msg: TMessage);
@@ -201,6 +221,10 @@ begin
     Exit;
 
   AppMenu_OpenFile(Self, FilePath);
+
+  if mmoText.CanFocus then
+    mmoText.SetFocus;
+
   Msg.Result := 1;
 end;
 

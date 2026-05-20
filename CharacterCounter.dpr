@@ -44,10 +44,10 @@ var
 begin
   if not UI_CreateMutex('CC!', uMutex) then
   begin
+    UI_ActivateInstance(TfrmMain.ClassName, '', WM_SHOWME);
+
     if (ParamCount >= 1) and FileExists(ParamStr(1)) then
-      AppTaskbar_OpenFile(ParamStr(1))
-    else
-      UI_ActivateInstance(TfrmMain.ClassName, '', WM_SHOWME);
+      AppTaskbar_OpenFile(ParamStr(1));
 
     UI_CloseMutex(uMutex);
     Exit;
