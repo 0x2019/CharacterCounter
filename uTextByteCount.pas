@@ -12,8 +12,8 @@ type
 function ConvertCRLFtoLF(const S: string): string; inline;
 function ConvertToCRLF(const S: string): string; inline;
 
-// 현재 설정된 TEncodingMode에 따라 UTF-8 또는 CP949 기준 바이트 수를 반환
-function GetByteCount(const Text: string): Integer;
+// TEncodingMode에 따라 UTF-8 또는 CP949 바이트 수를 반환
+function GetByteCount(const Text: string; Mode: TEncodingMode): Integer;
 
 // CP949 인코딩으로 문자열 전체의 바이트 수를 계산
 function GetCP949ByteCount(const Text: string): Integer;
@@ -21,13 +21,9 @@ function GetCP949ByteCount(const Text: string): Integer;
 // UTF-8 인코딩으로 문자열 전체의 바이트 수를 계산
 function GetUTF8ByteCount(const Text: string): Integer;
 
-// 인코딩 모드 설정
-procedure SetEncoding(Mode: TEncodingMode);
-
 implementation
 
 var
-  gUseCP949: Boolean = False;
   EncCP949: TEncoding = nil;
 
 function ConvertCRLFtoLF(const S: string): string; inline;
@@ -40,14 +36,16 @@ begin
   Result := ConvertCRLFtoLF(S).Replace(#10, sLineBreak, [rfReplaceAll]);
 end;
 
-function GetByteCount(const Text: string): Integer;
+function GetByteCount(const Text: string; Mode: TEncodingMode): Integer;
 var
   S: string;
 begin
   S := ConvertCRLFtoLF(Text);
-  if gUseCP949
-    then Result := GetCP949ByteCount(S)
-    else Result := GetUTF8ByteCount(S);
+
+  if Mode = emCP949 then
+    Result := GetCP949ByteCount(S)
+  else
+    Result := GetUTF8ByteCount(S);
 end;
 
 function GetCP949ByteCount(const Text: string): Integer;
@@ -60,11 +58,6 @@ end;
 function GetUTF8ByteCount(const Text: string): Integer;
 begin
   Result := TEncoding.UTF8.GetByteCount(Text);
-end;
-
-procedure SetEncoding(Mode: TEncodingMode);
-begin
-  gUseCP949 := (Mode = emCP949);
 end;
 
 initialization

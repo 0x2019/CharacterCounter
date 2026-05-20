@@ -3,7 +3,7 @@
 interface
 
 uses
-  System.Character, System.SysUtils;
+  System.Character, System.SysUtils, uTextByteCount;
 
 type
   TTextStats = record
@@ -32,7 +32,7 @@ type
   end;
 
 // 종합 통계 (문자/바이트/단어/줄 등)
-function GetTextStats(const Text: string): TTextStats;
+function GetTextStats(const Text: string; ByteMode: TEncodingMode): TTextStats;
 
 // 단어 수 계산
 function GetWordCount(const Text: string): Integer;
@@ -46,9 +46,9 @@ procedure UpdateHangulCounts(const ch: Char; var ConsonantCount, VowelCount: Int
 implementation
 
 uses
-  uChars, uTextByteCount;
+  uChars;
 
-function GetTextStats(const Text: string): TTextStats;
+function GetTextStats(const Text: string; ByteMode: TEncodingMode): TTextStats;
 var
   i, TextLen: Integer;
   ch: Char;
@@ -106,14 +106,14 @@ begin
     end;
 
     Result.CharCountNoSpaces := NoSpaceBuilder.Length;
-    Result.ByteCountNoSpaces := GetByteCount(NoSpaceBuilder.ToString);
+    Result.ByteCountNoSpaces := GetByteCount(NoSpaceBuilder.ToString, ByteMode);
   finally
     NoSpaceBuilder.Free;
   end;
 
   Result.WordCount := GetWordCount(Text);
   Result.LineCount := GetLineCount(Text);
-  Result.ByteCountWithSpaces := GetByteCount(Text);
+  Result.ByteCountWithSpaces := GetByteCount(Text, ByteMode);
 end;
 
 function GetWordCount(const Text: string): Integer;

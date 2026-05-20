@@ -102,7 +102,7 @@ begin
   else
     F.FByteEncoding := emUTF8;
   F.FCloseOnEsc := chkCloseOnEsc.Checked;
-  AppController_ByteEncoding(F);
+  AppController_UpdateStats(F);
 end;
 
 procedure TfrmOptions.tvOptionsChange(Sender: TObject; Node: TTreeNode);

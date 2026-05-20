@@ -10,7 +10,6 @@ uses
 procedure AppController_Init(F: TfrmMain);
 function AppController_Exit(F: TfrmMain): Boolean;
 
-procedure AppController_ByteEncoding(F: TfrmMain);
 procedure AppController_UpdateStats(F: TfrmMain);
 
 implementation
@@ -33,7 +32,7 @@ begin
     UI_StatusBar_SetVisible(F, F.stsbr, F.miShowStatusBar.Checked, False);
   AppTaskbar_Sync(F);
 
-  AppController_ByteEncoding(F);
+  AppController_UpdateStats(F);
 end;
 
 function AppController_Exit(F: TfrmMain): Boolean;
@@ -64,14 +63,6 @@ begin
   Result := True;
 end;
 
-procedure AppController_ByteEncoding(F: TfrmMain);
-begin
-  if F = nil then Exit;
-  SetEncoding(F.FByteEncoding);
-
-  F.mmoTextChange(nil);
-end;
-
 procedure AppController_UpdateStats(F: TfrmMain);
 var
   Stats: TTextStats;
@@ -89,7 +80,7 @@ begin
         Delete(InputText, Length(InputText), 1);
     end;
 
-  Stats := GetTextStats(InputText);
+  Stats := GetTextStats(InputText, F.FByteEncoding);
   F.lblStats.Caption := ShowTextStats(Stats, F.FByteEncoding = emCP949);
   if Assigned(F.miClearAll) then
     F.miClearAll.Enabled := InputText <> '';

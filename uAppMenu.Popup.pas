@@ -86,7 +86,7 @@ begin
   else
     Exit;
 
-  AppController_ByteEncoding(F);
+  AppController_UpdateStats(F);
 end;
 
 procedure AppMenu_Popup_Update(F: TfrmMain; Sender: TObject; const Items: TPopupItems);
