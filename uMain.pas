@@ -212,7 +212,14 @@ begin
   try
     UI_GetDroppedFiles(Msg.Drop, Files);
     if (Files.Count > 0) and FileExists(Files[0]) then
+    begin
       AppMenu_OpenFile(Self, ExpandFileName(Files[0]));
+
+      SetForegroundWindow(Handle);
+
+      if mmoText.CanFocus then
+        mmoText.SetFocus;
+    end;
   finally
     Files.Free;
   end;
