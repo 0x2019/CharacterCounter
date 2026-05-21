@@ -114,6 +114,7 @@ begin
     ]);
 
     CharTypes := (TextInfo.HangulCount > 0) or (TextInfo.HanjaCharCount > 0) or
+                 (TextInfo.HiraganaCount > 0) or (TextInfo.KatakanaCount > 0) or
                  (TextInfo.AsciiLetterCount > 0) or (TextInfo.AsciiDigitCount > 0) or
                  (TextInfo.SpecialCharCount > 0) or ((TextInfo.SpaceCount + TextInfo.OtherSpaceCount) > 0);
 
@@ -129,6 +130,16 @@ begin
 
       if TextInfo.HanjaCharCount > 0 then
         AppendStat(SHanja, TextInfo.HanjaCharCount, HTML_BR2);
+
+      if TextInfo.HiraganaCount > 0 then
+        AppendStat(SHiragana, TextInfo.HiraganaCount, HTML_BR);
+
+      if TextInfo.KatakanaCount > 0 then
+      begin
+        AppendStat(SKatakana, TextInfo.KatakanaCount, HTML_BR);
+        SB.Append(FormatSubStats(SKatakanaFullWidth, TextInfo.KatakanaFullWidthCount,
+                                 SKatakanaHalfWidth, TextInfo.KatakanaHalfWidthCount));
+      end;
 
       if TextInfo.AsciiLetterCount > 0 then
       begin

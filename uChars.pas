@@ -26,6 +26,12 @@ function IsHangulSyllable(Code: Integer): Boolean; inline;
 // 한자 여부
 function IsHanjaChar(Code: Cardinal): Boolean; inline;
 
+// 히라가나 여부
+function IsHiraganaChar(Code: Cardinal): Boolean; inline;
+
+// 가타카나 여부 (반각 포함 옵션)
+function IsKatakanaChar(Code: Cardinal; HalfWidth: Boolean = True): Boolean; inline;
+
 implementation
 
 {$INLINE AUTO}
@@ -63,6 +69,18 @@ begin
     ((Code >= $2CEB0) and (Code <= $2EBEF)) or  // 한중일 통합 한자 확장 F
     ((Code >= $30000) and (Code <= $3134F)) or  // 한중일 통합 한자 확장 G
     ((Code >= $31350) and (Code <= $323AF));    // 한중일 통합 한자 확장 H
+end;
+
+function IsHiraganaChar(Code: Cardinal): Boolean; inline;
+begin
+  Result := (Code >= $3040) and (Code <= $309F);
+end;
+
+function IsKatakanaChar(Code: Cardinal; HalfWidth: Boolean): Boolean; inline;
+begin
+  Result := (Code >= $30A0) and (Code <= $30FF);
+  if (not Result) and HalfWidth then
+    Result := (Code >= $FF66) and (Code <= $FF9F);
 end;
 
 function IsHangulChar(const ch: Char): Boolean;

@@ -21,6 +21,11 @@ type
 
     HanjaCharCount: Integer;          // 한자 개수
 
+    HiraganaCount: Integer;           // 히라가나 개수
+    KatakanaCount: Integer;           // 가타카나 개수
+    KatakanaFullWidthCount: Integer;  // 가타카나 전각 개수
+    KatakanaHalfWidthCount: Integer;  // 가타카나 반각 개수
+
     AsciiLetterCount: Integer;        // ASCII 영문자 전체 개수
     AsciiUpperCount: Integer;         // ASCII 대문자 개수 (A-Z)
     AsciiLowerCount: Integer;         // ASCII 소문자 개수 (a-z)
@@ -100,6 +105,15 @@ begin
       end
       else if IsAsciiDigit(ch) then Inc(Result.AsciiDigitCount)
       else if IsHanjaChar(Ord(ch)) then Inc(Result.HanjaCharCount)
+      else if IsHiraganaChar(Ord(ch)) then Inc(Result.HiraganaCount)
+      else if IsKatakanaChar(Ord(ch)) then
+      begin
+        Inc(Result.KatakanaCount);
+        if IsKatakanaChar(Ord(ch), False) then
+          Inc(Result.KatakanaFullWidthCount)
+        else
+          Inc(Result.KatakanaHalfWidthCount);
+      end
       else Inc(Result.SpecialCharCount);
 
       Inc(i);

@@ -45,6 +45,12 @@ resourcestring
 // 한자
   SHanja                              = '한자';
 
+// 일본어
+  SHiragana                           = '히라가나';
+  SKatakana                           = '가타카나';
+  SKatakanaFullWidth                  = '전각';
+  SKatakanaHalfWidth                  = '반각';
+
 // 영문
   SEnglish                            = '영문';
   SEnglishLowercase                   = '소문자';
