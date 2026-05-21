@@ -23,6 +23,7 @@ object frmMain: TfrmMain
     Width = 605
     Height = 339
     Align = alClient
+    DoubleBuffered = True
     Font.Charset = ANSI_CHARSET
     Font.Color = clBlack
     Font.Height = -13
