@@ -3,7 +3,7 @@
 interface
 
 uses
-  Winapi.Windows, System.SysUtils, Vcl.Forms, uMain,
+  Winapi.Windows, System.Classes, System.SysUtils, Vcl.Forms, uMain,
 
   uForms, uMessageBox, uStatusBar;
 
@@ -26,7 +26,25 @@ begin
   AppTaskbar_Init(F);
   UI_SetAlwaysOnTop(F, F.miAlwaysOnTop.Checked);
   AppMenu_WordWrap(F);
-  AppMenu_ShowMagnifier(F);
+
+  TThread.CreateAnonymousThread(
+    procedure
+    begin
+      Sleep(100);
+      TThread.Queue(nil,
+        procedure
+        begin
+          if Assigned(F) and
+             (not Application.Terminated) and
+             (not (csDestroying in F.ComponentState)) and
+             Assigned(F.miShowMagnifier) and
+             F.miShowMagnifier.Checked then
+          begin
+            AppMenu_ShowMagnifier(F);
+          end;
+        end);
+    end).Start;
+
   AppStatusBar_Init(F);
   if Assigned(F.stsbr) then
     UI_StatusBar_SetVisible(F, F.stsbr, F.miShowStatusBar.Checked, False);
