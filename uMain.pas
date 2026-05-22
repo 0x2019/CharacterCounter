@@ -9,8 +9,8 @@ uses
   sLabel, Vcl.ExtCtrls, sScrollBox, Vcl.Menus, ShellAPI, sStatusBar, acMagn,
   uTextByteCount,
 
-  uFileDialog, uFileUtils, uForms, uMenu, uMenu.Popup, uMessageBox, uMutex, uSettings,
-  uTextEncoding;
+  uFileDialog, uFileUtils, uForms, uMenu, uMenu.Popup, uMessageBox, uMutex, uOSUtils,
+  uSettings, uTextEncoding;
 
 type
   TfrmMain = class(TForm)
@@ -390,6 +390,7 @@ begin
   if Assigned(ApplicationEvents) then
     ApplicationEvents.OnMessage := AppMessage;
 
+  AllowUIPIMessages(Handle, WM_SHOWME);
   AddClipboardFormatListener(Handle);
   DragAcceptFiles(Handle, True);
 end;

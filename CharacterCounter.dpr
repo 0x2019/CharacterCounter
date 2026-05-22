@@ -25,6 +25,7 @@ uses
   uMenu in '..\Common\uMenu.pas',
   uMessageBox in '..\Common\uMessageBox.pas',
   uMutex in '..\Common\uMutex.pas',
+  uOSUtils in '..\Common\uOSUtils.pas',
   uProcessUtils in '..\Common\uProcessUtils.pas',
   uSettings.Menu in '..\Common\uSettings.Menu.pas',
   uSettings in '..\Common\uSettings.pas',
