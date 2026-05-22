@@ -29,6 +29,7 @@ object frmMain: TfrmMain
     Font.Height = -13
     Font.Name = 'Tahoma'
     Font.Style = []
+    ParentDoubleBuffered = False
     ParentFont = False
     CanUndoSelText = True
     ScrollBars = ssVertical
@@ -243,8 +244,21 @@ object frmMain: TfrmMain
       end
     end
   end
-  object OpenFileDlg: TsOpenDialog
-    Filter = #53581#49828#53944' '#47928#49436' (*.txt)|*.txt|'#47784#46304' '#54028#51068' (*.*)|*.*'
+  object OpenFileDlg: TFileOpenDialog
+    DefaultExtension = 'txt'
+    FavoriteLinks = <>
+    FileTypes = <
+      item
+        DisplayName = #53581#49828#53944' '#47928#49436' (*.txt)'
+        FileMask = '*.txt'
+      end
+      item
+        DisplayName = #47784#46304' '#54028#51068' (*.*)'
+        FileMask = '*.*'
+      end>
+    Options = [fdoPathMustExist, fdoFileMustExist]
+    OnExecute = OpenFileDlgExecute
+    OnFileOkClick = OpenFileDlgFileOkClick
     Left = 296
     Top = 69
   end

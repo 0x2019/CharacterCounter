@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.ComCtrls,
   Vcl.Controls, Vcl.Dialogs, Vcl.Forms, Vcl.AppEvnts, sSkinProvider, sSkinManager,
   Vcl.StdCtrls, System.ImageList, Vcl.ImgList, acAlphaImageList, sMemo, acAlphaHints,
-  sLabel, Vcl.ExtCtrls, sScrollBox, Vcl.Menus, sDialogs, ShellAPI, sStatusBar, acMagn,
+  sLabel, Vcl.ExtCtrls, sScrollBox, Vcl.Menus, ShellAPI, sStatusBar, acMagn,
   uTextByteCount,
 
   uFileDialog, uFileUtils, uForms, uMenu, uMenu.Popup, uMessageBox, uMutex, uSettings,
@@ -19,7 +19,7 @@ type
     mmoText: TsMemo;
     sAlphaHints: TsAlphaHints;
     sMagnifier: TsMagnifier;
-    OpenFileDlg: TsOpenDialog;
+    OpenFileDlg: TFileOpenDialog;
     SaveFileDlg: TFileSaveDialog;
     MainMenu: TMainMenu;
     mnuFile: TMenuItem;
@@ -101,6 +101,8 @@ type
     procedure AppMessage(var Msg: TMsg; var Handled: Boolean);
     procedure SaveFileDlgExecute(Sender: TObject);
     procedure SaveFileDlgFileOkClick(Sender: TObject; var CanClose: Boolean);
+    procedure OpenFileDlgExecute(Sender: TObject);
+    procedure OpenFileDlgFileOkClick(Sender: TObject; var CanClose: Boolean);
   private
     procedure WMActivateApp(var Msg: TWMActivateApp); message WM_ACTIVATEAPP;
     procedure WMShowMe(var Message: TMessage); message WM_SHOWME;
@@ -114,6 +116,7 @@ type
     FLoadedFromFile: Boolean;
     FHasTrailingNewLine: Boolean;
     FCurrentFileName: string;
+    FOpenEncoding: TOpenEncoding;
     FSaveEncoding: TSaveEncoding;
 
 // Edit
@@ -367,7 +370,9 @@ begin
   FLoadedFromFile := False;
   FHasTrailingNewLine := False;
   FCurrentFileName := '';
+  FOpenEncoding := oeAutoDetect;
   FSaveEncoding := seUTF8;
+
   FMagnifierLeft := -1;
   FMagnifierTop := -1;
   FByteEncoding := emUTF8;
@@ -392,14 +397,27 @@ end;
 procedure TfrmMain.SaveFileDlgExecute(Sender: TObject);
 begin
   if Sender is TFileSaveDialog then
-    UI_SetEncoding(TFileSaveDialog(Sender), FSaveEncoding);
+    UI_Save_SetEncoding(TFileSaveDialog(Sender), FSaveEncoding);
+end;
+
+procedure TfrmMain.OpenFileDlgExecute(Sender: TObject);
+begin
+  if Sender is TFileOpenDialog then
+    UI_Open_SetEncoding(TFileOpenDialog(Sender), FOpenEncoding);
+end;
+
+procedure TfrmMain.OpenFileDlgFileOkClick(Sender: TObject; var CanClose: Boolean);
+begin
+  CanClose := True;
+  if Sender is TFileOpenDialog then
+    UI_Open_GetEncoding(TFileOpenDialog(Sender), FOpenEncoding);
 end;
 
 procedure TfrmMain.SaveFileDlgFileOkClick(Sender: TObject; var CanClose: Boolean);
 begin
   CanClose := True;
   if Sender is TFileSaveDialog then
-    UI_GetEncoding(TFileSaveDialog(Sender), FSaveEncoding);
+    UI_Save_GetEncoding(TFileSaveDialog(Sender), FSaveEncoding);
 end;
 
 procedure TfrmMain.FormKeyDown(Sender: TObject; var Key: Word;

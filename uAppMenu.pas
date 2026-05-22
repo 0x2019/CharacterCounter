@@ -15,8 +15,7 @@ procedure AppMenu_UpdateClipboard(F: TfrmMain);
 procedure AppMenu_UpdateFile(F: TfrmMain; const FileName: string);
 
 // File
-procedure AppMenu_OpenFile(F: TfrmMain); overload;
-procedure AppMenu_OpenFile(F: TfrmMain; FileName: string); overload;
+procedure AppMenu_OpenFile(F: TfrmMain; FileName: string = '');
 function AppMenu_Save(F: TfrmMain): Boolean;
 function AppMenu_SaveAs(F: TfrmMain): Boolean;
 
@@ -130,22 +129,20 @@ begin
   AppStatusBar_Update(F, FileName, SourceText);
 end;
 
-procedure AppMenu_OpenFile(F: TfrmMain);
-var
-  FileName: string;
-begin
-  if F = nil then Exit;
-  if not Assigned(F.OpenFileDlg) then Exit;
-  if not UI_OpenFileDialog(F.OpenFileDlg, FileName) then Exit;
-  AppMenu_OpenFile(F, FileName);
-end;
-
 procedure AppMenu_OpenFile(F: TfrmMain; FileName: string);
 var
   InputText: string;
+  Encoding: TOpenEncoding;
 begin
   if F = nil then Exit;
-  if FileName = '' then Exit;
+  Encoding := oeAutoDetect;
+
+  if FileName = '' then
+  begin
+    if not Assigned(F.OpenFileDlg) then Exit;
+    if not UI_OpenFileDialog(F.OpenFileDlg, F.Handle, FileName) then Exit;
+    Encoding := F.FOpenEncoding;
+  end;
 
   FileName := UI_ResolveFileShortcut(FileName);
   if FileName = '' then Exit;
@@ -154,7 +151,7 @@ begin
     Exit;
 
   try
-    if not DecodeFile(FileName, InputText) then
+    if not DecodeFile(FileName, Encoding, InputText) then
     begin
       UI_MessageBox(F, SUnsupportedFileMsg, MB_ICONERROR or MB_OK);
       Exit;
@@ -173,7 +170,10 @@ begin
 
     end;
 
-    UI_DetectEncoding(FileName, F.FSaveEncoding);
+    if Encoding = oeAutoDetect then
+      UI_DetectEncoding(FileName, F.FSaveEncoding)
+    else
+      F.FSaveEncoding := TSaveEncoding(Pred(Ord(Encoding)));
     AppMenu_UpdateFile(F, FileName);
   except
     on E: Exception do
