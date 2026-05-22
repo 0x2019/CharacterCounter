@@ -131,6 +131,16 @@ object frmMain: TfrmMain
       object N2: TMenuItem
         Caption = '-'
       end
+      object miCloseFile: TMenuItem
+        Caption = #45803#44592'(&C)'
+        SubMenuImages = sMenuImageList
+        ImageIndex = 14
+        ShortCut = 16471
+        OnClick = miCloseFileClick
+      end
+      object N6: TMenuItem
+        Caption = '-'
+      end
       object miExit: TMenuItem
         Caption = #51333#47308'(&X)'
         SubMenuImages = sMenuImageList
@@ -3163,6 +3173,10 @@ object frmMain: TfrmMain
       item
         ScalingFactor = 0.700000000000000000
         Char = 61639
+      end
+      item
+        ScalingFactor = 0.700000000000000000
+        Char = 61453
       end>
     Left = 209
     Top = 19

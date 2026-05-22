@@ -65,6 +65,8 @@ type
     N1: TMenuItem;
     N4: TMenuItem;
     N5: TMenuItem;
+    miCloseFile: TMenuItem;
+    N6: TMenuItem;
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -76,6 +78,7 @@ type
     procedure miOpenFileClick(Sender: TObject);
     procedure miSaveClick(Sender: TObject);
     procedure miSaveAsClick(Sender: TObject);
+    procedure miCloseFileClick(Sender: TObject);
     procedure miRecentItems(Sender: TObject);
     procedure miClearHistoryClick(Sender: TObject);
     procedure mmoTextChange(Sender: TObject);
@@ -335,6 +338,11 @@ end;
 procedure TfrmMain.miSaveAsClick(Sender: TObject);
 begin
   AppMenu_SaveAs(Self);
+end;
+
+procedure TfrmMain.miCloseFileClick(Sender: TObject);
+begin
+  AppMenu_CloseFile(Self);
 end;
 
 procedure TfrmMain.miRecentItems(Sender: TObject);

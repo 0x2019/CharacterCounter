@@ -23,6 +23,7 @@ procedure AppMenu_RecentItems(F: TfrmMain; Sender: TObject);
 procedure AppMenu_Recent_Add(F: TfrmMain; const FilePath: string);
 procedure AppMenu_Recent_Clear(F: TfrmMain);
 
+procedure AppMenu_CloseFile(F: TfrmMain);
 procedure AppMenu_Exit(F: TfrmMain);
 
 // Edit
@@ -68,6 +69,9 @@ begin
 
   if Assigned(F.miRecentSep) then F.miRecentSep.Tag := UI_RECENT_MENU_SEP_TAG;
   if Assigned(F.miClearHistory) then F.miClearHistory.Tag := UI_RECENT_MENU_CLEAR_TAG;
+
+  if Assigned(F.miCloseFile) then F.miCloseFile.Enabled := F.FCurrentFileName <> '';
+
   AppMenu_UpdateCaption(F);
   AppMenu_Popup_Init(F);
 end;
@@ -121,6 +125,8 @@ begin
   F.FLoadedFromFile := True;
   F.FHasTrailingNewLine := (F.mmoText.Text <> '') and
     CharInSet(F.mmoText.Text[Length(F.mmoText.Text)], [#10, #13]);
+
+  if Assigned(F.miCloseFile) then F.miCloseFile.Enabled := True;
 
   AppMenu_UpdateCaption(F);
   AppMenu_Recent_Add(F, FileName);
@@ -259,6 +265,35 @@ begin
   if not Assigned(F.miRecent) then Exit;
   UI_Menu_Recent_Clear(F.miRecent);
   AppTaskbar_Sync(F);
+end;
+
+procedure AppMenu_CloseFile(F: TfrmMain);
+begin
+  if F = nil then Exit;
+  if not Assigned(F.mmoText) then Exit;
+
+  if not AppController_Exit(F) then
+    Exit;
+
+  F.FLoadedFromFile := False;
+  F.FHasTrailingNewLine := False;
+  F.FCurrentFileName := '';
+  F.FOpenEncoding := oeAutoDetect;
+  F.FSaveEncoding := seUTF8;
+  if Assigned(F.miCloseFile) then F.miCloseFile.Enabled := False;
+
+  F.mmoText.Clear;
+  F.mmoText.Modified := False;
+  F.mmoText.SelStart := 0;
+  F.mmoText.SelLength := 0;
+  if Assigned(F.miFind) then F.miFind.Enabled := False;
+  if Assigned(F.miFindNext) then F.miFindNext.Enabled := False;
+  if Assigned(F.miFindPrev) then F.miFindPrev.Enabled := False;
+
+  AppMenu_UpdateCaption(F);
+  AppController_UpdateStats(F);
+  AppStatusBar_Init(F);
+  AppStatusBar_UpdateCaret(F);
 end;
 
 procedure AppMenu_Exit(F: TfrmMain);
