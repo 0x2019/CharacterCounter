@@ -280,6 +280,8 @@ begin
   F.FCurrentFileName := '';
   F.FOpenEncoding := oeAutoDetect;
   F.FSaveEncoding := seUTF8;
+  F.FFindText := '';
+  F.FFindOptions := [frDown];
   if Assigned(F.miCloseFile) then F.miCloseFile.Enabled := False;
 
   F.mmoText.Clear;
