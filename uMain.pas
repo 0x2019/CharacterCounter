@@ -157,11 +157,18 @@ begin
   if FindDlg.Handle = 0 then Exit;
   if not IsWindowVisible(FindDlg.Handle) then Exit;
   if Msg.message <> WM_KEYDOWN then Exit;
-  if Msg.wParam <> VK_RETURN then Exit;
   if (Msg.hwnd <> FindDlg.Handle) and (not IsChild(FindDlg.Handle, Msg.hwnd)) then Exit;
 
-  PostMessage(FindDlg.Handle, WM_COMMAND, IDOK, 0);
-  Handled := True;
+  if Msg.wParam = VK_RETURN then
+  begin
+    PostMessage(FindDlg.Handle, WM_COMMAND, IDOK, 0);
+    Handled := True;
+  end
+  else if Msg.wParam = VK_ESCAPE then
+  begin
+    PostMessage(FindDlg.Handle, WM_COMMAND, IDCANCEL, 0);
+    Handled := True;
+  end;
 end;
 
 procedure TfrmMain.ChangeMessageBoxPosition(var Msg: TMessage);
