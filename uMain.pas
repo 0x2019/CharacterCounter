@@ -156,6 +156,17 @@ uses
 
 procedure TfrmMain.AppMessage(var Msg: TMsg; var Handled: Boolean);
 begin
+  if (Msg.message = WM_KEYDOWN) and
+     (Msg.wParam = Ord('F')) and
+     ((GetKeyState(VK_CONTROL) and $8000) <> 0) then
+  begin
+    if Assigned(miFind) and not miFind.Enabled then
+    begin
+      Handled := True;
+      Exit;
+    end;
+  end;
+
   if not Assigned(FindDlg) then Exit;
   if FindDlg.Handle = 0 then Exit;
   if not IsWindowVisible(FindDlg.Handle) then Exit;
