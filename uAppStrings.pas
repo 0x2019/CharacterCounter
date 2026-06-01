@@ -4,8 +4,8 @@ interface
 
 resourcestring
   APP_NAME                            = 'Character Counter';
-  APP_VERSION                         = 'v1.1.0.0';
-  APP_RELEASE                         = 'May 09, 2026';
+  APP_VERSION                         = 'v1.2.0.0';
+  APP_RELEASE                         = 'June 01, 2026';
   APP_URL                             = 'https://github.com/0x2019/CharacterCounter';
 
   SUntitled                           = 'Untitled';
