@@ -156,6 +156,9 @@ begin
   if not AppController_Exit(F) then
     Exit;
 
+  if Assigned(F.FindDlg) and (F.FindDlg.Handle <> 0) and IsWindowVisible(F.FindDlg.Handle) then
+    PostMessage(F.FindDlg.Handle, WM_CLOSE, 0, 0);
+
   try
     if not DecodeFile(FileName, Encoding, InputText) then
     begin
@@ -163,6 +166,7 @@ begin
       Exit;
     end;
 
+    F.FSaveLineBreak := GetSaveLineBreak(InputText);
     InputText := ConvertToCRLF(InputText);
 
     F.mmoText.Text := InputText;
@@ -199,7 +203,7 @@ begin
   if FileName = '' then Exit;
 
   try
-    TFile.WriteAllBytes(FileName, GetEncodedBytes(F.mmoText.Text, F.FSaveEncoding));
+    TFile.WriteAllBytes(FileName, GetEncodedBytes(ConvertLineBreak(F.mmoText.Text, F.FSaveLineBreak), F.FSaveEncoding));
     F.mmoText.Modified := False;
     AppMenu_UpdateFile(F, FileName);
     Result := True;
@@ -222,7 +226,7 @@ begin
   end;
 
   try
-    TFile.WriteAllBytes(F.FCurrentFileName, GetEncodedBytes(F.mmoText.Text, F.FSaveEncoding));
+    TFile.WriteAllBytes(F.FCurrentFileName, GetEncodedBytes(ConvertLineBreak(F.mmoText.Text, F.FSaveLineBreak), F.FSaveEncoding));
     F.mmoText.Modified := False;
     AppMenu_UpdateFile(F, F.FCurrentFileName);
     Result := True;
@@ -280,8 +284,13 @@ begin
   F.FCurrentFileName := '';
   F.FOpenEncoding := oeAutoDetect;
   F.FSaveEncoding := seUTF8;
+  F.FSaveLineBreak := slbCRLF;
   F.FFindText := '';
   F.FFindOptions := [frDown];
+
+  if Assigned(F.FindDlg) and (F.FindDlg.Handle <> 0) and IsWindowVisible(F.FindDlg.Handle) then
+    PostMessage(F.FindDlg.Handle, WM_CLOSE, 0, 0);
+
   if Assigned(F.miCloseFile) then F.miCloseFile.Enabled := False;
 
   F.mmoText.Clear;

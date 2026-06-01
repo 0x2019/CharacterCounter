@@ -69,6 +69,7 @@ var
   Bytes: TBytes;
   Size: string;
   Encoding: string;
+  LineBreak: string;
   SplitPos: Integer;
   StatusText: string;
 begin
@@ -89,9 +90,13 @@ begin
   if not SameText(FilePath, F.FCurrentFileName) then
     Encoding := GetEncodingName(Bytes);
 
+  LineBreak := GetLineBreak(F.FSaveLineBreak);
+  if not SameText(FilePath, F.FCurrentFileName) then
+    LineBreak := GetLineBreak(SourceText);
+
   StatusText := GetFileExt(FilePath) + SSeparator +
                 Encoding + SSeparator +
-                GetLineBreak(SourceText) + SSeparator +
+                LineBreak + SSeparator +
                 Size;
   AppStatusBar_SetStatusText(F, StatusText);
   AppStatusBar_UpdateCaret(F);

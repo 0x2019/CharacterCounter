@@ -121,6 +121,7 @@ type
     FCurrentFileName: string;
     FOpenEncoding: TOpenEncoding;
     FSaveEncoding: TSaveEncoding;
+    FSaveLineBreak: TSaveLineBreak;
 
 // Edit
     FFindText: string;
@@ -387,6 +388,7 @@ begin
   FCurrentFileName := '';
   FOpenEncoding := oeAutoDetect;
   FSaveEncoding := seUTF8;
+  FSaveLineBreak := slbCRLF;
 
   FMagnifierLeft := -1;
   FMagnifierTop := -1;
@@ -413,7 +415,10 @@ end;
 procedure TfrmMain.SaveFileDlgExecute(Sender: TObject);
 begin
   if Sender is TFileSaveDialog then
+  begin
     UI_Save_SetEncoding(TFileSaveDialog(Sender), FSaveEncoding);
+    UI_Save_SetLineBreak(TFileSaveDialog(Sender), FSaveLineBreak);
+  end;
 end;
 
 procedure TfrmMain.OpenFileDlgExecute(Sender: TObject);
@@ -433,7 +438,10 @@ procedure TfrmMain.SaveFileDlgFileOkClick(Sender: TObject; var CanClose: Boolean
 begin
   CanClose := True;
   if Sender is TFileSaveDialog then
+  begin
     UI_Save_GetEncoding(TFileSaveDialog(Sender), FSaveEncoding);
+    UI_Save_GetLineBreak(TFileSaveDialog(Sender), FSaveLineBreak);
+  end;
 end;
 
 procedure TfrmMain.FormKeyDown(Sender: TObject; var Key: Word;
@@ -441,6 +449,12 @@ procedure TfrmMain.FormKeyDown(Sender: TObject; var Key: Word;
 begin
   if Key = VK_F3 then
   begin
+    if Assigned(miFindNext) and not miFindNext.Enabled then
+    begin
+      Key := 0;
+      Exit;
+    end;
+
     AppMenu_FindNext(Self, ssShift in Shift);
     Key := 0;
     Exit;
