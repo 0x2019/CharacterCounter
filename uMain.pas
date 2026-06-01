@@ -57,6 +57,7 @@ type
     pmCopy: TPopupMenu;
     pmiCopyOnSelect: TMenuItem;
     pmiCopySep: TMenuItem;
+    pmiOpenFileLocation: TMenuItem;
     pmiByteEncoding: TMenuItem;
     pmiEncodingCP949: TMenuItem;
     pmiEncodingUTF8: TMenuItem;
@@ -98,6 +99,7 @@ type
     procedure mmoTextMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
     procedure mmoTextMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure pmiCopyOnSelectClick(Sender: TObject);
+    procedure pmiOpenFileLocationClick(Sender: TObject);
     procedure pmiByteEncodingClick(Sender: TObject);
     procedure pmCopyPopup(Sender: TObject);
     procedure FindDlgFind(Sender: TObject);
@@ -525,6 +527,11 @@ end;
 procedure TfrmMain.pmiCopyOnSelectClick(Sender: TObject);
 begin
   AppMenu_Popup_Copy(Self, Sender);
+end;
+
+procedure TfrmMain.pmiOpenFileLocationClick(Sender: TObject);
+begin
+  AppMenu_Popup_OpenFileLocation(Self);
 end;
 
 procedure TfrmMain.pmiByteEncodingClick(Sender: TObject);

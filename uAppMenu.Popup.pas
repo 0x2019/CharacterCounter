@@ -5,10 +5,11 @@ interface
 uses
   Winapi.Windows, System.SysUtils, System.Classes, Vcl.Menus, Clipbrd, uMain,
 
-  uMenu.Popup, uMessageBox;
+  uExplorer, uMenu.Popup, uMessageBox;
 
 procedure AppMenu_Popup_Init(F: TfrmMain);
 procedure AppMenu_Popup_Copy(F: TfrmMain; Sender: TObject);
+procedure AppMenu_Popup_OpenFileLocation(F: TfrmMain);
 procedure AppMenu_Popup_ByteEncoding(F: TfrmMain; Sender: TObject);
 procedure AppMenu_Popup_Update(F: TfrmMain; Sender: TObject; const Items: TPopupItems);
 
@@ -74,6 +75,14 @@ begin
   UI_Menu_Popup_Copy(Sender);
 end;
 
+procedure AppMenu_Popup_OpenFileLocation(F: TfrmMain);
+begin
+  if F = nil then Exit;
+  if Trim(F.FCurrentFileName) = '' then Exit;
+
+  UI_Explorer_SelectFile(F.FCurrentFileName);
+end;
+
 procedure AppMenu_Popup_ByteEncoding(F: TfrmMain; Sender: TObject);
 begin
   if (F = nil) or not (Sender is TMenuItem) then
@@ -93,6 +102,8 @@ procedure AppMenu_Popup_Update(F: TfrmMain; Sender: TObject; const Items: TPopup
 var
   PopupComponent: TComponent;
   IsStatsPopup: Boolean;
+  IsStatusBarPopup: Boolean;
+  HasCurrentFile: Boolean;
 begin
   UI_Menu_Popup_Update(Sender, Items);
 
@@ -104,9 +115,13 @@ begin
     PopupComponent := TPopupMenu(Sender).PopupComponent;
 
   IsStatsPopup := (PopupComponent = F.scrStats) or (PopupComponent = F.lblStats);
+  IsStatusBarPopup := PopupComponent = F.stsbr;
+  HasCurrentFile := Trim(F.FCurrentFileName) <> '';
 
   if Assigned(F.pmiCopySep) then
-    F.pmiCopySep.Visible := IsStatsPopup;
+    F.pmiCopySep.Visible := IsStatsPopup or (IsStatusBarPopup and HasCurrentFile);
+  if Assigned(F.pmiOpenFileLocation) then
+    F.pmiOpenFileLocation.Visible := IsStatusBarPopup and HasCurrentFile;
   if Assigned(F.pmiByteEncoding) then
     F.pmiByteEncoding.Visible := IsStatsPopup;
 
@@ -122,8 +137,12 @@ begin
     Exit;
 
   if PopupComponent = F.stsbr then
+  begin
     Items.Copy.Enabled := Assigned(F.stsbr) and (F.stsbr.Panels.Count > 0) and
                           (Trim(F.stsbr.Panels[0].Text) <> '');
+    if Assigned(F.pmiOpenFileLocation) then
+      F.pmiOpenFileLocation.Enabled := HasCurrentFile;
+  end;
 
   if IsStatsPopup then
     Items.Copy.Enabled := Assigned(F.lblStats) and
